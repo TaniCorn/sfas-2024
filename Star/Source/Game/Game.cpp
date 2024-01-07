@@ -37,7 +37,7 @@ bool Game::IsValid()
 
 bool Game::Load()
 {
-	ITexture* InnerTexture = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds");
+	/*ITexture* InnerTexture = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds");
 	ITexture* MiddleTexture = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds");
 	ITexture* OuterTexture = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds");
 	ITexture* ArrowTexture = Graphics->CreateTexture(L"Resource/Textures/Arrow.dds");
@@ -53,34 +53,40 @@ bool Game::Load()
 	std::srand(static_cast<unsigned int>(std::time(0)));
 
 	SelectedRing = RingLayer::Outer;
-	State = GameState::Setup;
+	State = GameState::Setup;*/
+	Splash = new SplashScreen(Graphics, Input);
+	Splash->Load();
 
 	return true;
 }
 
-void Game::Update()
+void Game::Update(float DeltaTime)
 {
-	// If mode is Setup game then set each ring to a random rotation
-	if (State == GameState::Setup)
-	{
-		SetupEachRing();
-		State = GameState::Playing;
-	}
+	Splash->Update(DeltaTime);
+	//Splash->Cleanup();
+	//delete Splash;
+	//// If mode is Setup game then set each ring to a random rotation
+	//if (State == GameState::Setup)
+	//{
+	//	SetupEachRing();
+	//	State = GameState::Playing;
+	//}
 
-	// If mode is Playing then read controller input and manage which ring is selected, the rotation of each ring and waiting for select to confirm positions 
-	if (State == GameState::Playing)
-	{
-		UpdateRingSelection();
-		UpdateSelectedRingRotation();
-		UpdateRingTestSelection();
-	}
+	//// If mode is Playing then read controller input and manage which ring is selected, the rotation of each ring and waiting for select to confirm positions 
+	//if (State == GameState::Playing)
+	//{
+	//	UpdateRingSelection();
+	//	UpdateSelectedRingRotation();
+	//	UpdateRingTestSelection();
+	//}
 
-	// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 
-	if (State == GameState::Test)
-	{
-		TestRingSolution();
-		State = GameState::Setup;
-	}
+	//// If mode is Test then check to see if the rings are in their correct positions, play a noise corresponding to how close the player is 
+	//if (State == GameState::Test)
+	//{
+	//	TestRingSolution();
+	//	State = GameState::Setup;
+	//}
+
 }
 
 void Game::Cleanup()

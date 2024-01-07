@@ -1,15 +1,20 @@
-
 #pragma once
 
 class IGraphics;
 class IInput;
 
-class IApplication
+enum Level
+{
+	SplashScreenLevel,
+	MainMenuLevel,
+	SettingsMenuLevel
+
+};
+class ILevel
 {
 public:
-
-	IApplication(IGraphics* GraphicsIn, IInput* InputIn);
-	virtual ~IApplication();
+	ILevel(IGraphics* GraphicsIn, IInput* InputIn);
+	virtual ~ILevel();
 
 	virtual bool IsValid() = 0;
 	virtual bool Load() = 0;
@@ -20,6 +25,5 @@ protected:
 
 	IGraphics* Graphics;
 	IInput* Input;
-
 };
 

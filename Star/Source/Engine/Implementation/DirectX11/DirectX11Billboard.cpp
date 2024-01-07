@@ -15,7 +15,7 @@ DirectX11Billboard::~DirectX11Billboard()
 	}
 }
 	
-void DirectX11Billboard::Update()
+void DirectX11Billboard::Update(ID3D11DeviceContext* Context)
 {
 	if (Context)
 	{

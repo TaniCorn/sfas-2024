@@ -3,10 +3,12 @@
 #include "DirectX11Billboard.h"
 #include "DirectX11Shader.h"
 #include "DirectX11Texture.h"
+#include "DirectX11Fade.h"
 #include <d3dcommon.h>
 #include <d3d11.h>
 #include <D3DCompiler.h>
 #include <DDSTextureLoader.h>
+#include <WICTextureLoader.h>
 
 DirectX11Graphics::DirectX11Graphics(HWND hwndIn) : Device(nullptr), Context(nullptr), SwapChain(nullptr), BackbufferView(nullptr), BackbufferTexture(nullptr), Mvp(nullptr), vpMatrix(), FeatureLevel(D3D_FEATURE_LEVEL_11_0), hwnd(hwndIn), width(0), height(0)
 {
@@ -134,7 +136,7 @@ void DirectX11Graphics::Update()
 {
     if (Context && SwapChain)
     {
-        float clearColour[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float clearColour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
         Context->ClearRenderTargetView(BackbufferView, clearColour);
 
         D3D11_VIEWPORT viewport;
@@ -156,7 +158,7 @@ void DirectX11Graphics::Update()
             {
                 SetWorldMatrix((*renderable)->GetTransform());
                 Context->OMSetBlendState(BlendState, NULL, ~0U);
-                (*renderable)->Update();
+                (*renderable)->Update(Context);
             }
         }
 
@@ -168,17 +170,34 @@ bool DirectX11Graphics::IsValid()
 {
     return Device != nullptr;
 }
-
-ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath)
+ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath, std::string identifierName)
 {
     ITexture* Result = nullptr;
     ID3D11ShaderResourceView* Texture = nullptr;
     ID3D11SamplerState* Sampler = nullptr;
     D3D11_TEXTURE2D_DESC Description;
+    Description.Width = 256;
+    Description.Height = 256;
+    Description.MipLevels = Description.ArraySize = 1;
+    Description.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    Description.SampleDesc.Count = 1;
+    Description.Usage = D3D11_USAGE_DYNAMIC;
+    Description.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    Description.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    Description.MiscFlags = 0;
 
     if (IsValid())
     {
         HRESULT hr = DirectX::CreateDDSTextureFromFile(Device, filepath, NULL, &Texture);
+        if (!SUCCEEDED(hr))
+        {
+            hr = DirectX::CreateWICTextureFromFile(Device, Context, filepath, NULL, &Texture, 0);
+            if (!SUCCEEDED(hr))
+            {
+                //Unable to create any textures
+                return Result;
+            }
+        }
 
         if (SUCCEEDED(hr))
         {
@@ -208,10 +227,11 @@ ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath)
             Result = new DirectX11Texture(Context, Texture, Sampler, Description);
             Textures.push_back(Result);
         }
-    }
 
+    }
     return Result;
 }
+
 
 IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn)
 {
@@ -308,6 +328,71 @@ IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
         {
             Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
             Renderables[ShaderIn].push_back(Result);
+        }
+    }
+
+    return Result;
+}
+
+IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, float* ParamPtr)
+{
+    IRenderable* Result = nullptr;
+
+    if (IsValid())
+    {
+        const ITexture* texture = ShaderIn->GetTexture();
+        const float halfWidth = texture ? texture->GetWidth() / 2.0f : 0.5f;
+        const float halfHeight = texture ? texture->GetHeight() / 2.0f : 0.5f;
+
+        float vertex_data_array[] =
+        {
+            halfWidth,  halfHeight, 0.0f,  1.0f, 1.0f,
+            halfWidth, -halfHeight, 0.0f,  1.0f, 0.0f,
+           -halfWidth, -halfHeight, 0.0f,  0.0f, 0.0f,
+
+           -halfWidth, -halfHeight, 0.0f,  0.0f, 0.0f,
+           -halfWidth,  halfHeight, 0.0f,  0.0f, 1.0f,
+            halfWidth,  halfHeight, 0.0f,  1.0f, 1.0f,
+        };
+
+        ID3D11Buffer* VertexBuffer;
+        unsigned int vertexStride = 5 * sizeof(float);
+        unsigned int vertexOffset = 0;
+        unsigned int vertexCount = 6;
+
+        D3D11_BUFFER_DESC vertexDescription;
+        ZeroMemory(&vertexDescription, sizeof(vertexDescription));
+        vertexDescription.Usage = D3D11_USAGE_DEFAULT;
+        vertexDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        vertexDescription.ByteWidth = sizeof(vertex_data_array);
+
+        D3D11_SUBRESOURCE_DATA resourceData;
+        ZeroMemory(&resourceData, sizeof(resourceData));
+        resourceData.pSysMem = vertex_data_array;
+
+        if (SUCCEEDED(Device->CreateBuffer(&vertexDescription, &resourceData, &VertexBuffer)))
+        {
+            float pixel_data_array[4] = { 0,0,0,0 };
+            ID3D11Buffer* PixelBuffer;
+            D3D11_BUFFER_DESC pixelDescription;
+            pixelDescription.Usage = D3D11_USAGE_DYNAMIC;
+            pixelDescription.ByteWidth = sizeof(pixel_data_array);
+            pixelDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+            pixelDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+            pixelDescription.MiscFlags = 0;
+            pixelDescription.StructureByteStride = 0;
+
+            D3D11_SUBRESOURCE_DATA pixelData;
+            ZeroMemory(&pixelData, sizeof(pixelData));
+            pixelData.pSysMem = pixel_data_array;
+
+            if (SUCCEEDED(Device->CreateBuffer(&pixelDescription, &pixelData, &PixelBuffer)))
+            {
+                Result = new DirectX11Fade(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, PixelBuffer, ParamPtr);
+                Renderables[ShaderIn].push_back(Result);
+
+            }
+            //Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
         }
     }
 

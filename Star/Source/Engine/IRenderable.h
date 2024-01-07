@@ -4,11 +4,13 @@
 #include "Engine/IGraphics.h"
 #include "Engine/Transform2D.h"
 
+class ID3D11DeviceContext;
+
 class IRenderable
 {
 public:
 
-	virtual void Update() = 0;
+	virtual void Update(ID3D11DeviceContext* Context) = 0;
 
 	const Transform2D& GetTransform() const;
 	void SetPosition(float x, float y);

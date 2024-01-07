@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Engine/IApplication.h"
-
+#include "../../SplashScreen.h"
 class IGraphics;
 class ITexture;
 class IShader;
@@ -21,7 +21,7 @@ public:
 
 	virtual bool IsValid();
 	virtual bool Load();
-	virtual void Update();
+	virtual void Update(float DeltaTime);
 	virtual void Cleanup();
 
 private:
@@ -36,5 +36,7 @@ private:
 	IRenderable* Arrow;
 	RingLayer SelectedRing;
 	GameState State;
+	SplashScreen* Splash;
+
 };
 

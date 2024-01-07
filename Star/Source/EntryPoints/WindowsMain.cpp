@@ -9,6 +9,7 @@
 #include "Engine/ITexture.h"
 #include "Engine/IShader.h"
 #include "Engine/IApplication.h"
+#include "../../WindowsTimer.h"
 
 const char WindowClassName[] = "Star";
 const char WindowTitle[] = "Search for a Star 2024";
@@ -59,7 +60,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	IGraphics * Graphics = new DirectX11Graphics(hwnd);
 	IInput* Input = new DirectXInput();
 	IApplication* Application = GetApplication(Graphics, Input);
-
+	ITimer* Timer = new WindowsTimer();
+	Timer->Update();
+	
 	if (Graphics && Graphics->IsValid() && Application)
 	{
 		Application->Load();
@@ -72,9 +75,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				DispatchMessage(&msg);
 			}
 
+			Timer->Update();
 			Input->Update();
-			Application->Update();
+			Application->Update(Timer->GetDeltaTime());
 			Graphics->Update();
+
 		}
 
 		Application->Cleanup();
@@ -109,3 +114,4 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
+
