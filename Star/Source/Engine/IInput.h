@@ -41,9 +41,9 @@ class IInput
 public:
 
 	IInput();
+	virtual ~IInput() {};
 
 	virtual void Update();
-
 	virtual float GetValue(InputAction action) const;
 	virtual bool IsPressed(InputAction action, float threshold = 0.5f) const;
 	virtual bool IsReleased(InputAction action, float threshold = 0.5f) const;

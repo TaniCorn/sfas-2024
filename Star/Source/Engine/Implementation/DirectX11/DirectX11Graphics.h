@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <d3dcommon.h>
 #include <DirectXMath.h>
+#include <string>
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -25,7 +26,7 @@ public:
 	virtual void Update();
 	virtual bool IsValid();
 
-	virtual ITexture* CreateTexture(const wchar_t* filepath);
+	virtual ITexture* CreateTexture(const wchar_t* filepath, std::string identifierName);
 	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn);
 	virtual IRenderable* CreateBillboard(IShader* ShaderIn);
 	virtual IRenderable* CreateFade(IShader* ShaderIn, float* ParamPtr);

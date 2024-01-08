@@ -7,7 +7,7 @@
 class IRenderable;
 class IShader;
 class ITexture;
-
+#include <string>
 class IGraphics
 {
 public:
@@ -18,15 +18,17 @@ public:
 	virtual void Update() = 0;
 	virtual bool IsValid() = 0;
 
-	virtual ITexture* CreateTexture(const wchar_t* filepath) = 0;
+	virtual ITexture* CreateTexture(const wchar_t* filepath, std::string identifierName) = 0;
 	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn) = 0;
 	virtual IRenderable* CreateBillboard(IShader* ShaderIn) = 0;
+	virtual IRenderable* CreateFade(IShader* ShaderIn, float* ParamPtr) = 0;
+	virtual void Cleanup();
 
 
 protected:
 
 	std::map<IShader*, std::list<IRenderable*> > Renderables;
-	std::list<ITexture*> Textures;
+	std::map<std::string, ITexture*> Textures;
 
 };
 

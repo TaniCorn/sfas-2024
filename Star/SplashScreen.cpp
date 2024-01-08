@@ -11,11 +11,7 @@ SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphi
 
 SplashScreen::~SplashScreen()
 {
-	if (SplashRender)
-	{
-		delete SplashRender;
-		SplashRender = nullptr;
-	}
+
 }
 
 bool SplashScreen::IsValid()
@@ -26,6 +22,7 @@ bool SplashScreen::IsValid()
 bool SplashScreen::Load()
 {
 	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/R.png", "SplashTexture");
+
 	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
 
 	SplashRender = Graphics->CreateFade(SplashShader, FadeParams);
@@ -63,4 +60,5 @@ void SplashScreen::Update(float DeltaTime)
 
 void SplashScreen::Cleanup()
 {
+	Graphics->Cleanup();
 }

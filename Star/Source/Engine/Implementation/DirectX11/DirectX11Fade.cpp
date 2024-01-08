@@ -17,10 +17,12 @@ DirectX11Fade::~DirectX11Fade()
 	if (VertexBuffer)
 	{
 		VertexBuffer->Release();
+		VertexBuffer = nullptr;
 	}
 	if (PixelBuffer)
 	{
 		PixelBuffer->Release();
+		PixelBuffer = nullptr;
 	}
 }
 

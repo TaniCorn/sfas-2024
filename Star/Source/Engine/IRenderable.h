@@ -9,9 +9,9 @@ class ID3D11DeviceContext;
 class IRenderable
 {
 public:
+	virtual ~IRenderable() {};
 
 	virtual void Update(ID3D11DeviceContext* Context) = 0;
-
 	const Transform2D& GetTransform() const;
 	void SetPosition(float x, float y);
 	void SetRotation(float r);

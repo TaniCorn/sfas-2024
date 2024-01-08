@@ -9,11 +9,13 @@ DirectX11Texture::~DirectX11Texture()
 	if (Texture)
 	{
 		Texture->Release();
+		Texture = nullptr;
 	}
 
 	if (Sampler)
 	{
 		Sampler->Release();
+		Sampler = nullptr;
 	}
 }
 

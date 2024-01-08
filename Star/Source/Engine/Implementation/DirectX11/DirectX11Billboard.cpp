@@ -12,6 +12,7 @@ DirectX11Billboard::~DirectX11Billboard()
 	if (VertexBuffer)
 	{
 		VertexBuffer->Release();
+		VertexBuffer = nullptr;
 	}
 }
 	

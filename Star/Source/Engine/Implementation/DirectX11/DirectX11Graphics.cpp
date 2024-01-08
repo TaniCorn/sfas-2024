@@ -109,26 +109,31 @@ DirectX11Graphics::~DirectX11Graphics()
     if (BlendState)
     {
         BlendState->Release();
+        BlendState = nullptr;
     }
 
     if (BackbufferView)
     {
         BackbufferView->Release();
+        BackbufferView = nullptr;
     }
 
     if (SwapChain)
     {
         SwapChain->Release();
+        SwapChain = nullptr;
     }
 
     if (Context)
     {
         Context->Release();
+        Context = nullptr;
     }
 
     if (Device)
     {
         Device->Release();
+        Device = nullptr;
     }
 }
 
@@ -221,13 +226,12 @@ ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath, std::string 
             ((ID3D11Texture2D*)textureResource)->GetDesc(&Description);
             textureResource->Release();
         }
-
+       
         if (SUCCEEDED(hr))
         {
             Result = new DirectX11Texture(Context, Texture, Sampler, Description);
-            Textures.push_back(Result);
+            Textures.insert(std::pair<std::string, ITexture*>(identifierName, Result));
         }
-
     }
     return Result;
 }

@@ -63,8 +63,8 @@ bool Game::Load()
 void Game::Update(float DeltaTime)
 {
 	Splash->Update(DeltaTime);
-	//Splash->Cleanup();
-	//delete Splash;
+	Splash->Cleanup();
+	delete Splash;
 	//// If mode is Setup game then set each ring to a random rotation
 	//if (State == GameState::Setup)
 	//{

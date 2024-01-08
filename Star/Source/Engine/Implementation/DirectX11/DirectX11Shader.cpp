@@ -11,16 +11,19 @@ DirectX11Shader::~DirectX11Shader()
 	if (InputLayout)
 	{
 		InputLayout->Release();
+		InputLayout = nullptr;
 	}
 
 	if (VertexShader)
 	{
 		VertexShader->Release();
+		VertexShader = nullptr;
 	}
 
 	if (PixelShader)
 	{
 		PixelShader->Release();
+		PixelShader = nullptr;
 	}
 }
 
