@@ -6,6 +6,8 @@
 #include <d3dcommon.h>
 #include <DirectXMath.h>
 #include <string>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;
@@ -53,6 +55,9 @@ private:
 	HWND hwnd;
 	int width;
 	int height;
+
+	DirectX::SpriteBatch* SpriteBatch;
+	DirectX::SpriteFont* SpriteFont;
 
 };
 

@@ -4,9 +4,11 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-
+#include "DirectX11Text.h"
+#include <DirectXColors.h>
 SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
+	LevelSwitchKey = SplashScreenLevel;
 }
 
 SplashScreen::~SplashScreen()
@@ -14,9 +16,9 @@ SplashScreen::~SplashScreen()
 
 }
 
-bool SplashScreen::IsValid()
+Level SplashScreen::LevelSwitch()
 {
-	return true;
+	return LevelSwitchKey;
 }
 
 bool SplashScreen::Load()
@@ -27,6 +29,15 @@ bool SplashScreen::Load()
 
 	SplashRender = Graphics->CreateFade(SplashShader, FadeParams);
 
+	Transform2D TransformText;
+	TransformText.PositionX = 0;
+	TransformText.PositionY = 0;
+	TransformText.ScaleX = 1;
+	TransformText.ScaleY = 1;
+	TransformText.Rotation = 0;
+	Text = new DirectX11Text("My name is Dende", TransformText, DirectX::Colors::White);
+
+	Graphics->AddText(Text);
 	return true;
 }
 
@@ -55,6 +66,7 @@ void SplashScreen::Update(float DeltaTime)
 		Time -= DeltaTime;
 		FadeParams[3] = Time/OutTransitionTime;
 		bCompleted = true;
+		LevelSwitchKey = MainMenuLevel;
 	}
 }
 

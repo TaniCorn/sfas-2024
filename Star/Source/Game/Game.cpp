@@ -54,17 +54,14 @@ bool Game::Load()
 
 	SelectedRing = RingLayer::Outer;
 	State = GameState::Setup;*/
-	Splash = new SplashScreen(Graphics, Input);
-	Splash->Load();
-
+	CurrentLevel = new SplashScreen(Graphics, Input);
+	CurrentLevel->Load();
+	CurrentLevelIdentifier = SplashScreenLevel;
 	return true;
 }
 
 void Game::Update(float DeltaTime)
 {
-	Splash->Update(DeltaTime);
-	Splash->Cleanup();
-	delete Splash;
 	//// If mode is Setup game then set each ring to a random rotation
 	//if (State == GameState::Setup)
 	//{
@@ -87,11 +84,35 @@ void Game::Update(float DeltaTime)
 	//	State = GameState::Setup;
 	//}
 
+	CurrentLevel->Update(DeltaTime);
+
+	if (CurrentLevelIdentifier != CurrentLevel->LevelSwitch())
+	{
+		SwitchLevel(CurrentLevel->LevelSwitch());
+	}
 }
 
 void Game::Cleanup()
 {
 
+}
+
+void Game::SwitchLevel(Level NextLevelIdentfier)
+{
+	CurrentLevelIdentifier = NextLevelIdentfier;
+	CurrentLevel->Cleanup();
+	delete CurrentLevel;
+	switch (NextLevelIdentfier)
+	{
+	case MainMenuLevel:
+		//CurrentLevel = new
+		break;
+	case SettingsMenuLevel:
+		//CurrentLevel = new
+		break;
+	default:
+		break;
+	}
 }
 
 void Game::SetupEachRing()

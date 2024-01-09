@@ -26,6 +26,7 @@ public:
 
 private:
 
+	void SwitchLevel(Level NextLevelIdentfier);
 	void SetupEachRing();
 	void UpdateRingSelection();
 	void UpdateSelectedRingRotation();
@@ -36,7 +37,10 @@ private:
 	IRenderable* Arrow;
 	RingLayer SelectedRing;
 	GameState State;
-	SplashScreen* Splash;
+
+	Level CurrentLevelIdentifier;
+	ILevel* CurrentLevel;
+	ILevel* LoadingScreenLevel;
 
 };
 

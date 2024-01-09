@@ -2,6 +2,7 @@
 #include "ILevel.h"
 
 class IRenderable;
+class IText;
 
 class SplashScreen : public ILevel
 {
@@ -9,7 +10,7 @@ public:
 	SplashScreen(IGraphics* Graphics, IInput* InputIn);
 	virtual ~SplashScreen();
 
-	virtual bool IsValid();
+	virtual Level LevelSwitch();
 	virtual bool Load();
 	virtual void Update(float DeltaTime);
 	virtual void Cleanup();
@@ -25,5 +26,6 @@ private:
 	float FadeParams[4] = { 1,1,1,0 };
 
 	IRenderable* SplashRender;
+	IText* Text;
 };
 

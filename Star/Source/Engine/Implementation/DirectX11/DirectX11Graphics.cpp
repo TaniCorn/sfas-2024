@@ -9,6 +9,7 @@
 #include <D3DCompiler.h>
 #include <DDSTextureLoader.h>
 #include <WICTextureLoader.h>
+#include "../../../IText.h"
 
 DirectX11Graphics::DirectX11Graphics(HWND hwndIn) : Device(nullptr), Context(nullptr), SwapChain(nullptr), BackbufferView(nullptr), BackbufferTexture(nullptr), Mvp(nullptr), vpMatrix(), FeatureLevel(D3D_FEATURE_LEVEL_11_0), hwnd(hwndIn), width(0), height(0)
 {
@@ -102,6 +103,9 @@ DirectX11Graphics::DirectX11Graphics(HWND hwndIn) : Device(nullptr), Context(nul
         Desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
         Device->CreateBlendState(&Desc, &BlendState);
     }
+
+    SpriteBatch = new DirectX::SpriteBatch(Context);
+    SpriteFont = new DirectX::SpriteFont(Device, L"Resource/Fonts/myfile.spritefont");
 }
 
 DirectX11Graphics::~DirectX11Graphics()
@@ -166,6 +170,15 @@ void DirectX11Graphics::Update()
                 (*renderable)->Update(Context);
             }
         }
+
+        SpriteBatch->Begin();
+        for (auto text = Text.begin(); text != Text.end(); ++text) 
+        {
+            IText* t = (*text);
+            DirectX::XMVECTOR Color = DirectX::XMVectorSet(t->GetRed(), t->GetGreen(), t->GetBlue(), t->GetAlpha());
+            SpriteFont->DrawString(SpriteBatch, t->GetText(), DirectX::XMFLOAT2(t->GetXPosition(), t->GetYPosition()), Color, t->GetRotation(), DirectX::XMFLOAT2(0, 0), DirectX::XMFLOAT2(t->GetXScale(), t->GetYScale()));
+        }
+        SpriteBatch->End();
 
         SwapChain->Present(0, 0);
     }

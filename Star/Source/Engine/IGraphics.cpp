@@ -30,6 +30,16 @@ IGraphics::~IGraphics()
     Textures.clear();
 }
 
+void IGraphics::AddText(IText* TextIn)
+{
+    Text.push_back(TextIn);
+}
+
+void IGraphics::RemoveText(IText* TextIn)
+{
+    Text.remove(TextIn);
+}
+
 void IGraphics::Cleanup()
 {
     for (auto bucket = Renderables.begin(); bucket != Renderables.end(); ++bucket)

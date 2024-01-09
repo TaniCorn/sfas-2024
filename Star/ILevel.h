@@ -16,13 +16,13 @@ public:
 	ILevel(IGraphics* GraphicsIn, IInput* InputIn);
 	virtual ~ILevel();
 
-	virtual bool IsValid() = 0;
+	virtual Level LevelSwitch() = 0;
 	virtual bool Load() = 0;
 	virtual void Update(float DeltaTime) = 0;
 	virtual void Cleanup() = 0;
 
 protected:
-
+	Level LevelSwitchKey;
 	IGraphics* Graphics;
 	IInput* Input;
 };
