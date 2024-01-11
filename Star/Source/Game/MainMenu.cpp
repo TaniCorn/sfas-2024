@@ -24,12 +24,12 @@ bool MainMenu::Load()
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 
 
-	IShader* BackgroundShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", BackgroundTexture);
-	IShader* ButtonShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", ButtonTexture);
+	IShader* BackgroundShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
+	IShader* ButtonShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	IRenderable* StartRender = Graphics->CreateFade(ButtonShader, Color);
-	IRenderable* QuitRender = Graphics->CreateFade(ButtonShader, Color);
-	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader);
+	IRenderable* StartRender = Graphics->CreateFade(ButtonShader, ButtonTexture, Color);
+	IRenderable* QuitRender = Graphics->CreateFade(ButtonShader, ButtonTexture, Color);
+	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader, BackgroundTexture);
 	
 	IText* StartText = Graphics->CreateText("Start Game", 0, 0, 1,1,0,1,0,0,1);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);

@@ -11,7 +11,7 @@ class DirectX11Shader : public IShader
 {
 public:
 
-	DirectX11Shader(ID3D11DeviceContext* ContextIn, ID3D11VertexShader* VertexShaderIn,	ID3D11PixelShader* PixelShaderIn, ID3D11InputLayout* InputLayoutIn, ITexture* TextureIn);
+	DirectX11Shader(ID3D11DeviceContext* ContextIn, ID3D11VertexShader* VertexShaderIn,	ID3D11PixelShader* PixelShaderIn, ID3D11InputLayout* InputLayoutIn);
 	virtual ~DirectX11Shader();
 	virtual void Update();
 

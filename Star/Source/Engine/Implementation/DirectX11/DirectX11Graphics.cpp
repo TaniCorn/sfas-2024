@@ -272,7 +272,7 @@ IText* DirectX11Graphics::CreateText(const char* text, float positionX, float po
 }
 
 
-IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn)
+IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader)
 {
     IShader* Result = nullptr;
     ID3D11VertexShader* VertexShader = nullptr;
@@ -319,7 +319,7 @@ IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vs
 
         if (SUCCEEDED(hr))
         {
-            Result = new DirectX11Shader(Context, VertexShader, PixelShader, InputLayout, TextureIn);
+            Result = new DirectX11Shader(Context, VertexShader, PixelShader, InputLayout);
             Renderables.insert(std::pair<IShader*, std::list<IRenderable*> >(Result, std::list<IRenderable*>()));
             ShadersRegister.insert(Result);
         }
@@ -328,13 +328,13 @@ IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vs
     return Result;
 }
 
-IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
+IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn, ITexture* TextureIn)
 {
     IRenderable* Result = nullptr;
 
     if (IsValid())
     {
-        const ITexture* texture = ShaderIn->GetTexture();
+        const ITexture* texture = TextureIn;
         const float halfWidth = texture ? texture->GetWidth() / 2.0f : 0.5f;
         const float halfHeight = texture ? texture->GetHeight() / 2.0f : 0.5f;
 
@@ -366,7 +366,7 @@ IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
 
         if (SUCCEEDED(Device->CreateBuffer(&vertexDescription, &resourceData, &VertexBuffer)))
         {
-            Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
+            Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, TextureIn);
             RenderablesRegister.insert(Result);
         }
     }
@@ -374,13 +374,13 @@ IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
     return Result;
 }
 
-IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, float* ParamPtr)
+IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, ITexture* TextureIn, float* ParamPtr)
 {
     IRenderable* Result = nullptr;
 
     if (IsValid())
     {
-        const ITexture* texture = ShaderIn->GetTexture();
+        const ITexture* texture = TextureIn;
         const float halfWidth = texture ? texture->GetWidth() / 2.0f : 0.5f;
         const float halfHeight = texture ? texture->GetHeight() / 2.0f : 0.5f;
 
@@ -428,7 +428,7 @@ IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, float* ParamPtr)
 
             if (SUCCEEDED(Device->CreateBuffer(&pixelDescription, &pixelData, &PixelBuffer)))
             {
-                Result = new DirectX11Fade(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, PixelBuffer, ParamPtr);
+                Result = new DirectX11Fade(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, TextureIn, PixelBuffer, ParamPtr);
                 RenderablesRegister.insert(Result);
             }
         }

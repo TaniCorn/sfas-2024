@@ -23,10 +23,10 @@ public:
 	virtual bool IsValid() = 0;
 
 	virtual ITexture* CreateTexture(const wchar_t* filepath, std::string identifierName) = 0;
-	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn) = 0;
+	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader) = 0;
 	virtual IText* CreateText(const char* text, float positionX = 0, float positionY = 0, float scaleX = 1, float scaleY = 1, float rotation = 0, float r = 1, float g = 1, float b = 1, float a = 1) = 0;
-	virtual IRenderable* CreateBillboard(IShader* ShaderIn) = 0;
-	virtual IRenderable* CreateFade(IShader* ShaderIn, float* ParamPtr) = 0;
+	virtual IRenderable* CreateBillboard(IShader* ShaderIn, ITexture* TextureIn) = 0;
+	virtual IRenderable* CreateFade(IShader* ShaderIn, ITexture* TextureIn, float* ParamPtr) = 0;
 	virtual void Cleanup();
 
 	ITexture* GetTexture(std::string identifierName);

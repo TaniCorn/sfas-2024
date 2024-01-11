@@ -11,7 +11,7 @@ class DirectX11Fade : public IRenderable
 {
 public:
 
-	DirectX11Fade(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ID3D11Buffer* pixelBufferIn, float* ParamPtr);
+	DirectX11Fade(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ITexture* TextureIn, ID3D11Buffer* pixelBufferIn, float* ParamPtr);
 	virtual ~DirectX11Fade();
 	virtual void Update(ID3D11DeviceContext* Context);
 

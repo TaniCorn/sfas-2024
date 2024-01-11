@@ -3,7 +3,7 @@
 #include <D3DCompiler.h>
 #include "DirectX11Graphics.h"
 
-DirectX11Fade::DirectX11Fade(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ID3D11Buffer* pixelBufferIn, float* ParamPtr) : Context(ContextIn), VertexBuffer(VertexBufferIn), vertexStride(vertexStride), vertexOffset(vertexOffset), vertexCount(vertexCountIn), PixelBuffer(pixelBufferIn)
+DirectX11Fade::DirectX11Fade(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ITexture* TextureIn, ID3D11Buffer* pixelBufferIn, float* ParamPtr) : IRenderable(TextureIn), Context(ContextIn), VertexBuffer(VertexBufferIn), vertexStride(vertexStride), vertexOffset(vertexOffset), vertexCount(vertexCountIn), PixelBuffer(pixelBufferIn)
 {
 	Fade.FadeTime = 0;
 	Fade.r = 1;
@@ -51,6 +51,10 @@ void DirectX11Fade::Update(ID3D11DeviceContext* Context)
 	}
 	if (Context)
 	{
+		if (Texture)
+		{
+			Texture->Update();
+		}
 		Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Context->IASetVertexBuffers(0, 1, &VertexBuffer, &vertexStride, &vertexOffset);
 		Context->PSSetConstantBuffers(1, 1, &PixelBuffer);

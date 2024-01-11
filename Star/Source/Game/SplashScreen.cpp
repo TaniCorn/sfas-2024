@@ -19,12 +19,13 @@ SplashScreen::~SplashScreen()
 bool SplashScreen::Load()
 {
 	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/R.png", "SplashTexture");
+	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 
-	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
-	IShader* SplashShader2 = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
-	IShader* SplashShader3 = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
+	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
+	IShader* SplashShader2 = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
+	IShader* SplashShader3 = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	SplashRender = Graphics->CreateFade(SplashShader, FadeParams);
+	SplashRender = Graphics->CreateFade(SplashShader,SplashTexture, FadeParams);
 	SplashRender->SetPosition(500, -500);
 	
 	Transform2D TransformText;
@@ -38,7 +39,7 @@ bool SplashScreen::Load()
 
 	Graphics->AddText(Text);
 
-	SplashRender2 = Graphics->CreateBillboard(SplashShader);
+	SplashRender2 = Graphics->CreateBillboard(SplashShader, ButtonTexture);
 	Graphics->AddSpriteToRender(SplashShader, SplashRender);
 	/*Graphics->AddSpriteToRender(SplashShader2, SplashRender2);
 	Graphics->AddUIToRender(SplashShader, SplashRender2);*/

@@ -11,7 +11,7 @@ class DirectX11Billboard : public IRenderable
 {
 public:
 
-	DirectX11Billboard(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn);
+	DirectX11Billboard(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ITexture* TextureIn);
 	virtual ~DirectX11Billboard();
 	virtual void Update(ID3D11DeviceContext* Context);
 
