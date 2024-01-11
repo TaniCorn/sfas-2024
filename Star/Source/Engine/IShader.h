@@ -15,7 +15,7 @@ public:
 	const ITexture* GetTexture() const;
 
 protected: 
-
+	//TODO: Optimise Shading by assigning a Texture to Renderables instead of to shaders. That way 1 shader can be created for any textures, rather than creating a shader per texture
 	ITexture* Texture;
 
 };

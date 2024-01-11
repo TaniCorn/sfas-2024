@@ -29,12 +29,16 @@ public:
 	virtual bool IsValid();
 
 	virtual ITexture* CreateTexture(const wchar_t* filepath, std::string identifierName);
+	virtual IText* CreateText(const char* text, float positionX = 0, float positionY = 0, float scaleX = 1, float scaleY = 1, float rotation = 0, float r = 255, float g = 255, float b = 255, float a = 255);
 	virtual IShader* CreateShader(const wchar_t* filepath, const char* vsentry, const char* vsshader, const char* psentry, const char* psshader, ITexture* TextureIn);
 	virtual IRenderable* CreateBillboard(IShader* ShaderIn);
 	virtual IRenderable* CreateFade(IShader* ShaderIn, float* ParamPtr);
 
 	ID3D11Device* GetDevice() const { return Device; }
 	ID3D11DeviceContext* GetContext() const { return Context; }
+
+	virtual float GetWindowWidth();
+	virtual float GetWindowHeight();
 
 protected:
 

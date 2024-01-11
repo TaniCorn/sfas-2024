@@ -10,7 +10,6 @@ public:
 	SplashScreen(IGraphics* Graphics, IInput* InputIn);
 	virtual ~SplashScreen();
 
-	virtual Level LevelSwitch();
 	virtual bool Load();
 	virtual void Update(float DeltaTime);
 	virtual void Cleanup();
@@ -26,6 +25,7 @@ private:
 	float FadeParams[4] = { 1,1,1,0 };
 
 	IRenderable* SplashRender;
+	IRenderable* SplashRender2;
 	IText* Text;
 };
 

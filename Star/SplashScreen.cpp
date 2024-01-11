@@ -16,28 +16,37 @@ SplashScreen::~SplashScreen()
 
 }
 
-Level SplashScreen::LevelSwitch()
-{
-	return LevelSwitchKey;
-}
-
 bool SplashScreen::Load()
 {
 	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/R.png", "SplashTexture");
 
 	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
+	IShader* SplashShader2 = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
+	IShader* SplashShader3 = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0", SplashTexture);
 
 	SplashRender = Graphics->CreateFade(SplashShader, FadeParams);
-
+	SplashRender->SetPosition(500, -500);
+	
 	Transform2D TransformText;
 	TransformText.PositionX = 0;
 	TransformText.PositionY = 0;
 	TransformText.ScaleX = 1;
 	TransformText.ScaleY = 1;
 	TransformText.Rotation = 0;
+	
 	Text = new DirectX11Text("My name is Dende", TransformText, DirectX::Colors::White);
 
 	Graphics->AddText(Text);
+
+	SplashRender2 = Graphics->CreateBillboard(SplashShader);
+	Graphics->AddSpriteToRender(SplashShader, SplashRender);
+	/*Graphics->AddSpriteToRender(SplashShader2, SplashRender2);
+	Graphics->AddUIToRender(SplashShader, SplashRender2);*/
+	Graphics->AddSpriteToRender(SplashShader3, SplashRender2);
+	//Graphics->RemoveUIFromRender(SplashShader, SplashRender2); //Tested works
+	//Graphics->RemoveSpriteFromRender(SplashShader, SplashRender); //Tested works
+	//Graphics->RemoveText(Text);//Tested works
+
 	return true;
 }
 

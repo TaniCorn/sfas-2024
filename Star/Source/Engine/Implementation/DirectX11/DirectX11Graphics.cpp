@@ -4,12 +4,12 @@
 #include "DirectX11Shader.h"
 #include "DirectX11Texture.h"
 #include "DirectX11Fade.h"
+#include "../../../DirectX11Text.h"
 #include <d3dcommon.h>
 #include <d3d11.h>
 #include <D3DCompiler.h>
 #include <DDSTextureLoader.h>
 #include <WICTextureLoader.h>
-#include "../../../IText.h"
 
 DirectX11Graphics::DirectX11Graphics(HWND hwndIn) : Device(nullptr), Context(nullptr), SwapChain(nullptr), BackbufferView(nullptr), BackbufferTexture(nullptr), Mvp(nullptr), vpMatrix(), FeatureLevel(D3D_FEATURE_LEVEL_11_0), hwnd(hwndIn), width(0), height(0)
 {
@@ -159,6 +159,7 @@ void DirectX11Graphics::Update()
 
         Context->OMSetRenderTargets(1, &BackbufferView, NULL);
 
+        //Sprites
         for (auto bucket = Renderables.begin(); bucket != Renderables.end(); ++bucket)
         {
             bucket->first->Update();
@@ -170,9 +171,21 @@ void DirectX11Graphics::Update()
                 (*renderable)->Update(Context);
             }
         }
+        //UI
+        for (auto bucket = UIRenderables.begin(); bucket != UIRenderables.end(); ++bucket)
+        {
+            bucket->first->Update();
 
+            for (auto renderable = bucket->second.begin(); renderable != bucket->second.end(); ++renderable)
+            {
+                SetWorldMatrix((*renderable)->GetTransform());
+                Context->OMSetBlendState(BlendState, NULL, ~0U);
+                (*renderable)->Update(Context);
+            }
+        }
+        //Text
         SpriteBatch->Begin();
-        for (auto text = Text.begin(); text != Text.end(); ++text) 
+        for (auto text = UIText.begin(); text != UIText.end(); ++text) 
         {
             IText* t = (*text);
             DirectX::XMVECTOR Color = DirectX::XMVectorSet(t->GetRed(), t->GetGreen(), t->GetBlue(), t->GetAlpha());
@@ -244,8 +257,17 @@ ITexture* DirectX11Graphics::CreateTexture(const wchar_t* filepath, std::string 
         {
             Result = new DirectX11Texture(Context, Texture, Sampler, Description);
             Textures.insert(std::pair<std::string, ITexture*>(identifierName, Result));
+            TexturesRegister.insert(Result);
         }
     }
+    return Result;
+}
+
+IText* DirectX11Graphics::CreateText(const char* text, float positionX, float positionY, float scaleX, float scaleY, float rotation, float r, float g, float b, float a)
+{
+    IText* Result;
+    Result = new DirectX11Text(text, DirectX::XMFLOAT2(positionX, positionY), DirectX::XMFLOAT2(scaleX, scaleY), rotation, DirectX::XMVectorSet(r, g, b, a));
+    TextRegister.insert(Result);
     return Result;
 }
 
@@ -299,6 +321,7 @@ IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vs
         {
             Result = new DirectX11Shader(Context, VertexShader, PixelShader, InputLayout, TextureIn);
             Renderables.insert(std::pair<IShader*, std::list<IRenderable*> >(Result, std::list<IRenderable*>()));
+            ShadersRegister.insert(Result);
         }
     }
 
@@ -344,7 +367,7 @@ IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn)
         if (SUCCEEDED(Device->CreateBuffer(&vertexDescription, &resourceData, &VertexBuffer)))
         {
             Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
-            Renderables[ShaderIn].push_back(Result);
+            RenderablesRegister.insert(Result);
         }
     }
 
@@ -406,14 +429,22 @@ IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, float* ParamPtr)
             if (SUCCEEDED(Device->CreateBuffer(&pixelDescription, &pixelData, &PixelBuffer)))
             {
                 Result = new DirectX11Fade(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, PixelBuffer, ParamPtr);
-                Renderables[ShaderIn].push_back(Result);
-
+                RenderablesRegister.insert(Result);
             }
-            //Result = new DirectX11Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount);
         }
     }
 
     return Result;
+}
+
+float DirectX11Graphics::GetWindowWidth()
+{
+    return width;
+}
+
+float DirectX11Graphics::GetWindowHeight()
+{
+    return height;
 }
 
 void DirectX11Graphics::SetWorldMatrix(const Transform2D& transform)

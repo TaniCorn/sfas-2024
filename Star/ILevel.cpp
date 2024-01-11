@@ -7,3 +7,8 @@ ILevel::ILevel(IGraphics* GraphicsIn, IInput* InputIn) : Graphics(GraphicsIn), I
 ILevel::~ILevel()
 {
 }
+
+Level ILevel::LevelSwitch()
+{
+    return LevelSwitchKey;
+}

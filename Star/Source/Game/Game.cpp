@@ -5,7 +5,8 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-
+#include "../../SplashScreen.h"
+#include "../../MainMenu.h"
 #include <ctime>
 #include <math.h>
 
@@ -32,7 +33,7 @@ Game::~Game()
 
 bool Game::IsValid()
 {
-	return true;
+	return !bQuitGame;
 }
 
 bool Game::Load()
@@ -99,19 +100,35 @@ void Game::Cleanup()
 
 void Game::SwitchLevel(Level NextLevelIdentfier)
 {
-	CurrentLevelIdentifier = NextLevelIdentfier;
 	CurrentLevel->Cleanup();
 	delete CurrentLevel;
+
 	switch (NextLevelIdentfier)
 	{
+	case QuitProgram:
+		bQuitGame = true;
+		return;
 	case MainMenuLevel:
-		//CurrentLevel = new
+		CurrentLevel = new MainMenu(Graphics, Input);
 		break;
 	case SettingsMenuLevel:
 		//CurrentLevel = new
 		break;
-	default:
+	case GameLevel:
 		break;
+	default:
+		CurrentLevel = new SplashScreen(Graphics, Input);
+		break;
+	}
+
+	CurrentLevelIdentifier = NextLevelIdentfier;
+	if (!CurrentLevel->Load())
+	{
+		CurrentLevel->Cleanup();
+		delete CurrentLevel;
+		CurrentLevel = new SplashScreen(Graphics, Input);
+		CurrentLevel->Load();
+		CurrentLevelIdentifier = SplashScreenLevel;
 	}
 }
 

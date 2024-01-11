@@ -2,11 +2,12 @@
 #pragma once
 
 #include "Engine/IApplication.h"
-#include "../../SplashScreen.h"
 class IGraphics;
 class ITexture;
 class IShader;
 class IRenderable;
+enum Level;
+class ILevel;
 
 enum RingLayer { Outer, Middle, Inner, NumRings };
 enum GameState { Setup, Playing, Test, NumModes };
@@ -40,7 +41,9 @@ private:
 
 	Level CurrentLevelIdentifier;
 	ILevel* CurrentLevel;
-	ILevel* LoadingScreenLevel;
+	ILevel* LoadingScreenLevel; //If implementing Asyncronous loading screens
+
+	bool bQuitGame = false;
 
 };
 

@@ -1,6 +1,11 @@
 cbuffer cbChangedPerFrame : register(b0)
 {
     matrix mvp;
+
+};
+cbuffer cbFade : register(b1)
+{
+    float4 addedColor;
 };
 
 Texture2D colorMap : register(t0);
@@ -28,5 +33,8 @@ PS_Input VS_Main(VS_Input vertex)
 
 float4 PS_Main(PS_Input frag) : SV_TARGET
 {
-    return colorMap.Sample(colorSample, -frag.tex0);
+    float4 finalColor = colorMap.Sample(colorSample, -frag.tex0);
+    
+    finalColor *= addedColor;
+    return saturate(finalColor);
 }
