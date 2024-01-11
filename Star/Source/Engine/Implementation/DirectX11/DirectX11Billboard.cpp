@@ -29,3 +29,7 @@ void DirectX11Billboard::Update(ID3D11DeviceContext* Context)
 		Context->Draw(vertexCount, 0);
 	}
 }
+
+void DirectX11Billboard::BindParam(float* Param)
+{
+}

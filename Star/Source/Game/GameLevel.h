@@ -6,11 +6,11 @@ class TextButton;
 class IText;
 class InputSelection;
 
-class MainMenu : public ILevel
+class GameLevel : public ILevel
 {
-public:
-	MainMenu(IGraphics* Graphics, IInput* InputIn);
-	virtual ~MainMenu();
+	public:
+	GameLevel(IGraphics* Graphics, IInput* InputIn);
+	virtual ~GameLevel();
 
 	virtual bool Load();
 	virtual void Update(float DeltaTime);
@@ -19,7 +19,5 @@ public:
 private:
 	InputSelection* GamepadSelection;
 	TextButton* Buttons[2];
-	void QuitGame();
-	void StartGame();
 };
 

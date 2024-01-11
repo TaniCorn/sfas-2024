@@ -4,11 +4,18 @@ class IText;
 class IRenderable;
 class IShader;
 #include "../../../Source/Engine/IRegisteredObject.h"
-class TextButton : public IRegisteredObject
+#include "../../Engine/Interactable.h"
+
+class TextButton : public IRegisteredObject, public Interactable
 {
 public:
-	TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShdaerIn, float screenx, float screeny);
+	TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny);
 
+	virtual void Register(IGraphics* GraphicsIn);
+	virtual void Unregister(IGraphics* GraphicsIn);
+
+	void AddButtonPosition(float x, float y);
+	void AddTextPosition(float x, float y);
 	void SetPosition(float x, float y);
 	void SetRotation(float r);
 	void SetScale(float sx, float sy);
@@ -21,24 +28,12 @@ public:
 	void SetTextPosition(float x, float y);
 	void SetTextRotation(float r);
 	void SetTextScale(float sx, float sy);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
 
-	void AddButtonPosition(float x, float y);
-	void AddTextPosition(float x, float y);
-
-	void Highlighted();
-	void Unhighlighted();
-	void SetHighlightColor(float r, float g, float b, float a);
-	float* GetColorBind();
 private:
+
 	IShader* Shader;
 	IRenderable* Renderable;
 	IText* Text;
-	float screenX, screenY;
 	float halfX, halfY;
-
-	float Color[4] = { 1,1,1,1 };
-	float HighlightColor[4] = { 1,1,1,1 };
 };
 

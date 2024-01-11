@@ -3,7 +3,7 @@
 #include "DirectX11Billboard.h"
 #include "DirectX11Shader.h"
 #include "DirectX11Texture.h"
-#include "DirectX11Fade.h"
+#include "DirectX11Float4Billboard.h"
 #include "DirectX11Text.h"
 #include <d3dcommon.h>
 #include <d3d11.h>
@@ -428,7 +428,7 @@ IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, ITexture* TextureI
 
             if (SUCCEEDED(Device->CreateBuffer(&pixelDescription, &pixelData, &PixelBuffer)))
             {
-                Result = new DirectX11Fade(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, TextureIn, PixelBuffer, ParamPtr);
+                Result = new DirectX11Float4Billboard(Context, VertexBuffer, vertexStride, vertexOffset, vertexCount, TextureIn, PixelBuffer, ParamPtr);
                 RenderablesRegister.insert(Result);
             }
         }

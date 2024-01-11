@@ -19,6 +19,7 @@ public:
 	void SetScale(float sx, float sy);
 	virtual void SetTexture(ITexture* TextureIn);
 	const ITexture* GetTexture() const;
+	virtual void BindParam(float* Param) = 0;
 protected:
 	ITexture* Texture;
 private:

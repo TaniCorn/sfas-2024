@@ -47,7 +47,7 @@ bool SplashScreen::Load()
 	//Graphics->RemoveUIFromRender(SplashShader, SplashRender2); //Tested works
 	//Graphics->RemoveSpriteFromRender(SplashShader, SplashRender); //Tested works
 	//Graphics->RemoveText(Text);//Tested works
-
+	
 	return true;
 }
 

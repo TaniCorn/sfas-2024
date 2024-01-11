@@ -3,7 +3,7 @@
 #include "../Source/Engine/IRenderable.h"
 #include "../Source/Engine/IText.h"
 
-TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny) : screenX(screenx), screenY(screeny), halfX(screenx / 2), halfY(screeny/2)
+TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny) : halfX(screenx / 2), halfY(screeny/2)
 {
 	Renderable = RenderableIn;
 	Text = TextIn;
@@ -98,22 +98,4 @@ void TextButton::AddButtonPosition(float x, float y)
 void TextButton::AddTextPosition(float x, float y)
 {
 	Text->SetPosition(Text->GetXPosition() + x, Text->GetYPosition() - y);
-}
-
-void TextButton::Highlighted()
-{
-	//Renderable.
-}
-
-void TextButton::Unhighlighted()
-{
-}
-
-void TextButton::SetHighlightColor(float r, float g, float b, float a)
-{
-}
-
-float* TextButton::GetColorBind()
-{
-	return Color;
 }

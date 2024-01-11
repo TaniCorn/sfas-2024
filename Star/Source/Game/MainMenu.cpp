@@ -7,6 +7,7 @@
 
 #include "../../Source/Game/GameObjects/TextButton.h"
 #include "../../Source/Engine/IText.h"
+#include "../Engine/Implementation/InputSelection.h"
 MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
 	LevelSwitchKey = MainMenuLevel;
@@ -14,6 +15,9 @@ MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, Inpu
 
 MainMenu::~MainMenu()
 {
+	delete GamepadSelection;
+	delete Buttons[0];
+	delete Buttons[1];
 }
 
 bool MainMenu::Load()
@@ -27,67 +31,60 @@ bool MainMenu::Load()
 	IShader* BackgroundShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 	IShader* ButtonShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	IRenderable* StartRender = Graphics->CreateFade(ButtonShader, ButtonTexture, Color);
-	IRenderable* QuitRender = Graphics->CreateFade(ButtonShader, ButtonTexture, Color);
+	IRenderable* StartRender = Graphics->CreateFade(ButtonShader, ButtonTexture, nullptr);
+	IRenderable* QuitRender = Graphics->CreateFade(ButtonShader, ButtonTexture, nullptr);
 	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader, BackgroundTexture);
 	
 	IText* StartText = Graphics->CreateText("Start Game", 0, 0, 1,1,0,1,0,0,1);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	StartButton = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
-	StartButton->SetPosition( ( - screenX / 2) + 200, -200);
-	StartButton->SetTextRelativePosition(-100,50);
-	StartButton->SetScale(2, 2);
-	StartButton->AddButtonPosition(170, 0);
-	StartButton->SetButtonScale(5, 2);
-	QuitButton = new TextButton(QuitRender, QuitText , ButtonShader, screenX, screenY);
-	QuitButton->SetPosition((-screenX / 2) + 200, -400);
-	QuitButton->SetTextRelativePosition(-100, 50);
-	QuitButton->SetScale(2, 2);
-	QuitButton->AddButtonPosition(170, 0);
-	QuitButton->SetButtonScale(5, 2);
+	Buttons[0] = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
+	Buttons[0]->SetPosition( ( - screenX / 2) + 200, -200);
+	Buttons[0]->SetTextRelativePosition(-100,50);
+	Buttons[0]->SetScale(2, 2);
+	Buttons[0]->AddButtonPosition(170, 0);
+	Buttons[0]->SetButtonScale(5, 2);
+	Buttons[1] = new TextButton(QuitRender, QuitText , ButtonShader, screenX, screenY);
+	Buttons[1]->SetPosition((-screenX / 2) + 200, -400);
+	Buttons[1]->SetTextRelativePosition(-100, 50);
+	Buttons[1]->SetScale(2, 2);
+	Buttons[1]->AddButtonPosition(170, 0);
+	Buttons[1]->SetButtonScale(5, 2);
 
-	QuitButton->Register(Graphics);
-	StartButton->Register(Graphics);
+	for (int i = 0; i < 2; i++)
+	{
+		Buttons[i]->Register(Graphics);
+	}
+	Buttons[0]->BoundFunction = std::bind(&MainMenu::StartGame, this);
+	Buttons[1]->BoundFunction = std::bind(&MainMenu::QuitGame, this);
 
-	DebugText = Graphics->CreateText("Hello");
-	Graphics->AddText(DebugText);
+	StartRender->BindParam(Buttons[0]->GetColorBind());
+	QuitRender->BindParam(Buttons[1]->GetColorBind());
+
+	GamepadSelection = new InputSelection(Buttons[0]);
+	GamepadSelection->AddButtonLink(Buttons[0], Buttons[1], Down);
+	GamepadSelection->AddButtonLink(Buttons[1], Buttons[0], Up);
 	return true;
 }
 
+
 void MainMenu::Update(float DeltaTime)
 {
-	float val = Input->GetValue(InputAction::LeftStickYAxis);
-	DebugString = "Axis: " + std::to_string(ButtonSelection);
-	DebugText->SetText(DebugString.data());
-	if (val < 0)
-	{
-		ButtonSelection = ButtonSelection >= HighestButtonSelection ? HighestButtonSelection : ButtonSelection + 1;
-	} 
-	else if (val > 0)
-	{
-		ButtonSelection = ButtonSelection <= 0 ? 0 : ButtonSelection - 1;
-	}
-	if (Input->IsPressed(InputAction::ButtonBottom))
-	{
-		switch (ButtonSelection)
-		{
-		case 0:
-			LevelSwitchKey = GameLevel;
-			break;
-		case 1:
-			LevelSwitchKey = QuitProgram;
-			break;
-		default:
-			LevelSwitchKey = QuitProgram;
-			break;
-		}
-	}
+	GamepadSelection->Update(Input);
 
 }
 
 void MainMenu::Cleanup()
 {
 	Graphics->Cleanup();
-	delete StartButton;
-	delete QuitButton;
+}
+
+
+void MainMenu::QuitGame()
+{
+	LevelSwitchKey = QuitProgram;
+}
+
+void MainMenu::StartGame()
+{
+	LevelSwitchKey = GameLevel;
 }
