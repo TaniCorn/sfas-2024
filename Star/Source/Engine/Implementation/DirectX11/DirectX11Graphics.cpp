@@ -4,7 +4,7 @@
 #include "DirectX11Shader.h"
 #include "DirectX11Texture.h"
 #include "DirectX11Fade.h"
-#include "../../../DirectX11Text.h"
+#include "DirectX11Text.h"
 #include <d3dcommon.h>
 #include <d3d11.h>
 #include <D3DCompiler.h>

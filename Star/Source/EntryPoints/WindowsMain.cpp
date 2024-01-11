@@ -9,7 +9,7 @@
 #include "Engine/ITexture.h"
 #include "Engine/IShader.h"
 #include "Engine/IApplication.h"
-#include "../../WindowsTimer.h"
+#include "../Engine/Implementation/WindowsTimer.h"
 
 const char WindowClassName[] = "Star";
 const char WindowTitle[] = "Search for a Star 2024";

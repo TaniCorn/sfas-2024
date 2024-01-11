@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/Transform2D.h"
-#include "IText.h"
+#include "../../IText.h"
 #include <DirectXMath.h>
 class DirectX11Text : public IText
 {

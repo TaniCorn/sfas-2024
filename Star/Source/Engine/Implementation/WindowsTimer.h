@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Windows.h>
-#include "ITimer.h"
+#include "../ITimer.h"
 class WindowsTimer : public ITimer
 {
 public:

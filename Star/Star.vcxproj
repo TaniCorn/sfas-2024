@@ -132,54 +132,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ILevel.cpp" />
-    <ClCompile Include="DirectX11Text.cpp" />
-    <ClCompile Include="IRegisteredObject.cpp" />
-    <ClCompile Include="IText.cpp" />
-    <ClCompile Include="ITimer.cpp" />
-    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Source\Engine\IApplication.cpp" />
     <ClCompile Include="Source\Engine\IGraphics.cpp" />
     <ClCompile Include="Source\Engine\IInput.cpp" />
+    <ClCompile Include="Source\Engine\ILevel.cpp" />
     <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Billboard.cpp" />
     <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Fade.cpp" />
     <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Graphics.cpp" />
     <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Shader.cpp" />
+    <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Text.cpp" />
     <ClCompile Include="Source\Engine\Implementation\DirectX11\DirectX11Texture.cpp" />
+    <ClCompile Include="Source\Engine\Implementation\WindowsTimer.cpp" />
     <ClCompile Include="Source\Engine\Implementation\XInput\DirectXInput.cpp" />
+    <ClCompile Include="Source\Engine\IRegisteredObject.cpp" />
     <ClCompile Include="Source\Engine\IRenderable.cpp" />
     <ClCompile Include="Source\Engine\IShader.cpp" />
+    <ClCompile Include="Source\Engine\IText.cpp" />
     <ClCompile Include="Source\Engine\ITexture.cpp" />
+    <ClCompile Include="Source\Engine\ITimer.cpp" />
     <ClCompile Include="Source\EntryPoints\WindowsMain.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
-    <ClCompile Include="SplashScreen.cpp" />
-    <ClCompile Include="TextButton.cpp" />
-    <ClCompile Include="WindowsTimer.cpp" />
+    <ClCompile Include="Source\Game\GameObjects\TextButton.cpp" />
+    <ClCompile Include="Source\Game\MainMenu.cpp" />
+    <ClCompile Include="Source\Game\SplashScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ILevel.h" />
-    <ClInclude Include="DirectX11Text.h" />
-    <ClInclude Include="IRegisteredObject.h" />
-    <ClInclude Include="IText.h" />
-    <ClInclude Include="ITimer.h" />
-    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Source\Engine\IApplication.h" />
     <ClInclude Include="Source\Engine\IGraphics.h" />
     <ClInclude Include="Source\Engine\IInput.h" />
+    <ClInclude Include="Source\Engine\ILevel.h" />
     <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Billboard.h" />
     <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Fade.h" />
     <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Graphics.h" />
     <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Shader.h" />
+    <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Text.h" />
     <ClInclude Include="Source\Engine\Implementation\DirectX11\DirectX11Texture.h" />
+    <ClInclude Include="Source\Engine\Implementation\WindowsTimer.h" />
     <ClInclude Include="Source\Engine\Implementation\XInput\DirectXInput.h" />
+    <ClInclude Include="Source\Engine\IRegisteredObject.h" />
     <ClInclude Include="Source\Engine\IRenderable.h" />
     <ClInclude Include="Source\Engine\IShader.h" />
+    <ClInclude Include="Source\Engine\IText.h" />
     <ClInclude Include="Source\Engine\ITexture.h" />
+    <ClInclude Include="Source\Engine\ITimer.h" />
     <ClInclude Include="Source\Engine\Transform2D.h" />
     <ClInclude Include="Source\Game\Game.h" />
-    <ClInclude Include="SplashScreen.h" />
-    <ClInclude Include="TextButton.h" />
-    <ClInclude Include="WindowsTimer.h" />
+    <ClInclude Include="Source\Game\GameObjects\TextButton.h" />
+    <ClInclude Include="Source\Game\MainMenu.h" />
+    <ClInclude Include="Source\Game\SplashScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

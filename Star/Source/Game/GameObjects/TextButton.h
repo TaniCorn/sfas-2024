@@ -3,7 +3,7 @@
 class IText;
 class IRenderable;
 class IShader;
-#include "IRegisteredObject.h"
+#include "../../../Source/Engine/IRegisteredObject.h"
 class TextButton : public IRegisteredObject
 {
 public:

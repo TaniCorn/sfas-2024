@@ -5,8 +5,8 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-#include "../../SplashScreen.h"
-#include "../../MainMenu.h"
+#include "SplashScreen.h"
+#include "MainMenu.h"
 #include <ctime>
 #include <math.h>
 

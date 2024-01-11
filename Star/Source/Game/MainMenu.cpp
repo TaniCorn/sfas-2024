@@ -4,8 +4,9 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-#include "TextButton.h"
-#include "IText.h"
+
+#include "../../Source/Game/GameObjects/TextButton.h"
+#include "../../Source/Engine/IText.h"
 MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
 	LevelSwitchKey = MainMenuLevel;

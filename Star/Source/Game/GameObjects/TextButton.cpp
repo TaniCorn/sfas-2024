@@ -1,7 +1,7 @@
 #include "TextButton.h"
-#include "Source/Engine/IGraphics.h"
-#include "Source/Engine/IRenderable.h"
-#include "IText.h"
+#include "../Source/Engine/IGraphics.h"
+#include "../Source/Engine/IRenderable.h"
+#include "../Source/Engine/IText.h"
 
 TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny) : screenX(screenx), screenY(screeny), halfX(screenx / 2), halfY(screeny/2)
 {
