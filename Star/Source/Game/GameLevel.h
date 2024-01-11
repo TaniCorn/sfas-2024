@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Source/Engine/ILevel.h"
+#include "Enemies/IEnemy.h"
 
 class IRenderable;
 class TextButton;
@@ -19,5 +20,7 @@ class GameLevel : public ILevel
 private:
 	InputSelection* GamepadSelection;
 	TextButton* Buttons[2];
+
+	IEnemy EnemyPool[50];
 };
 
