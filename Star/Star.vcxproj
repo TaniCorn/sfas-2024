@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RingSelection.cpp" />
     <ClCompile Include="Source\Engine\IApplication.cpp" />
     <ClCompile Include="Source\Engine\IGraphics.cpp" />
     <ClCompile Include="Source\Engine\IInput.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Source\Game\UI\TextButton.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RingSelection.h" />
     <ClInclude Include="Source\Engine\IApplication.h" />
     <ClInclude Include="Source\Engine\IGraphics.h" />
     <ClInclude Include="Source\Engine\IInput.h" />

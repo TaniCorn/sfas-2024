@@ -44,7 +44,11 @@ bool GameLevel::Load()
 	{
 		return bSuccess;
 	}
-
+	bSuccess = LoadUILinks();
+	if (!bSuccess)
+	{
+		return bSuccess;
+	}
 	Enemy::TargetPosition = Base->Position;
 	Enemy::Target = &Base->Health;
     return true;
@@ -52,9 +56,11 @@ bool GameLevel::Load()
 
 void GameLevel::Update(float DeltaTime)
 {
+	RingGamepadSelection->Update(DeltaTime, Input);
 	GamepadSelection->Update(Input);
 	Base->Update(DeltaTime);
 	Wave.Update(DeltaTime);
+	
 	if (Wave.CanStartNextWave())
 	{
 		StartButton->Register(Graphics);
@@ -126,6 +132,41 @@ bool GameLevel::LoadEntities()
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
 	}
 
+	ITexture* RingTextureInner = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds", "InnerRing");
+	ITexture* RingTextureMiddle = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds", "MiddleRing");
+	ITexture* RingTextureOuter = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds", "OuterRing");
+	IRenderable* InnerRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureInner, nullptr);
+	IRenderable* MiddleRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureMiddle, nullptr);
+	IRenderable* OuterRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureOuter, nullptr);
+	Rings[0] = new DefenceRing(ColorChangeShader, InnerRing);
+	Rings[1] = new DefenceRing(ColorChangeShader, MiddleRing);
+	Rings[2] = new DefenceRing(ColorChangeShader, OuterRing);
+	for (int i = 0; i < 3; i++)
+	{
+		Rings[i]->Register(Graphics);
+	}
+	InnerRing->BindParam(Rings[0]->Interact.GetColorBind());
+	MiddleRing->BindParam(Rings[1]->Interact.GetColorBind());
+	OuterRing->BindParam(Rings[2]->Interact.GetColorBind());
+
+	for (int i = 0; i < 3; i++)
+	{
+		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
+		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
+		Plot->BindParam(Plots[i]->Interact.GetColorBind());
+
+		Plots[i]->Register(Graphics);
+		//Todo after getting the art assets
+		Plots[i]->SetScale(0.5, 0.5);
+		float Pos = 55 * (i+1);
+		Plots[i]->SetPosition(DirectX::XMFLOAT2(0, Pos));
+		Plots[i]->DistanceFromCenter = Pos;
+		Plots[i]->Rotation = 0;
+	}
+
+	Rings[0]->Plots.push_back(Plots[0]);
+	Rings[1]->Plots.push_back(Plots[1]);
+	Rings[2]->Plots.push_back(Plots[2]);
 	return true;
 }
 
@@ -200,7 +241,18 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	StartButton->Interact.BoundFunction = std::bind(&GameLevel::StartNextWave, this);
 
 
+	return true;
+}
+
+bool GameLevel::LoadUILinks()
+{
 	GamepadSelection = new InputSelection(&StartButton->Interact);
+
+	RingGamepadSelection = new RingSelection(Rings[0]);
+	RingGamepadSelection->AddLink(Rings[0], Rings[1], true);
+	RingGamepadSelection->AddLink(Rings[1], Rings[0], false);
+	RingGamepadSelection->AddLink(Rings[1], Rings[2], true);
+	RingGamepadSelection->AddLink(Rings[2], Rings[1], false);
 	return true;
 }
 

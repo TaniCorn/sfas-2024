@@ -2,6 +2,9 @@
 #include "../../Engine/ILevel.h"
 #include "../Enemies/WaveManager.h"
 #include "../Base/HomeBase.h"
+#include "../../../RingSelection.h"
+#include "../Base/DefenceRing.h"
+
 
 class IRenderable;
 class TextButton;
@@ -24,11 +27,14 @@ private:
 	bool LoadEntities();
 	bool LoadWaves();
 	bool LoadUI(float screenX, float screenY);
+	bool LoadUILinks();
 	void QuitGame();
 	TextButton* StartButton;
 	InputSelection* GamepadSelection;
 
-
+	TowerPlot* Plots[3];
+	RingSelection* RingGamepadSelection;
+	DefenceRing* Rings[3];
 	HomeBase* Base;
 	WaveManager Wave;
 	DirectX::XMFLOAT2 SpawnAreas[8];
