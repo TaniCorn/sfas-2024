@@ -18,7 +18,7 @@ SplashScreen::~SplashScreen()
 
 bool SplashScreen::Load()
 {
-	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/R.png", "SplashTexture");
+	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/Splash.png", "SplashTexture");
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 
 	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");

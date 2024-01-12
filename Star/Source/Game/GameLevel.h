@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Source/Engine/ILevel.h"
-#include "Enemies/Enemy.h"
+#include "../../WaveManager.h"
 #include "Towers/HomeBase.h"
 
 class IRenderable;
@@ -19,14 +19,18 @@ public:
 	virtual void Cleanup();
 
 private:
+	void StartNextWave();
+	bool LoadArea();
 	bool LoadEntities();
+	bool LoadWaves();
 	bool LoadUI(float screenX, float screenY);
 	void QuitGame();
-	TextButton* TestButton;
+	TextButton* StartButton;
 	InputSelection* GamepadSelection;
 
 
 	HomeBase* Base;
-	Enemy EnemyPool[60];
+	WaveManager Wave;
+	DirectX::XMFLOAT2 SpawnAreas[8];
 };
 

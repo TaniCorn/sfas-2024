@@ -1,28 +1,12 @@
 #include "Enemy.h"
 #include "../../Engine/Implementation/DXMathHelper.h"
+DirectX::XMFLOAT2 Enemy::TargetPosition = DirectX::XMFLOAT2(0, 0);
+EntityHealth* Enemy::Target = nullptr;
+
 
 Enemy::Enemy() : CurrentTexture(nullptr), Shader(nullptr), ColorHighlight(), Health(0)
 {
-	AttackTimer = AttackCooldown;
-}
-
-Enemy::Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : CurrentTexture(RenderableIn), Shader(ShaderIn), Health(0)
-{
-	switch (Enemy)
-	{
-	case FastPack:
-		SetStats(5, 5, 10, 0.5, false);
-		break;
-	case SlowGrunts:
-		SetStats(25, 5, 2, 1, false);
-		break;
-	case Flyers:
-		SetStats(5, 2, 5, 1, true);
-		break;
-	default:
-		break;
-	}
-	AttackTimer = AttackCooldown;
+	bAlive = false;
 }
 
 void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
@@ -32,18 +16,20 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 	switch (Enemy)
 	{
 	case FastPack:
-		SetStats(5, 5, 10, 0.5, false);
+		SetStats(5, 5, 60, 0.5, false);
 		break;
 	case SlowGrunts:
-		SetStats(25, 5, 2, 1, false);
+		SetStats(25, 5, 20, 1, false);
 		break;
 	case Flyers:
-		SetStats(5, 2, 5, 1, true);
+		SetStats(5, 2, 45, 1, true);
 		break;
 	default:
 		break;
 	}
-	AttackTimer = AttackCooldown;
+	SetPosition(DirectX::XMFLOAT2(0, 0));
+	bAlive = false;
+	ColorHighlight.SetNormalColor(0, 0, 0, 0);
 }
 
 void Enemy::Register(IGraphics* Graphics)
@@ -60,34 +46,57 @@ void Enemy::DamageEntity(float Amount)
 {
 	Health.DamageEntity(Amount);
 	ColorHighlight.Highlighted();
+	if (Health.Health <= 0)
+	{
+		bAlive = false;
+		ColorHighlight.SetNormalColor(0, 0, 0, 0);
+		ColorHighlight.Unhighlighted();
+	}
+}
+
+bool Enemy::IsAlive()
+{
+	return bAlive;
+}
+
+void Enemy::Spawn(DirectX::XMFLOAT2 Location)
+{
+	SetPosition(Location);
+	bAlive = true;
+	Health.Health = Health.GetMaxHealth();
+	ColorHighlight.SetNormalColor(1, 0, 0, 1);
+	ColorHighlight.Unhighlighted();
 }
 
 void Enemy::Update(float DeltaTime)
 {
 	ColorHighlight.Update(DeltaTime);
-	if (Target != nullptr)
+	if (Target != nullptr && bAlive)
 	{
 		MoveTowardsTarget(DeltaTime);
 	}
 }
 
+void Enemy::SetPosition(DirectX::XMFLOAT2 Location)
+{
+	Position = Location;
+	CurrentTexture->SetPosition(Location.x, Location.y);
+}
+
 void Enemy::MoveTowardsTarget(float DeltaTime)
 {
-	DirectX::XMFLOAT2 Distance = DXHelper::Subtract(TargetPosition, Position);
-	DirectX::XMFLOAT2 UnitDistance = DXHelper::Normalise(Distance);
-
-	if (DXHelper::Magnitude(Distance) < 10.0f)
+	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(TargetPosition, Position);
+	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Vector);
+	float Distance = DXHelper::Magnitude(Vector);
+	if (Distance > 10.0f)
 	{
-		Position = DXHelper::Multiply(DXHelper::Add(UnitDistance, Position), (Speed * DeltaTime));
+		DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
+		SetPosition(DXHelper::Add(Direction, Position));
 	}
 	else
 	{
-		AttackTimer -= DeltaTime;
-		if (AttackTimer < 0)
-		{
-			AttackTimer = AttackCooldown;
-			Target->DamageEntity(Damage);
-		}
+		Target->DamageEntity(Damage);
+		DamageEntity(Health.GetMaxHealth());
 	}
 }
 
@@ -96,6 +105,5 @@ void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, float Attack
 	Health.SetEntityHealth(HealthIn);
 	Damage = DamageIn;
 	Speed = SpeedIn;
-	AttackCooldown = AttackCooldownIn;
 	bFlying = bCanFly;
 }

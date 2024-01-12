@@ -162,6 +162,7 @@
     <ClCompile Include="Source\Game\MainMenu.cpp" />
     <ClCompile Include="Source\Game\SplashScreen.cpp" />
     <ClCompile Include="Source\Game\Towers\HomeBase.cpp" />
+    <ClCompile Include="WaveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorHighlighting.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Source\Game\MainMenu.h" />
     <ClInclude Include="Source\Game\SplashScreen.h" />
     <ClInclude Include="Source\Game\Towers\HomeBase.h" />
+    <ClInclude Include="WaveManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

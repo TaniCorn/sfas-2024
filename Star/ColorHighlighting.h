@@ -4,13 +4,14 @@ class ColorHighlighting
 public:
 	ColorHighlighting();
 	void Highlighted();
+	void Unhighlighted();
+
 	void Update(float DeltaTime);
 	void SetHighlightColor(float r, float g, float b, float a);
 	void SetNormalColor(float r, float g, float b, float a);
 	float* GetColorBind();
 
 private:
-	void Unhighlighted();
 	void SetArray(float* arrayColor, float r, float g, float b, float a);
 
 	float Color[4] = { 1,1,1,1 };

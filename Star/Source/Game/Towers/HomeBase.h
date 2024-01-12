@@ -15,6 +15,7 @@ public:
 	virtual void Unregister(IGraphics* GraphicsIn);
 	virtual void DamageEntity(float Amount);
 	void Update(float DeltaTime);
+	void SetPosition(DirectX::XMFLOAT2 Location);
 
 	EntityHealth Health;
 	ColorHighlighting ColorHighlight;

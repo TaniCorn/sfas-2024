@@ -17,18 +17,18 @@ class Enemy : public IRegisteredObject
 {
 public:
 	Enemy();
-	Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
 	void Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
 	virtual void DamageEntity(float Amount);
-
+	bool IsAlive();
+	void Spawn(DirectX::XMFLOAT2 Location);
 	virtual void Update(float DeltaTime);
+	void SetPosition(DirectX::XMFLOAT2 Location);
 
 	EntityHealth Health;
-	DirectX::XMFLOAT2 Position;
-	EntityHealth* Target;
-	DirectX::XMFLOAT2 TargetPosition;
+	static EntityHealth* Target;
+	static DirectX::XMFLOAT2 TargetPosition;
 	ColorHighlighting ColorHighlight;
 protected:
 	void MoveTowardsTarget(float DeltaTime);
@@ -38,9 +38,9 @@ protected:
 
 	float Damage;
 	float Speed;
-	float AttackCooldown;
-	float AttackTimer;
 	bool bFlying;
 	bool bAlive;
+	DirectX::XMFLOAT2 Position;
+
 };
 

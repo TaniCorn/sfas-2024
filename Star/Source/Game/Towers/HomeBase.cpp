@@ -29,4 +29,10 @@ void HomeBase::Update(float DeltaTime)
 	ColorHighlight.Update(DeltaTime);
 }
 
+void HomeBase::SetPosition(DirectX::XMFLOAT2 Location)
+{
+	Position = Location;
+	CurrentTexture->SetPosition(Location.x, Location.y);
+}
+
 

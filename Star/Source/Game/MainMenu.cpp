@@ -24,7 +24,7 @@ bool MainMenu::Load()
 {
 	float screenX = Graphics->GetWindowWidth();
 	float screenY= Graphics->GetWindowHeight();
-	ITexture* BackgroundTexture = Graphics->CreateTexture(L"Resource/Textures/R.png", "Background");
+	ITexture* BackgroundTexture = Graphics->CreateTexture(L"Resource/Textures/Splash.png", "Background");
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 
 
