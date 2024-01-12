@@ -4,7 +4,7 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-#include "../../Source/Engine/Implementation/DirectX11/DirectX11Text.h"
+#include "../../Engine/Implementation/DirectX11/DirectX11Text.h"
 #include <DirectXColors.h>
 SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {

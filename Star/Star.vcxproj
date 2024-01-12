@@ -132,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ColorHighlighting.cpp" />
     <ClCompile Include="Source\Engine\IApplication.cpp" />
     <ClCompile Include="Source\Engine\IGraphics.cpp" />
     <ClCompile Include="Source\Engine\IInput.cpp" />
@@ -146,7 +145,6 @@
     <ClCompile Include="Source\Engine\Implementation\InputSelection.cpp" />
     <ClCompile Include="Source\Engine\Implementation\WindowsTimer.cpp" />
     <ClCompile Include="Source\Engine\Implementation\XInput\DirectXInput.cpp" />
-    <ClCompile Include="Source\Engine\Interactable.cpp" />
     <ClCompile Include="Source\Engine\IRegisteredObject.cpp" />
     <ClCompile Include="Source\Engine\IRenderable.cpp" />
     <ClCompile Include="Source\Engine\IShader.cpp" />
@@ -154,18 +152,25 @@
     <ClCompile Include="Source\Engine\ITexture.cpp" />
     <ClCompile Include="Source\Engine\ITimer.cpp" />
     <ClCompile Include="Source\EntryPoints\WindowsMain.cpp" />
+    <ClCompile Include="Source\Game\Base\DefenceRing.cpp" />
+    <ClCompile Include="Source\Game\Base\HomeBase.cpp" />
+    <ClCompile Include="Source\Game\Base\TowerPlot.cpp" />
+    <ClCompile Include="Source\Game\Components\ColorHighlighting.cpp" />
+    <ClCompile Include="Source\Game\Components\EntityHealth.cpp" />
+    <ClCompile Include="Source\Game\Components\Interactable.cpp" />
     <ClCompile Include="Source\Game\Enemies\Enemy.cpp" />
+    <ClCompile Include="Source\Game\Enemies\WaveManager.cpp" />
     <ClCompile Include="Source\Game\Game.cpp" />
-    <ClCompile Include="Source\Game\GameLevel.cpp" />
-    <ClCompile Include="Source\Game\GameObjects\TextButton.cpp" />
-    <ClCompile Include="Source\Game\EntityHealth.cpp" />
-    <ClCompile Include="Source\Game\MainMenu.cpp" />
-    <ClCompile Include="Source\Game\SplashScreen.cpp" />
-    <ClCompile Include="Source\Game\Towers\HomeBase.cpp" />
-    <ClCompile Include="WaveManager.cpp" />
+    <ClCompile Include="Source\Game\Levels\GameLevel.cpp" />
+    <ClCompile Include="Source\Game\Levels\MainMenu.cpp" />
+    <ClCompile Include="Source\Game\Levels\SplashScreen.cpp" />
+    <ClCompile Include="Source\Game\Shop\Shop.cpp" />
+    <ClCompile Include="Source\Game\Towers\AreaTower.cpp" />
+    <ClCompile Include="Source\Game\Towers\GroundAreaTower.cpp" />
+    <ClCompile Include="Source\Game\Towers\Tower.cpp" />
+    <ClCompile Include="Source\Game\UI\TextButton.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ColorHighlighting.h" />
     <ClInclude Include="Source\Engine\IApplication.h" />
     <ClInclude Include="Source\Engine\IGraphics.h" />
     <ClInclude Include="Source\Engine\IInput.h" />
@@ -180,7 +185,6 @@
     <ClInclude Include="Source\Engine\Implementation\InputSelection.h" />
     <ClInclude Include="Source\Engine\Implementation\WindowsTimer.h" />
     <ClInclude Include="Source\Engine\Implementation\XInput\DirectXInput.h" />
-    <ClInclude Include="Source\Engine\Interactable.h" />
     <ClInclude Include="Source\Engine\IRegisteredObject.h" />
     <ClInclude Include="Source\Engine\IRenderable.h" />
     <ClInclude Include="Source\Engine\IShader.h" />
@@ -188,15 +192,23 @@
     <ClInclude Include="Source\Engine\ITexture.h" />
     <ClInclude Include="Source\Engine\ITimer.h" />
     <ClInclude Include="Source\Engine\Transform2D.h" />
+    <ClInclude Include="Source\Game\Base\DefenceRing.h" />
+    <ClInclude Include="Source\Game\Base\HomeBase.h" />
+    <ClInclude Include="Source\Game\Base\TowerPlot.h" />
+    <ClInclude Include="Source\Game\Components\ColorHighlighting.h" />
+    <ClInclude Include="Source\Game\Components\EntityHealth.h" />
+    <ClInclude Include="Source\Game\Components\Interactable.h" />
     <ClInclude Include="Source\Game\Enemies\Enemy.h" />
+    <ClInclude Include="Source\Game\Enemies\WaveManager.h" />
     <ClInclude Include="Source\Game\Game.h" />
-    <ClInclude Include="Source\Game\GameLevel.h" />
-    <ClInclude Include="Source\Game\GameObjects\TextButton.h" />
-    <ClInclude Include="Source\Game\EntityHealth.h" />
-    <ClInclude Include="Source\Game\MainMenu.h" />
-    <ClInclude Include="Source\Game\SplashScreen.h" />
-    <ClInclude Include="Source\Game\Towers\HomeBase.h" />
-    <ClInclude Include="WaveManager.h" />
+    <ClInclude Include="Source\Game\Levels\GameLevel.h" />
+    <ClInclude Include="Source\Game\Levels\MainMenu.h" />
+    <ClInclude Include="Source\Game\Levels\SplashScreen.h" />
+    <ClInclude Include="Source\Game\Shop\Shop.h" />
+    <ClInclude Include="Source\Game\Towers\AreaTower.h" />
+    <ClInclude Include="Source\Game\Towers\GroundAreaTower.h" />
+    <ClInclude Include="Source\Game\Towers\Tower.h" />
+    <ClInclude Include="Source\Game\UI\TextButton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

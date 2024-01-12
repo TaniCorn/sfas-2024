@@ -5,9 +5,9 @@
 #include "Engine/IShader.h"
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
-#include "SplashScreen.h"
-#include "MainMenu.h"
-#include "GameLevel.h"
+#include "../Game/Levels/SplashScreen.h"
+#include "../Game/Levels/MainMenu.h"
+#include "../Game/Levels/GameLevel.h"
 #include <ctime>
 #include <math.h>
 

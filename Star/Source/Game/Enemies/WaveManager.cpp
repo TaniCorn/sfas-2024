@@ -1,9 +1,9 @@
 #include "WaveManager.h"
 #include <list>
-#include "Source/Engine/IGraphics.h"
-#include "Source/Engine/IShader.h"
+#include "../Source/Engine/IGraphics.h"
+#include "../Source/Engine/IShader.h"
 
-WaveManager::WaveManager() : WaveEntities(), SpawnArea(), Fast()
+WaveManager::WaveManager() : WaveEntities(), SpawnArea()
 {
 }
 
@@ -16,7 +16,6 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.Unhighlighted();
-		Fast.push(&EnemyPool[i]);
 	}
 	for (int i = 50; i < 100; i++)
 	{
@@ -25,7 +24,6 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.Unhighlighted();
-		Fly.push(&EnemyPool[i]);
 	}
 	for (int i = 100; i < 150; i++)
 	{
@@ -34,7 +32,6 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.Unhighlighted();
-		Slow.push(&EnemyPool[i]);
 	}
 }
 
@@ -48,14 +45,20 @@ void WaveManager::Update(float DeltaTime)
 			SpawnWave();
 		}
 	}
-	for (int i = 0; i < 150; i++)
+	for (int i = 0; i < AliveEnemies.size(); i++)
 	{
-		if (EnemyPool[i].IsAlive())
+		
+		if (AliveEnemies[i])
 		{
-			EnemyPool[i].Update(DeltaTime);
-
+			AliveEnemies[i]->Update(DeltaTime);
+		}
+		if (!AliveEnemies[i]->IsAlive())
+		{
+			AliveEnemies.erase(AliveEnemies.begin() + i);
 		}
 	}
+	AliveEnemies.shrink_to_fit();
+
 }
 
 void WaveManager::AddNewSpawnArea(DirectX::XMFLOAT2& Area)
@@ -90,15 +93,12 @@ bool WaveManager::HasWon()
 {
 	if (WaveEntities.size() <= 0)
 	{
-		for (int i = 0; i < 150; i++)
+		if (AliveEnemies.size() <= 0)
 		{
-			if (EnemyPool[i].IsAlive()) 
-			{
-				return false;
-			}
+			return true;
 		}
-		return true;
 	}
+	return false;
 }
 
 bool WaveManager::CanStartNextWave()
@@ -106,30 +106,47 @@ bool WaveManager::CanStartNextWave()
 	return !bWaveInProgress;
 }
 
-int WaveManager::SpawnGroup(std::queue<Enemy*>* Enemies, int Amount, int Area)
+int WaveManager::SpawnGroup(EnemyTypes Type, int Amount, int Area)
 {
-	int AmountSuccessfullySpawned = 0;
-	DirectX::XMFLOAT2 Spawn = *SpawnArea[Area];
-	for (int i = 0; i < Amount; i++)
+	int Range = 50;
+	switch (Type)
 	{
-		Enemy* CurrentEnemy = Enemies->front();
-		if (CurrentEnemy->IsAlive())
+	case FastPack:
+		Range = 50;
+		break;
+	case Flyers:
+		Range = 100;
+		break;
+	case SlowGrunts:
+		Range = 150;
+		break;
+	default:
+		break;
+	}
+
+	DirectX::XMFLOAT2 Spawn = *SpawnArea[Area];
+	int AmountSuccessfullySpawned = 0;
+	//Spawn enemy
+	for (int i = Range-50; i < Range; i++)
+	{
+		if (AmountSuccessfullySpawned >= Amount)
 		{
 			return AmountSuccessfullySpawned;
+		}
+		Enemy* CurrentEnemy = &EnemyPool[i];
+		if (CurrentEnemy->IsAlive())
+		{
+			continue;
 		}
 
 		float DeviationX = (rand() % 100) - 50;
 		float DeviationY = (rand() % 100) - 50;
 		CurrentEnemy->Spawn(DirectX::XMFLOAT2(Spawn.x + DeviationX, Spawn.y + DeviationY));
+		AliveEnemies.push_back(CurrentEnemy);
 		AmountSuccessfullySpawned++;
-		//Push newly spawned enemy to the back, it is least likely to be dead
-		Enemies->pop();
-		Enemies->push(CurrentEnemy);
+
 	}
 	return AmountSuccessfullySpawned;
-
-
-
 }
 
 void WaveManager::SpawnWave()
@@ -142,23 +159,9 @@ void WaveManager::SpawnWave()
 	}
 	int Spawned = 0;
 	WaveSpawns Wave = WaveEntities[CurrentWave].front();
-	switch (Wave.Type)
-	{
-	case FastPack:
-		Spawned = SpawnGroup(&Fast, Wave.Amount, Wave.SpawnArea);
-		break;
-	case SlowGrunts:
-		Spawned = SpawnGroup(&Slow, Wave.Amount, Wave.SpawnArea);
-		break;
-	case Flyers:
-		Spawned = SpawnGroup(&Fly, Wave.Amount, Wave.SpawnArea);
-		break;
-	default:
-		break;
-	}
+	Spawned = SpawnGroup(Wave.Type, Wave.Amount, Wave.SpawnArea);
 
-
-	if (Spawned == Wave.Amount)
+	if (Spawned >= Wave.Amount)
 	{
 		WaveEntities[CurrentWave].pop();
 		Timer = Wave.TimeToSpawnFromLast;

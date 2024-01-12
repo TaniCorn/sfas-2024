@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Source/Engine/ILevel.h"
-#include "../../WaveManager.h"
-#include "Towers/HomeBase.h"
+#include "../../Engine/ILevel.h"
+#include "../Enemies/WaveManager.h"
+#include "../Base/HomeBase.h"
 
 class IRenderable;
 class TextButton;

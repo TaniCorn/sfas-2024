@@ -5,9 +5,9 @@
 #include "Engine/IRenderable.h"
 #include "Engine/IInput.h"
 
-#include "../Engine/Implementation/InputSelection.h"
-#include "../Game/GameObjects/TextButton.h"
-#include "../../Source/Engine/IText.h"
+#include "../../Engine/Implementation/InputSelection.h"
+#include "../UI/TextButton.h"
+#include "../../Engine/IText.h"
 
 GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {

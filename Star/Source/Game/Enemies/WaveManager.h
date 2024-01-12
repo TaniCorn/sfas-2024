@@ -1,5 +1,5 @@
 #pragma once
-#include "Source/Game/Enemies/Enemy.h"
+#include "Enemy.h"
 class IGraphics;
 class IShader;
 #include <queue>
@@ -23,12 +23,10 @@ public:
 	bool CanStartNextWave();
 	void StartNextWave();
 private:
-	int SpawnGroup(std::queue<Enemy*>* Enemies, int Amount, int Area);
+	int SpawnGroup(EnemyTypes Type, int Amount, int Area);
 	void SpawnWave();
 	std::map<int, std::queue<WaveSpawns>> WaveEntities;
-	std::queue<Enemy*> Fast;
-	std::queue<Enemy*> Slow;
-	std::queue<Enemy*> Fly;
+	std::vector<Enemy*> AliveEnemies;
 	Enemy EnemyPool[150];
 	std::vector<DirectX::XMFLOAT2*> SpawnArea;
 

@@ -1,5 +1,5 @@
 #include "HomeBase.h"
-#include "../../../ColorHighlighting.h"
+#include "../Components/ColorHighlighting.h"
 
 
 HomeBase::HomeBase(IRenderable* RenderableIn, IShader* ShaderIn) : CurrentTexture(RenderableIn), Shader(ShaderIn), Health(50), ColorHighlight()

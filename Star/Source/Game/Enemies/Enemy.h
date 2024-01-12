@@ -1,9 +1,8 @@
 #pragma once
-
-#include "../EntityHealth.h"
+#include "../Components/EntityHealth.h"
 #include "../../Engine/IRenderable.h"
 #include "../../Engine/IRegisteredObject.h"
-#include "../../../ColorHighlighting.h"
+#include "../Components/ColorHighlighting.h"
 #include <DirectXMath.h>
 
 class IShader;

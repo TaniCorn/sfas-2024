@@ -1,6 +1,6 @@
 #include "InputSelection.h"
+#include "../../Game/Components/Interactable.h"
 #include "../IInput.h"
-#include "../Interactable.h"
 
 InputSelection::InputSelection(Interactable* FirstSelection) : InteractableLinks()
 {
