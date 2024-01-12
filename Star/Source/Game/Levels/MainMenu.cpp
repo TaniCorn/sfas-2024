@@ -57,9 +57,6 @@ bool MainMenu::Load()
 	Buttons[0]->Interact.BoundFunction = std::bind(&MainMenu::StartGame, this);
 	Buttons[1]->Interact.BoundFunction = std::bind(&MainMenu::QuitGame, this);
 
-	StartRender->BindParam(Buttons[0]->Interact.GetColorBind());
-	QuitRender->BindParam(Buttons[1]->Interact.GetColorBind());
-
 	GamepadSelection = new InputSelection(&Buttons[0]->Interact);
 	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, Down);
 	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, Up);

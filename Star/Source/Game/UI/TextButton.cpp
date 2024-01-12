@@ -12,6 +12,7 @@ TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* Shader
 	Text->SetPosition(halfX, halfY);
 	//Text origin is topLeft
 	//Renderable origin is center
+	RenderableIn->BindParam(Interact.GetColorBind());
 }
 
 

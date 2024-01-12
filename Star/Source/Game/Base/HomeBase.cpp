@@ -4,6 +4,7 @@
 
 HomeBase::HomeBase(IRenderable* RenderableIn, IShader* ShaderIn) : CurrentTexture(RenderableIn), Shader(ShaderIn), Health(50), ColorHighlight()
 {
+	RenderableIn->BindParam(ColorHighlight.GetColorBind());
 }
 
 

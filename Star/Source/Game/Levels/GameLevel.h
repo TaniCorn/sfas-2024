@@ -29,7 +29,7 @@ private:
 	bool LoadUI(float screenX, float screenY);
 	bool LoadUILinks();
 	void QuitGame();
-	TextButton* StartButton;
+	TextButton* StartNextWaveButton;
 	InputSelection* GamepadSelection;
 
 	TowerPlot* Plots[3];

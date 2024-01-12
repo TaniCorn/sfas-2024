@@ -63,11 +63,11 @@ void GameLevel::Update(float DeltaTime)
 	
 	if (Wave.CanStartNextWave())
 	{
-		StartButton->Register(Graphics);
+		StartNextWaveButton->Register(Graphics);
 	}
 	else 
 	{
-		StartButton->Unregister(Graphics);
+		StartNextWaveButton->Unregister(Graphics);
 	}
 
 	if (Base->Health.Health < 0)
@@ -121,8 +121,6 @@ bool GameLevel::LoadEntities()
 	IRenderable* BaseRender = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
 	Base = new HomeBase(BaseRender, ColorChangeShader);
 	Base->Register(Graphics);
-	BaseRender->BindParam(Base->ColorHighlight.GetColorBind());
-
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Fly.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
@@ -145,16 +143,11 @@ bool GameLevel::LoadEntities()
 	{
 		Rings[i]->Register(Graphics);
 	}
-	InnerRing->BindParam(Rings[0]->Interact.GetColorBind());
-	MiddleRing->BindParam(Rings[1]->Interact.GetColorBind());
-	OuterRing->BindParam(Rings[2]->Interact.GetColorBind());
 
 	for (int i = 0; i < 3; i++)
 	{
 		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
 		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
-		Plot->BindParam(Plots[i]->Interact.GetColorBind());
-
 		Plots[i]->Register(Graphics);
 		//Todo after getting the art assets
 		Plots[i]->SetScale(0.5, 0.5);
@@ -231,14 +224,12 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* StartText = Graphics->CreateText("Start Next Wave", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	StartButton = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
-	StartButton->SetPosition(0, -300);
-	StartButton->SetButtonScale(4, 2);
-	StartButton->AddTextPosition(-200, 25);
-	StartButton->Register(Graphics);
-	StartRender->BindParam(StartButton->Interact.GetColorBind());
-	//StartButton->Unregister(Graphics);
-	StartButton->Interact.BoundFunction = std::bind(&GameLevel::StartNextWave, this);
+	StartNextWaveButton = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
+	StartNextWaveButton->SetPosition(0, -300);
+	StartNextWaveButton->SetButtonScale(4, 2);
+	StartNextWaveButton->AddTextPosition(-200, 25);
+	StartNextWaveButton->Register(Graphics);
+	StartNextWaveButton->Interact.BoundFunction = std::bind(&GameLevel::StartNextWave, this);
 
 
 	return true;
@@ -246,7 +237,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 
 bool GameLevel::LoadUILinks()
 {
-	GamepadSelection = new InputSelection(&StartButton->Interact);
+	GamepadSelection = new InputSelection(&StartNextWaveButton->Interact);
 
 	RingGamepadSelection = new RingSelection(Rings[0]);
 	RingGamepadSelection->AddLink(Rings[0], Rings[1], true);

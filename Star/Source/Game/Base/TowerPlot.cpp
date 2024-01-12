@@ -2,6 +2,7 @@
 #include "../../Engine/IRenderable.h"
 TowerPlot::TowerPlot(IShader* ShaderIn, IRenderable* RenderableIn) : Shader(ShaderIn), Renderable(RenderableIn), Position(0, 0)
 {
+	RenderableIn->BindParam(Interact.GetColorBind());
 }
 
 void TowerPlot::Register(IGraphics* GraphicsIn)

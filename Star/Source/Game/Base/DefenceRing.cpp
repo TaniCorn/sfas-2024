@@ -8,6 +8,7 @@ DefenceRing::DefenceRing(IShader* ShaderIn, IRenderable* RenderableIn) : Shader(
 	Interact.SetHighlightColor(1, 1, 1, 1);
 	Interact.SetNormalColor(0.7, 0.7, 0.8, 1);
 	Interact.Unhighlighted();
+	RenderableIn->BindParam(Interact.GetColorBind());
 }
 
 void DefenceRing::Register(IGraphics* GraphicsIn)
