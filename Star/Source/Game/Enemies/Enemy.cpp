@@ -54,9 +54,14 @@ void Enemy::DamageEntity(float Amount)
 	}
 }
 
-bool Enemy::IsAlive()
+bool Enemy::IsAlive() const
 {
 	return bAlive;
+}
+
+bool Enemy::Flying() const
+{
+	return bFlying;
 }
 
 void Enemy::Spawn(DirectX::XMFLOAT2 Location)
@@ -81,6 +86,11 @@ void Enemy::SetPosition(DirectX::XMFLOAT2 Location)
 {
 	Position = Location;
 	CurrentTexture->SetPosition(Location.x, Location.y);
+}
+
+DirectX::XMFLOAT2 Enemy::GetPosition() const
+{
+	return Position;
 }
 
 void Enemy::MoveTowardsTarget(float DeltaTime)

@@ -20,10 +20,12 @@ public:
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
 	virtual void DamageEntity(float Amount);
-	bool IsAlive();
+	bool IsAlive() const;
+	bool Flying() const;
 	void Spawn(DirectX::XMFLOAT2 Location);
 	virtual void Update(float DeltaTime);
 	void SetPosition(DirectX::XMFLOAT2 Location);
+	DirectX::XMFLOAT2 GetPosition() const;
 
 	EntityHealth Health;
 	static EntityHealth* Target;

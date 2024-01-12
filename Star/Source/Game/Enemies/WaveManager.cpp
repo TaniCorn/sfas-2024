@@ -89,6 +89,11 @@ void WaveManager::StartNextWave()
 	Timer = WaveEntities[CurrentWave].front().TimeToSpawnFromLast;
 }
 
+const std::vector<Enemy*>& WaveManager::GetAliveEnemies()
+{
+	return AliveEnemies;
+}
+
 bool WaveManager::HasWon()
 {
 	if (WaveEntities.size() <= 0)

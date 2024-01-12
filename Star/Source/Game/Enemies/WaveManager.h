@@ -22,6 +22,8 @@ public:
 	bool HasWon();
 	bool CanStartNextWave();
 	void StartNextWave();
+
+	const std::vector<Enemy*>& GetAliveEnemies();
 private:
 	int SpawnGroup(EnemyTypes Type, int Amount, int Area);
 	void SpawnWave();

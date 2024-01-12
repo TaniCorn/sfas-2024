@@ -5,10 +5,10 @@
 
 namespace DXHelper 
 {
-	static float Magnitude(float x1, float y1) {
+	static float Magnitude(const float x1, const float y1) {
 		return (x1 * x1) + (y1 * y1);
 	}
-	static float MagnitudeSqrRoot(float x1, float y1) {
+	static float MagnitudeSqrRoot(const float x1, const float y1) {
 		return sqrtf(Magnitude(x1, y1));
 	}
 	static float Magnitude(const DirectX::XMFLOAT2 v1)
@@ -32,19 +32,19 @@ namespace DXHelper
 	}
 
 	//Unless I'm just an absolute moron, I can't see XMFLOAT2 having an additive or subtractive overload, and I don't really want to fiddle with the original files
-	static DirectX::XMFLOAT2 Subtract(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b)
+	static DirectX::XMFLOAT2 Subtract(const DirectX::XMFLOAT2 a, const DirectX::XMFLOAT2 b)
 	{
 		return DirectX::XMFLOAT2(a.x - b.x, a.y - b.y);
 	}
-	static DirectX::XMFLOAT2 Add(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b)
+	static DirectX::XMFLOAT2 Add(const DirectX::XMFLOAT2 a, const  DirectX::XMFLOAT2 b)
 	{
 		return DirectX::XMFLOAT2(a.x + b.x, a.y + b.y);
 	}
-	static DirectX::XMFLOAT2 Multiply(DirectX::XMFLOAT2 a, DirectX::XMFLOAT2 b)
+	static DirectX::XMFLOAT2 Multiply(const DirectX::XMFLOAT2 a, const DirectX::XMFLOAT2 b)
 	{
 		return DirectX::XMFLOAT2(a.x * b.x, a.y * b.y);
 	}
-	static DirectX::XMFLOAT2 Multiply(DirectX::XMFLOAT2 a, float b)
+	static DirectX::XMFLOAT2 Multiply(const DirectX::XMFLOAT2 a, const float b)
 	{
 		return DirectX::XMFLOAT2(a.x * b, a.y * b);
 	}
