@@ -1,10 +1,11 @@
 #include "Tower.h"
 #include "../Enemies/Enemy.h"
 #include "../../Engine/Implementation/DXMathHelper.h"
-Tower::Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn, DirectX::XMFLOAT2 PositionIn)  :
-	Shader(ShaderIn), CurrentTexture(RenderableIn), Damage(DamageIn), Range(RangeIn), AttackCooldown(AttackCooldownIn), Position(PositionIn)
+#include "../Base/TowerPlot.h"
+Tower::Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn,int CostIn)  :
+	Shader(ShaderIn), CurrentTexture(RenderableIn), Damage(DamageIn), Range(RangeIn), AttackCooldown(AttackCooldownIn), Cost(CostIn)
 {
-
+	RenderableIn->BindParam(ColorHighlight.GetColorBind());
 }
 void Tower::Register(IGraphics* GraphicsIn)
 {
@@ -23,17 +24,29 @@ void Tower::Update(float DeltaTime)
 		AttackTimer = AttackCooldown;
 	}
 	AttackTimer -= DeltaTime;
+	CurrentTexture->SetPosition(Position->x, Position->y);
+
 }
 
-void Tower::SetPosition(DirectX::XMFLOAT2 Location)
+int Tower::GetCost()
 {
-	Position = Location;
-	CurrentTexture->SetPosition(Location.x, Location.y);
+	return Cost;
+}
+
+void Tower::LinkPosition(DirectX::XMFLOAT2& Location)
+{
+	Position = &Location;
+	CurrentTexture->SetPosition(Position->x, Position->y);
+}
+
+void Tower::SetScale(float x, float y)
+{
+	CurrentTexture->SetScale(x, y);
 }
 
 bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 {
-	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), Position);
+	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), *Position);
 	float Distance = DXHelper::Magnitude(Vector);
 	if (Distance > Range)
 	{

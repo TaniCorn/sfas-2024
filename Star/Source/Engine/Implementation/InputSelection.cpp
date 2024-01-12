@@ -19,46 +19,82 @@ void InputSelection::Update(IInput* Input)
 {
 	float xVal = Input->GetValue(InputAction::LeftStickXAxis);
 	float yVal = Input->GetValue(InputAction::LeftStickYAxis);
-	if (xVal < 0)
+	if (bMoveableX)
 	{
-		if (InteractableLinks[CurrentInteractable].Left != nullptr) 
+		if (xVal < 0)
 		{
-			CurrentInteractable->Unhighlighted();
-			CurrentInteractable = InteractableLinks[CurrentInteractable].Left;
-			CurrentInteractable->Highlighted();
+			if (InteractableLinks[CurrentInteractable].Left != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Left;
+				CurrentInteractable->Highlighted();
+				bMoveableX = false;
+			}
+		}
+		else if (xVal > 0)
+		{
+			if (InteractableLinks[CurrentInteractable].Right != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Right;
+				CurrentInteractable->Highlighted();
+				bMoveableX = false;
+			}
 		}
 	}
-	else if (xVal > 0)
-	{
-		if (InteractableLinks[CurrentInteractable].Right != nullptr)
+	else {
+		if (xVal <= 0.1 && xVal >= -0.1)
 		{
-			CurrentInteractable->Unhighlighted();
-			CurrentInteractable = InteractableLinks[CurrentInteractable].Right;
-			CurrentInteractable->Highlighted();
+			bMoveableX = true;
 		}
 	}
-	else if (yVal < 0)
-	{
-		if (InteractableLinks[CurrentInteractable].Down != nullptr)
-		{
-			CurrentInteractable->Unhighlighted();
-			CurrentInteractable = InteractableLinks[CurrentInteractable].Down;
-			CurrentInteractable->Highlighted();
-		}
 
-	}
-	else if (yVal > 0)
+	if (bMoveableY)
 	{
-		if (InteractableLinks[CurrentInteractable].Up != nullptr)
+		if (yVal < 0)
 		{
-			CurrentInteractable->Unhighlighted();
-			CurrentInteractable = InteractableLinks[CurrentInteractable].Up;
-			CurrentInteractable->Highlighted();
+			if (InteractableLinks[CurrentInteractable].Down != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Down;
+				CurrentInteractable->Highlighted();
+				bMoveableY = false;
+			}
+
+		}
+		else if (yVal > 0)
+		{
+			if (InteractableLinks[CurrentInteractable].Up != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Up;
+				CurrentInteractable->Highlighted();
+				bMoveableY = false;
+			}
 		}
 	}
+	else 
+	{
+		if (yVal <= 0.1 && yVal >= -0.1)
+		{
+			bMoveableY = true;
+		}
+	}
+
+
 	if (Input->IsPressed(InputAction::ButtonBottom))
 	{
-		CurrentInteractable->BoundFunction();
+		if (CurrentInteractable->BoundFunction)
+		{
+			CurrentInteractable->BoundFunction();
+		}
+	}
+	if (Input->IsPressed(InputAction::ButtonRight))
+	{
+		if (PreviousMenuFunction)
+		{
+			PreviousMenuFunction();
+		}
 	}
 }
 

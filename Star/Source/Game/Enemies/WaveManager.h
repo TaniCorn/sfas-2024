@@ -22,6 +22,7 @@ public:
 	bool HasWon();
 	bool CanStartNextWave();
 	void StartNextWave();
+	int GetWaveNumber();
 
 	const std::vector<Enemy*>& GetAliveEnemies();
 private:

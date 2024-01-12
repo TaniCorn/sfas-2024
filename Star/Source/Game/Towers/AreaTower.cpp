@@ -1,7 +1,7 @@
 #include "AreaTower.h"
 #include "../Enemies/Enemy.h"
-AreaTower::AreaTower(IShader* ShaderIn, IRenderable* RenderableIn, DirectX::XMFLOAT2 PositionIn) :
-	Tower(ShaderIn, RenderableIn, 2, 300, 1.5f, PositionIn)
+AreaTower::AreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
+	Tower(ShaderIn, RenderableIn, 2, 300, 1.5f,60)
 {
 }
 
@@ -29,4 +29,9 @@ void AreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 			EnemiesToHit[i]->DamageEntity(Damage);
 		}
 	}
+}
+Tower* AreaTower::Clone(IGraphics* Graphics)
+{
+	IRenderable* Renderable = Graphics->CreateFloat4Billboard(Shader, Graphics->GetTexture("AreaTower"), nullptr);
+	return new AreaTower(Shader, Renderable);
 }

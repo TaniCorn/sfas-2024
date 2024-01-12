@@ -11,6 +11,8 @@ public:
 	DirectX::XMFLOAT2 GetPosition() const;
 	void SetScale(float x, float y);
 	void Rotate(float Direction, float DeltaTime);
+	bool PlotAvailable();
+	void PlantTower(Tower* TowerIn);
 	Interactable Interact;
 	std::vector<TowerPlot*> Plots;
 private:

@@ -5,31 +5,36 @@
 #include <vector>
 #include <DirectXMath.h>
 
+class TowerPlot;
 class Enemy;
 
 class Tower : public IRegisteredObject
 {
 public:
-	Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn, DirectX::XMFLOAT2 PositionIn);
+	Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn, int Cost);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
 
 	virtual void Update(float DeltaTime);
 	virtual void AttackUpdate(const std::vector<Enemy*>& Enemies) = 0;
 
-	void SetPosition(DirectX::XMFLOAT2 Location);
+	int GetCost();
+	void LinkPosition(DirectX::XMFLOAT2& Location);
+	void SetScale(float x, float y);
 	bool IsEnemyInRange(const Enemy* CurrentEnemy) const;
 	ColorHighlighting ColorHighlight;
+
+	virtual Tower* Clone(IGraphics* Graphics) = 0;
 protected:
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-
+	DirectX::XMFLOAT2* Position;
 	float Range;
 	float Damage;
-	DirectX::XMFLOAT2 Position;
 
 	float AttackCooldown;
 	float AttackTimer = 0;
 	bool bAttack = false;
+	int Cost;
 };
 

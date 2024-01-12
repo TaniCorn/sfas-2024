@@ -1,7 +1,7 @@
 #include "GroundAreaTower.h"
 #include "../Enemies/Enemy.h"
-GroundAreaTower::GroundAreaTower(IShader* ShaderIn, IRenderable* RenderableIn, DirectX::XMFLOAT2 PositionIn) :
-	Tower(ShaderIn, RenderableIn, 3.0f, 300.0f,0.5f, PositionIn)
+GroundAreaTower::GroundAreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
+	Tower(ShaderIn, RenderableIn, 3.0f, 300.0f,0.5f,40)
 {
 }
 
@@ -32,4 +32,10 @@ void GroundAreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 			EnemiesToHit[i]->DamageEntity(Damage);
 		}
 	}
+}
+
+Tower* GroundAreaTower::Clone(IGraphics* Graphics)
+{
+	IRenderable* Renderable = Graphics->CreateFloat4Billboard(Shader, Graphics->GetTexture("GroundAreaTower"), nullptr);
+	return new GroundAreaTower(Shader, Renderable);
 }

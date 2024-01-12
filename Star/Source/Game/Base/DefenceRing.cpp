@@ -58,3 +58,29 @@ void DefenceRing::Rotate(float Direction, float DeltaTime)
 	}
 
 }
+
+bool DefenceRing::PlotAvailable()
+{
+	for (int i = 0; i < Plots.size(); i++)
+	{
+		if (Plots[i]->IsAvailable())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void DefenceRing::PlantTower(Tower* TowerIn)
+{
+	std::vector<TowerPlot*> PlotsAvailable;
+	for (int i = 0; i < Plots.size(); i++)
+	{
+		if (Plots[i]->IsAvailable())
+		{
+			PlotsAvailable.push_back(Plots[i]);
+		}
+	}
+	int PlotNumber = rand() % PlotsAvailable.size();
+	PlotsAvailable[PlotNumber]->PlantTower(TowerIn);
+}
