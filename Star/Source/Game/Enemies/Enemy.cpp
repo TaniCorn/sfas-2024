@@ -1,12 +1,12 @@
-#include "IEnemy.h"
+#include "Enemy.h"
 #include "../../Engine/Implementation/DXMathHelper.h"
 
-IEnemy::IEnemy() : CurrentTexture(nullptr), Shader(nullptr)
+Enemy::Enemy() : CurrentTexture(nullptr), Shader(nullptr), ColorHighlight(), Health(0)
 {
 	AttackTimer = AttackCooldown;
 }
 
-IEnemy::IEnemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : CurrentTexture(RenderableIn), Shader(ShaderIn)
+Enemy::Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : CurrentTexture(RenderableIn), Shader(ShaderIn), Health(0)
 {
 	switch (Enemy)
 	{
@@ -25,7 +25,7 @@ IEnemy::IEnemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) :
 	AttackTimer = AttackCooldown;
 }
 
-void IEnemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
+void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 {
 	CurrentTexture = RenderableIn;
 	Shader = ShaderIn;
@@ -46,47 +46,34 @@ void IEnemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy
 	AttackTimer = AttackCooldown;
 }
 
-void IEnemy::Register(IGraphics* Graphics)
+void Enemy::Register(IGraphics* Graphics)
 {
 	Graphics->AddSpriteToRender(Shader, CurrentTexture);
 }
 
-void IEnemy::Unregister(IGraphics* Graphics)
+void Enemy::Unregister(IGraphics* Graphics)
 {
 	Graphics->RemoveSpriteFromRender(Shader, CurrentTexture);
 }
 
-float IEnemy::GetHealth()
+void Enemy::DamageEntity(float Amount)
 {
-	return Health;
+	Health.DamageEntity(Amount);
+	ColorHighlight.Highlighted();
 }
 
-void IEnemy::DamageEntity(float Amount)
+void Enemy::Update(float DeltaTime)
 {
-	Health -= Amount;
-}
-
-DirectX::XMFLOAT2 IEnemy::GetPosition()
-{
-	return Position;
-}
-
-void IEnemy::SetPosition(DirectX::XMFLOAT2 PositionIn)
-{
-	Position = PositionIn;
-}
-
-void IEnemy::Update(float DeltaTime)
-{
+	ColorHighlight.Update(DeltaTime);
 	if (Target != nullptr)
 	{
 		MoveTowardsTarget(DeltaTime);
 	}
 }
 
-void IEnemy::MoveTowardsTarget(float DeltaTime)
+void Enemy::MoveTowardsTarget(float DeltaTime)
 {
-	DirectX::XMFLOAT2 Distance = DXHelper::Subtract(Target->GetPosition(), Position);
+	DirectX::XMFLOAT2 Distance = DXHelper::Subtract(TargetPosition, Position);
 	DirectX::XMFLOAT2 UnitDistance = DXHelper::Normalise(Distance);
 
 	if (DXHelper::Magnitude(Distance) < 10.0f)
@@ -104,9 +91,9 @@ void IEnemy::MoveTowardsTarget(float DeltaTime)
 	}
 }
 
-void IEnemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, float AttackCooldownIn, bool bCanFly)
+void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, float AttackCooldownIn, bool bCanFly)
 {
-	Health = HealthIn;
+	Health.SetEntityHealth(HealthIn);
 	Damage = DamageIn;
 	Speed = SpeedIn;
 	AttackCooldown = AttackCooldownIn;

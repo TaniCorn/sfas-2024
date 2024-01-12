@@ -6,7 +6,7 @@ class IShader;
 #include "../../../Source/Engine/IRegisteredObject.h"
 #include "../../Engine/Interactable.h"
 
-class TextButton : public IRegisteredObject, public Interactable
+class TextButton : public IRegisteredObject
 {
 public:
 	TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny);
@@ -29,6 +29,7 @@ public:
 	void SetTextRotation(float r);
 	void SetTextScale(float sx, float sy);
 
+	Interactable Interact;
 private:
 
 	IShader* Shader;

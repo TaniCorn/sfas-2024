@@ -3,7 +3,7 @@
 #include "../Source/Engine/IRenderable.h"
 #include "../Source/Engine/IText.h"
 
-TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny) : halfX(screenx / 2), halfY(screeny/2)
+TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny) : halfX(screenx / 2), halfY(screeny/2), Interact()
 {
 	Renderable = RenderableIn;
 	Text = TextIn;

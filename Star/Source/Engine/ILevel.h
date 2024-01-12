@@ -9,7 +9,7 @@ enum Level
 	SplashScreenLevel,
 	MainMenuLevel,
 	SettingsMenuLevel,
-	GameLevel
+	GameLevel1
 
 };
 class ILevel

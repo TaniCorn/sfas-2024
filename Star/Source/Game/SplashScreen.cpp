@@ -25,7 +25,7 @@ bool SplashScreen::Load()
 	IShader* SplashShader2 = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 	IShader* SplashShader3 = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	SplashRender = Graphics->CreateFade(SplashShader,SplashTexture, FadeParams);
+	SplashRender = Graphics->CreateFloat4Billboard(SplashShader,SplashTexture, FadeParams);
 	SplashRender->SetPosition(500, -500);
 	
 	Transform2D TransformText;

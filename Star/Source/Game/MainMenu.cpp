@@ -31,8 +31,8 @@ bool MainMenu::Load()
 	IShader* BackgroundShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 	IShader* ButtonShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	IRenderable* StartRender = Graphics->CreateFade(ButtonShader, ButtonTexture, nullptr);
-	IRenderable* QuitRender = Graphics->CreateFade(ButtonShader, ButtonTexture, nullptr);
+	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
+	IRenderable* QuitRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader, BackgroundTexture);
 	
 	IText* StartText = Graphics->CreateText("Start Game", 0, 0, 1,1,0,1,0,0,1);
@@ -54,15 +54,15 @@ bool MainMenu::Load()
 	{
 		Buttons[i]->Register(Graphics);
 	}
-	Buttons[0]->BoundFunction = std::bind(&MainMenu::StartGame, this);
-	Buttons[1]->BoundFunction = std::bind(&MainMenu::QuitGame, this);
+	Buttons[0]->Interact.BoundFunction = std::bind(&MainMenu::StartGame, this);
+	Buttons[1]->Interact.BoundFunction = std::bind(&MainMenu::QuitGame, this);
 
-	StartRender->BindParam(Buttons[0]->GetColorBind());
-	QuitRender->BindParam(Buttons[1]->GetColorBind());
+	StartRender->BindParam(Buttons[0]->Interact.GetColorBind());
+	QuitRender->BindParam(Buttons[1]->Interact.GetColorBind());
 
-	GamepadSelection = new InputSelection(Buttons[0]);
-	GamepadSelection->AddButtonLink(Buttons[0], Buttons[1], Down);
-	GamepadSelection->AddButtonLink(Buttons[1], Buttons[0], Up);
+	GamepadSelection = new InputSelection(&Buttons[0]->Interact);
+	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, Down);
+	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, Up);
 	return true;
 }
 
@@ -86,5 +86,5 @@ void MainMenu::QuitGame()
 
 void MainMenu::StartGame()
 {
-	LevelSwitchKey = GameLevel;
+	LevelSwitchKey = GameLevel1;
 }

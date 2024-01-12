@@ -1,4 +1,7 @@
 #include "Interactable.h"
+Interactable::Interactable()
+{
+}
 void Interactable::Highlighted()
 {
 	for (int i = 0; i < 4; i++)

@@ -374,7 +374,7 @@ IRenderable* DirectX11Graphics::CreateBillboard(IShader* ShaderIn, ITexture* Tex
     return Result;
 }
 
-IRenderable* DirectX11Graphics::CreateFade(IShader* ShaderIn, ITexture* TextureIn, float* ParamPtr)
+IRenderable* DirectX11Graphics::CreateFloat4Billboard(IShader* ShaderIn, ITexture* TextureIn, float* ParamPtr)
 {
     IRenderable* Result = nullptr;
 

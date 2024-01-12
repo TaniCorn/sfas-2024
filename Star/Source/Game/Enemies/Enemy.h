@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../IDamageable.h"
+#include "../EntityHealth.h"
 #include "../../Engine/IRenderable.h"
 #include "../../Engine/IRegisteredObject.h"
+#include "../../../ColorHighlighting.h"
 #include <DirectXMath.h>
 
 class IShader;
@@ -12,35 +13,34 @@ enum EnemyTypes {
 	SlowGrunts,
 	Flyers
 };
-class IEnemy : public IRegisteredObject, public IDamageable
+class Enemy : public IRegisteredObject
 {
 public:
-	IEnemy();
-	IEnemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
+	Enemy();
+	Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
 	void Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
-	virtual float GetHealth();
 	virtual void DamageEntity(float Amount);
-	virtual DirectX::XMFLOAT2 GetPosition();
-	virtual void SetPosition(DirectX::XMFLOAT2 PositionIn);
 
 	virtual void Update(float DeltaTime);
 
-	void MoveTowardsTarget(float DeltaTime);
+	EntityHealth Health;
+	DirectX::XMFLOAT2 Position;
+	EntityHealth* Target;
+	DirectX::XMFLOAT2 TargetPosition;
+	ColorHighlighting ColorHighlight;
 protected:
-
+	void MoveTowardsTarget(float DeltaTime);
 	void SetStats(float HealthIn, float DamageIn, float SpeedIn, float AttackCooldownIn, bool bCanFly);
-	IDamageable* Target;
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-	float Health;
+
 	float Damage;
 	float Speed;
 	float AttackCooldown;
 	float AttackTimer;
 	bool bFlying;
-	
-	DirectX::XMFLOAT2 Position;
+	bool bAlive;
 };
 

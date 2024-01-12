@@ -7,6 +7,7 @@
 #include "Engine/IInput.h"
 #include "SplashScreen.h"
 #include "MainMenu.h"
+#include "GameLevel.h"
 #include <ctime>
 #include <math.h>
 
@@ -114,7 +115,8 @@ void Game::SwitchLevel(Level NextLevelIdentfier)
 	case SettingsMenuLevel:
 		//CurrentLevel = new
 		break;
-	case GameLevel:
+	case GameLevel1:
+		CurrentLevel = new GameLevel(Graphics, Input);
 		break;
 	default:
 		CurrentLevel = new SplashScreen(Graphics, Input);

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Source/Engine/ILevel.h"
-#include "Enemies/IEnemy.h"
+#include "Enemies/Enemy.h"
+#include "Towers/HomeBase.h"
 
 class IRenderable;
 class TextButton;
@@ -9,7 +10,7 @@ class InputSelection;
 
 class GameLevel : public ILevel
 {
-	public:
+public:
 	GameLevel(IGraphics* Graphics, IInput* InputIn);
 	virtual ~GameLevel();
 
@@ -18,9 +19,14 @@ class GameLevel : public ILevel
 	virtual void Cleanup();
 
 private:
+	bool LoadEntities();
+	bool LoadUI(float screenX, float screenY);
+	void QuitGame();
+	TextButton* TestButton;
 	InputSelection* GamepadSelection;
-	TextButton* Buttons[2];
 
-	IEnemy EnemyPool[50];
+
+	HomeBase* Base;
+	Enemy EnemyPool[60];
 };
 
