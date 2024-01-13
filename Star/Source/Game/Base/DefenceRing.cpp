@@ -88,6 +88,9 @@ void DefenceRing::PlantTower(Tower* TowerIn)
 
 void DefenceRing::BindPlotsColor()
 {
+	Interact.SetNormalColor(1.0, 1.0, 1.0, 0.8);
+	Interact.SetHighlightColor(0.6, 1, 0.6, 0.9);
+	Interact.Unhighlighted();
 	for (int i = 0; i < Plots.size(); i++)
 	{
 		Plots[i]->GetRenderable()->BindParam(Interact.GetColorBind());

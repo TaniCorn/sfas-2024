@@ -25,6 +25,7 @@ public:
 	void Spawn(DirectX::XMFLOAT2 Location);
 	virtual void Update(float DeltaTime);
 	void SetPosition(DirectX::XMFLOAT2 Location);
+	void SetRotation(float Rotation);
 	DirectX::XMFLOAT2 GetPosition() const;
 	int GetGoldGain();
 

@@ -17,7 +17,7 @@ TowerPlot::~TowerPlot()
 
 void TowerPlot::Register(IGraphics* GraphicsIn)
 {
-	GraphicsIn->AddSpriteToRender(Shader, Renderable);
+	GraphicsIn->AddSpriteToRender(Shader, Renderable, 1);
 }
 
 void TowerPlot::Unregister(IGraphics* GraphicsIn)

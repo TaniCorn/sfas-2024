@@ -230,15 +230,7 @@ bool GameLevel::LoadEntities()
 		Plots[i]->DistanceFromCenter = DistFromCenter;
 		Rings[2]->Plots.push_back(Plots[i]);
 	}
-	for (int i = 0; i < 14; i++)
-	{
-		Plots[i]->Interact.SetNormalColor(0.4, 0.4, 0.4, 0.3);
-		Plots[i]->Interact.SetHighlightColor(0.9, 0.9, 0.9, 0.7);
-		Plots[i]->Interact.Unhighlighted();
-	}
-	//Rings[0]->Plots.push_back(Plots[0]);
-	//Rings[1]->Plots.push_back(Plots[1]);
-	//Rings[2]->Plots.push_back(Plots[2]);
+
 	for (int i = 0; i < 3; i++)
 	{
 		//Rings[i]->Register(Graphics);
@@ -252,7 +244,7 @@ bool GameLevel::LoadEntities()
 	TowerClones[1] = new GroundAreaTower(ColorChangeShader, GroundAreaTowerRenderable);
 	CurrencyShop = new Shop(100);
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
-	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Fly.png", "EnemyFly");
+	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Flyer.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
 	Wave.Init(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);
 	for (int i = 0; i < 8; i++)
@@ -268,7 +260,7 @@ bool GameLevel::LoadWaves()
 	int WaveNumber = 1;
 	//Wave 1
 	Wave.AddNewSpawn(SlowGrunts, 2, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 5, 0, WaveNumber);
+	Wave.AddNewSpawn(FastPack, 5, 5, WaveNumber);
 	Wave.AddNewSpawn(FastPack, 5, 10, WaveNumber);
 	WaveNumber++;
 	//Wave 3

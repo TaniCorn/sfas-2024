@@ -16,7 +16,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0,0.3);
-		EnemyPool[i].ColorHighlight.SetNormalColor(1, 1, 1, 1);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
 		EnemyPool[i].ColorHighlight.Unhighlighted();
 	}
 	for (int i = 50; i < 100; i++)
@@ -26,7 +26,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
-		EnemyPool[i].ColorHighlight.SetNormalColor(1, 1, 1, 1);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
 		EnemyPool[i].ColorHighlight.Unhighlighted();
 	}
 	for (int i = 100; i < 150; i++)
@@ -36,7 +36,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
-		EnemyPool[i].ColorHighlight.SetNormalColor(1, 1, 1, 1);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
 		EnemyPool[i].ColorHighlight.Unhighlighted();
 	}
 }
@@ -180,8 +180,8 @@ void WaveManager::SpawnWave()
 
 	if (Spawned >= Wave.Amount)
 	{
-		WaveEntities[CurrentWave].pop();
 		Timer = Wave.TimeToSpawnFromLast;
+		WaveEntities[CurrentWave].pop();
 	}
 	else 
 	{

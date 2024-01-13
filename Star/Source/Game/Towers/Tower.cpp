@@ -9,7 +9,7 @@ Tower::Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float
 }
 void Tower::Register(IGraphics* GraphicsIn)
 {
-	GraphicsIn->AddSpriteToRender(Shader, CurrentTexture);
+	GraphicsIn->AddSpriteToRender(Shader, CurrentTexture, 2);
 }
 void Tower::Unregister(IGraphics* GraphicsIn)
 {

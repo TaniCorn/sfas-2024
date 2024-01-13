@@ -34,7 +34,7 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 
 void Enemy::Register(IGraphics* Graphics)
 {
-	Graphics->AddSpriteToRender(Shader, CurrentTexture);
+	Graphics->AddSpriteToRender(Shader, CurrentTexture, 4);
 }
 
 void Enemy::Unregister(IGraphics* Graphics)
@@ -69,6 +69,7 @@ void Enemy::Spawn(DirectX::XMFLOAT2 Location)
 	SetPosition(Location);
 	bAlive = true;
 	Health.Health = Health.GetMaxHealth();
+	ColorHighlight.SetNormalColor(1, 1, 1, 1);
 	ColorHighlight.Unhighlighted();
 }
 
@@ -87,6 +88,11 @@ void Enemy::SetPosition(DirectX::XMFLOAT2 Location)
 	CurrentTexture->SetPosition(Location.x, Location.y);
 }
 
+void Enemy::SetRotation(float Rotation)
+{
+	CurrentTexture->SetRotation(Rotation);
+}
+
 DirectX::XMFLOAT2 Enemy::GetPosition() const
 {
 	return Position;
@@ -96,7 +102,6 @@ int Enemy::GetGoldGain()
 {
 	return GoldGain;
 }
-
 void Enemy::MoveTowardsTarget(float DeltaTime)
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(TargetPosition, Position);
@@ -106,6 +111,16 @@ void Enemy::MoveTowardsTarget(float DeltaTime)
 	{
 		DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
 		SetPosition(DXHelper::Add(Direction, Position));
+		
+		float RadRotDot = acos(DXHelper::DotProduct(DirectX::XMFLOAT2(0, -1), UnitVector));
+		if (UnitVector.x < 0)
+		{
+			SetRotation(-RadRotDot);
+		}
+		else 
+		{
+			SetRotation(RadRotDot);
+		}
 	}
 	else
 	{
