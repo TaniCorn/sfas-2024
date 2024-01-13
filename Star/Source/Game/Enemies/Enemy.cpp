@@ -16,13 +16,13 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 	switch (Enemy)
 	{
 	case FastPack:
-		SetStats(5, 5, 60, 0.5, false);
+		SetStats(5, 5, 60, 2, false);
 		break;
 	case SlowGrunts:
-		SetStats(25, 5, 20, 1, false);
+		SetStats(20, 5, 20, 10, false);
 		break;
 	case Flyers:
-		SetStats(5, 2, 45, 1, true);
+		SetStats(5, 2, 45, 3, true);
 		break;
 	default:
 		break;
@@ -93,6 +93,11 @@ DirectX::XMFLOAT2 Enemy::GetPosition() const
 	return Position;
 }
 
+int Enemy::GetGoldGain()
+{
+	return GoldGain;
+}
+
 void Enemy::MoveTowardsTarget(float DeltaTime)
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(TargetPosition, Position);
@@ -110,10 +115,11 @@ void Enemy::MoveTowardsTarget(float DeltaTime)
 	}
 }
 
-void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, float AttackCooldownIn, bool bCanFly)
+void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, int Gold, bool bCanFly)
 {
 	Health.SetEntityHealth(HealthIn);
 	Damage = DamageIn;
 	Speed = SpeedIn;
 	bFlying = bCanFly;
+	GoldGain = Gold;
 }

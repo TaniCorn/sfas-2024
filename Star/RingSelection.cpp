@@ -16,11 +16,11 @@ void RingSelection::Update(float DeltaTime, IInput* Input)
 
 	if (Input->IsHeld(InputAction::TriggerLeft))
 	{
-		CurrentRing->Rotate(-1, DeltaTime);
+		CurrentRing->Rotate(1, DeltaTime);
 	}
 	else if (Input->IsHeld(InputAction::TriggerRight))
 	{
-		CurrentRing->Rotate(1, DeltaTime);
+		CurrentRing->Rotate(-1, DeltaTime);
 	}
 }
 

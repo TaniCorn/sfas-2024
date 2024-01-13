@@ -83,16 +83,26 @@ void GameLevel::Update(float DeltaTime)
 			it._Ptr->_Myval->AttackUpdate(Wave.GetAliveEnemies());
 		}
 
-		if (Base->Health.Health < 0)
+		if (Base->Health.Health <= 0)
 		{
 			//Lose Game
 			//Popup quit/retry UI
+			CurrentSelector = EndSelector;
+			EndButton->Register(Graphics);
+			EndText->SetText("You Lose!");
+			Graphics->AddText(EndText);
+			bPaused = true;
 		}
 
 		if (Wave.HasWon())
 		{
 			//End Game
 			//Popup win UI
+			CurrentSelector = EndSelector;
+			EndButton->Register(Graphics);
+			EndText->SetText("You Win!");
+			Graphics->AddText(EndText);
+			bPaused = true;
 		}
 	}
 
@@ -102,6 +112,9 @@ void GameLevel::Update(float DeltaTime)
 	int Currency = CurrencyShop->GetCurrentGold();
 	CurrencyString = "Gold: " + std::to_string(Currency);
 	CurrencyIndicator->SetText(CurrencyString.c_str());
+	int Health = Base->Health.Health;
+	HealthString = "Health: " + std::to_string(Health);
+	HealthIndicator->SetText(HealthString.c_str());
 }
 
 void GameLevel::Cleanup()
@@ -182,7 +195,6 @@ bool GameLevel::LoadEntities()
 	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
 	TowerClones[1] = new GroundAreaTower(ColorChangeShader, GroundAreaTowerRenderable);
 	CurrencyShop = new Shop(100);
-
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Fly.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
@@ -191,6 +203,7 @@ bool GameLevel::LoadEntities()
 	{
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
 	}
+	Wave.ShopReference = CurrencyShop;
 	return true;
 }
 
@@ -277,11 +290,25 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	QuitButton->AddTextPosition(-200, 25);
 	QuitButton->Register(Graphics);
 	QuitButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
+	IRenderable* EndRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
+	IText* EndButtonText = Graphics->CreateText("End Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
+	EndButton = new TextButton(EndRender, EndButtonText, ButtonShader, screenX, screenY);
+	EndButton->SetPosition(0, 200);
+	EndButton->SetButtonScale(4, 2);
+	EndButton->AddTextPosition(-200, 25);
+	EndButton->Register(Graphics);
+	EndButton->Unregister(Graphics);
+	EndText = Graphics->CreateText("END CONDITION", (screenX / 2) - 200, 50);
+	EndButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
+	Graphics->AddText(EndText);
+	Graphics->RemoveText(EndText);
 
 	RoundIndicator = Graphics->CreateText("Round: X");
 	CurrencyIndicator = Graphics->CreateText("Gold: X", 0, 50);
+	HealthIndicator = Graphics->CreateText("Health: X", 0, 100);
 	Graphics->AddText(RoundIndicator);
 	Graphics->AddText(CurrencyIndicator);
+	Graphics->AddText(HealthIndicator);
 
 	IText* AreaTowerText = Graphics->CreateText("60 Gold", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
@@ -324,6 +351,8 @@ bool GameLevel::LoadUILinks()
 	ShopSelector->AddButtonLink(&TowerButtons[0]->Interact, &TowerButtons[1]->Interact, Right);
 	ShopSelector->AddButtonLink(&TowerButtons[1]->Interact, &TowerButtons[0]->Interact, Left);
 	ShopSelector->PreviousMenuFunction = std::bind(&GameLevel::CloseShop, this);
+
+	EndSelector = new InputSelection(&EndButton->Interact);
 	return true;
 }
 

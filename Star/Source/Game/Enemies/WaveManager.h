@@ -2,6 +2,7 @@
 #include "Enemy.h"
 class IGraphics;
 class IShader;
+class Shop;
 #include <queue>
 class WaveManager
 {
@@ -25,6 +26,7 @@ public:
 	int GetWaveNumber();
 
 	const std::vector<Enemy*>& GetAliveEnemies();
+	Shop* ShopReference;
 private:
 	int SpawnGroup(EnemyTypes Type, int Amount, int Area);
 	void SpawnWave();

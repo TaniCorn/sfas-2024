@@ -40,8 +40,14 @@ private:
 	std::string CurrencyString;
 	IText* RoundIndicator;
 	std::string RoundString;
+	IText* HealthIndicator;
+	std::string HealthString;
+	IText* EndText;
+	TextButton* EndButton;
+
 	InputSelection* ButtonSelector;
 	InputSelection* ShopSelector;
+	InputSelection* EndSelector;
 	InputSelection* CurrentSelector;
 
 	Shop* CurrencyShop;

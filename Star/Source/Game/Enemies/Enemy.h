@@ -26,6 +26,7 @@ public:
 	virtual void Update(float DeltaTime);
 	void SetPosition(DirectX::XMFLOAT2 Location);
 	DirectX::XMFLOAT2 GetPosition() const;
+	int GetGoldGain();
 
 	EntityHealth Health;
 	static EntityHealth* Target;
@@ -33,7 +34,7 @@ public:
 	ColorHighlighting ColorHighlight;
 protected:
 	void MoveTowardsTarget(float DeltaTime);
-	void SetStats(float HealthIn, float DamageIn, float SpeedIn, float AttackCooldownIn, bool bCanFly);
+	void SetStats(float HealthIn, float DamageIn, float SpeedIn, int Gold, bool bCanFly);
 	IShader* Shader;
 	IRenderable* CurrentTexture;
 
@@ -41,6 +42,7 @@ protected:
 	float Speed;
 	bool bFlying;
 	bool bAlive;
+	int GoldGain;
 	DirectX::XMFLOAT2 Position;
 
 };

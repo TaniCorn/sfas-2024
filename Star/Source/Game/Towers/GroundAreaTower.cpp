@@ -1,7 +1,8 @@
 #include "GroundAreaTower.h"
 #include "../Enemies/Enemy.h"
+#include "../Shop/Shop.h"
 GroundAreaTower::GroundAreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
-	Tower(ShaderIn, RenderableIn, 3.0f, 300.0f,0.5f,40)
+	Tower(ShaderIn, RenderableIn, 5.0f, 800.0f,0.5f,40)
 {
 }
 
@@ -30,6 +31,7 @@ void GroundAreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 		for (int i = 0; i < EnemiesToHit.size(); i++)
 		{
 			EnemiesToHit[i]->DamageEntity(Damage);
+			
 		}
 	}
 }
