@@ -75,7 +75,7 @@ void GameLevel::Update(float DeltaTime)
 		Base->Update(DeltaTime);
 		Wave.Update(DeltaTime);
 
-		if (Wave.CanStartNextWave())
+		if (Wave.CanStartNextWave() && Wave.WavesLeft() > 1)
 		{
 			StartNextWaveButton->Register(Graphics);
 		}
@@ -130,7 +130,7 @@ void GameLevel::Cleanup()
 
 void GameLevel::StartNextWave()
 {
-	if (Wave.CanStartNextWave())
+	if (Wave.CanStartNextWave() && Wave.WavesLeft() > 1)
 	{
 		Wave.StartNextWave();
 	}
@@ -302,9 +302,26 @@ bool GameLevel::LoadWaves()
 	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
 	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
 	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
 	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
 	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
 	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
+	WaveNumber++;
+	//Wave 8
+	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber, 0);
+	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber, 1);
+	Wave.AddNewSpawn(Flyers, 10, 5, WaveNumber , 2);
+	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber , 3);
+	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber , 4);
+	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber, 6);
+	Wave.AddNewSpawn(FastPack, 30, 0, WaveNumber, 7);
+	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber, 6);
+	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(Flyers, 30, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(SlowGrunts, 20, 0, WaveNumber, 0);
+	Wave.AddNewSpawn(SlowGrunts, 20, 0, WaveNumber, 1);
 	WaveNumber++;
 
 	return true;
@@ -317,7 +334,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* StartText = Graphics->CreateText("Start Next Wave", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	StartNextWaveButton = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
-	StartNextWaveButton->SetPosition(-700, -300);
+	StartNextWaveButton->SetPosition(-700, -400);
 	StartNextWaveButton->SetButtonScale(4, 2);
 	StartNextWaveButton->AddTextPosition(-200, 25);
 	StartNextWaveButton->Register(Graphics);
@@ -325,7 +342,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	IRenderable* OpenRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* OpenText = Graphics->CreateText("Open Shop", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	OpenShopButton = new TextButton(OpenRender, OpenText, ButtonShader, screenX, screenY);
-	OpenShopButton->SetPosition(0, -300);
+	OpenShopButton->SetPosition(0, -400);
 	OpenShopButton->SetButtonScale(4, 2);
 	OpenShopButton->AddTextPosition(-200, 25);
 	OpenShopButton->Register(Graphics);
@@ -333,7 +350,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	IRenderable* QuitRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	QuitButton = new TextButton(QuitRender, QuitText, ButtonShader, screenX, screenY);
-	QuitButton->SetPosition(700, -300);
+	QuitButton->SetPosition(700, -400);
 	QuitButton->SetButtonScale(4, 2);
 	QuitButton->AddTextPosition(-200, 25);
 	QuitButton->Register(Graphics);
@@ -358,25 +375,27 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	Graphics->AddText(CurrencyIndicator);
 	Graphics->AddText(HealthIndicator);
 
-	IText* AreaTowerText = Graphics->CreateText("60 Gold", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
-	IRenderable* AreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
+	IText* AreaTowerText = Graphics->CreateText("60 Gold Can attack Sea and Air", 0, 0, 1, 1, 0, 1, 0, 0, 1);
+	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "TBuy");
+	IRenderable* AreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, AreaTowerTexture, nullptr);
 	TowerButtons[0] = new TextButton(AreaTowerRenderable, AreaTowerText, ButtonShader, screenX, screenY);
 	TowerButtons[0]->SetPosition(-300, 0);
 	TowerButtons[0]->SetButtonScale(2, 2);
-	TowerButtons[0]->AddTextPosition(-200, 25);
+	TowerButtons[0]->AddTextPosition(-400, 200);
 	TowerButtons[0]->Register(Graphics);
 	TowerButtons[0]->Unregister(Graphics);
+	TowerButtons[0]->Interact.SetHighlightColor(0.7, 1, 0.7, 1);
 	TowerButtons[0]->Interact.BoundFunction = std::bind(&GameLevel::SpawnAreaTower, this);
-	IText* GroundAreaTowerText = Graphics->CreateText("40 Gold", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
-	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
+	IText* GroundAreaTowerText = Graphics->CreateText("40 Gold Can attack Sea", 0, 0, 1, 1, 0, 1, 0, 0, 1);
+	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GTBuy");
+	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, GroundAreaTowerTexture, nullptr);
 	TowerButtons[1] = new TextButton(GroundAreaTowerRenderable, GroundAreaTowerText, ButtonShader, screenX, screenY);
 	TowerButtons[1]->SetPosition(300, 0);
 	TowerButtons[1]->SetButtonScale(2, 2);
-	TowerButtons[1]->AddTextPosition(-200, 25);
+	TowerButtons[1]->AddTextPosition(-300, -150);
 	TowerButtons[1]->Register(Graphics);
 	TowerButtons[1]->Unregister(Graphics);
+	TowerButtons[1]->Interact.SetHighlightColor(0.7, 1, 0.7, 1);
 	TowerButtons[1]->Interact.BoundFunction = std::bind(&GameLevel::SpawnGroundAreaTower, this);
 	return true;
 }
@@ -390,6 +409,7 @@ bool GameLevel::LoadUILinks()
 	ButtonSelector->AddButtonLink(&QuitButton->Interact, &OpenShopButton->Interact, Left);
 
 	RingGamepadSelection = new RingSelection(Rings[0]);
+	Rings[0]->Interact.Highlighted();
 	RingGamepadSelection->AddLink(Rings[0], Rings[1], true);
 	RingGamepadSelection->AddLink(Rings[1], Rings[0], false);
 	RingGamepadSelection->AddLink(Rings[1], Rings[2], true);

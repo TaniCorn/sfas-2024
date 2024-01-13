@@ -20,6 +20,7 @@ public:
 	void AddNewSpawnArea(DirectX::XMFLOAT2& Area);
 	void AddNewSpawn(EnemyTypes Type, int Amount, float TimeToSpawnFromLast, int Wave, int SpawnArea = -1);
 
+	int WavesLeft();
 	bool HasWon();
 	bool CanStartNextWave();
 	void StartNextWave();

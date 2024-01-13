@@ -16,13 +16,13 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 	switch (Enemy)
 	{
 	case FastPack:
-		SetStats(5, 5, 60, 2, false);
+		SetStats(5, 5, 50, 2, false);
 		break;
 	case SlowGrunts:
 		SetStats(20, 5, 20, 10, false);
 		break;
 	case Flyers:
-		SetStats(5, 2, 45, 3, true);
+		SetStats(5, 2, 40, 3, true);
 		break;
 	default:
 		break;

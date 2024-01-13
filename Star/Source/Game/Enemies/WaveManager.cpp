@@ -91,6 +91,7 @@ void WaveManager::AddNewSpawn(EnemyTypes Type, int Amount, float TimeToSpawnFrom
 
 void WaveManager::StartNextWave()
 {
+	WaveEntities.erase(CurrentWave);
 	bWaveInProgress = true;
 	CurrentWave++;
 	Timer = WaveEntities[CurrentWave].front().TimeToSpawnFromLast;
@@ -106,9 +107,14 @@ const std::vector<Enemy*>& WaveManager::GetAliveEnemies()
 	return AliveEnemies;
 }
 
+int WaveManager::WavesLeft()
+{
+	return WaveEntities.size();
+}
+
 bool WaveManager::HasWon()
 {
-	if (WaveEntities.size() <= 0)
+	if (WaveEntities.size() <= 1)
 	{
 		if (AliveEnemies.size() <= 0)
 		{
@@ -156,8 +162,8 @@ int WaveManager::SpawnGroup(EnemyTypes Type, int Amount, int Area)
 			continue;
 		}
 
-		float DeviationX = (rand() % 100) - 50;
-		float DeviationY = (rand() % 100) - 50;
+		float DeviationX = (rand() % 400) - 200;
+		float DeviationY = (rand() % 400) - 200;
 		CurrentEnemy->Spawn(DirectX::XMFLOAT2(Spawn.x + DeviationX, Spawn.y + DeviationY));
 		AliveEnemies.push_back(CurrentEnemy);
 		AmountSuccessfullySpawned++;
