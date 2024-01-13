@@ -27,6 +27,12 @@ bool GameLevel::Load()
 	float screenX = Graphics->GetWindowWidth();
 	float screenY = Graphics->GetWindowHeight();
 	bool bSuccess = true;
+	ITexture* BackgroundTexture = Graphics->CreateTexture(L"Resource/Textures/Water.png", "Background");
+	IShader* BackgroundShader = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
+	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader, BackgroundTexture);
+	BackgroundRender->SetScale(40, 20);
+	Graphics->AddSpriteToRender(BackgroundShader, BackgroundRender, 0);
+
 	bSuccess = LoadArea();
 	if (!bSuccess)
 	{
@@ -132,8 +138,8 @@ void GameLevel::StartNextWave()
 
 bool GameLevel::LoadArea()
 {
-	int XBound = 400;
-	int YBound = 400;
+	int XBound = 800;
+	int YBound = 600;
 
 	SpawnAreas[0] = DirectX::XMFLOAT2(-XBound, 0);
 	SpawnAreas[1] = DirectX::XMFLOAT2(-XBound, YBound);
@@ -145,7 +151,6 @@ bool GameLevel::LoadArea()
 	SpawnAreas[7] = DirectX::XMFLOAT2(-XBound, -YBound);
 	return true;
 }
-
 bool GameLevel::LoadEntities()
 {
 	IShader* ColorChangeShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
@@ -154,40 +159,91 @@ bool GameLevel::LoadEntities()
 	IRenderable* BaseRender = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
 	Base = new HomeBase(BaseRender, ColorChangeShader);
 	Base->Register(Graphics);
+
 	
 
 	ITexture* RingTextureInner = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds", "InnerRing");
-	ITexture* RingTextureMiddle = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds", "MiddleRing");
-	ITexture* RingTextureOuter = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds", "OuterRing");
+	//ITexture* RingTextureMiddle = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds", "MiddleRing");
+	//ITexture* RingTextureOuter = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds", "OuterRing");
 	IRenderable* InnerRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureInner, nullptr);
-	IRenderable* MiddleRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureMiddle, nullptr);
-	IRenderable* OuterRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureOuter, nullptr);
+	//IRenderable* MiddleRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureMiddle, nullptr);
+	//IRenderable* OuterRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureOuter, nullptr);
 	Rings[0] = new DefenceRing(ColorChangeShader, InnerRing);
-	Rings[1] = new DefenceRing(ColorChangeShader, MiddleRing);
-	Rings[2] = new DefenceRing(ColorChangeShader, OuterRing);
-	for (int i = 0; i < 3; i++)
-	{
-		Rings[i]->Register(Graphics);
-	}
+	Rings[1] = new DefenceRing(ColorChangeShader, InnerRing);
+	Rings[2] = new DefenceRing(ColorChangeShader, InnerRing);
 
-	for (int i = 0; i < 3; i++)
+
+	ITexture* PlotTexture = Graphics->CreateTexture(L"Resource/Textures/Plot.png", "Plot");
+	for (int i = 0; i < 2; i++)
 	{
-		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
+		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
 		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
 		Plots[i]->Register(Graphics);
-		//Todo after getting the art assets
 		Plots[i]->SetScale(0.5, 0.5);
-		float Pos = 55 * (i+1);
-		Plots[i]->SetPosition(DirectX::XMFLOAT2(0, Pos));
-		Plots[i]->DistanceFromCenter = Pos;
-		Plots[i]->Rotation = 0;
+	
+
+		float DistFromCenter = 150; 
+		
+		float Rotation = 180 * i; 
+		float radRot = Rotation * 3.14159265359f / 180;
+		int y = (cos(radRot) * (DistFromCenter));
+		int x = (sin(radRot) * (DistFromCenter));
+		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plots[i]->Rotation = Rotation;
+		Plots[i]->DistanceFromCenter = DistFromCenter;
+		Rings[0]->Plots.push_back(Plots[i]);
+
 	}
+	for (int i = 2; i < 6; i++)
+	{
+		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
+		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
+		Plots[i]->Register(Graphics);
+		Plots[i]->SetScale(0.5, 0.5);
 
-	Rings[0]->Plots.push_back(Plots[0]);
-	Rings[1]->Plots.push_back(Plots[1]);
-	Rings[2]->Plots.push_back(Plots[2]);
+		float DistFromCenter = 300;
 
+		float Rotation = 90 * i;
+		float radRot = Rotation * 3.14159265359f / 180;
+		int y = (cos(radRot) * (DistFromCenter));
+		int x = (sin(radRot) * (DistFromCenter));
+		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plots[i]->Rotation = Rotation;
+		Plots[i]->DistanceFromCenter = DistFromCenter;
+		Rings[1]->Plots.push_back(Plots[i]);
+	}
+	for (int i = 6; i < 14; i++)
+	{
+		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
+		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
+		Plots[i]->Register(Graphics);
+		Plots[i]->SetScale(0.5, 0.5);
 
+		float DistFromCenter = 450;
+
+		float Rotation = (360/8) * i;
+		float radRot = Rotation * 3.14159265359f / 180;
+		int y = (cos(radRot) * (DistFromCenter));
+		int x = (sin(radRot) * (DistFromCenter));
+		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plots[i]->Rotation = Rotation;
+		Plots[i]->DistanceFromCenter = DistFromCenter;
+		Rings[2]->Plots.push_back(Plots[i]);
+	}
+	for (int i = 0; i < 14; i++)
+	{
+		Plots[i]->Interact.SetNormalColor(0.4, 0.4, 0.4, 0.3);
+		Plots[i]->Interact.SetHighlightColor(0.9, 0.9, 0.9, 0.7);
+		Plots[i]->Interact.Unhighlighted();
+	}
+	//Rings[0]->Plots.push_back(Plots[0]);
+	//Rings[1]->Plots.push_back(Plots[1]);
+	//Rings[2]->Plots.push_back(Plots[2]);
+	for (int i = 0; i < 3; i++)
+	{
+		//Rings[i]->Register(Graphics);
+		Rings[i]->BindPlotsColor();
+	}
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "AreaTower");
 	IRenderable* AreaTowerRemderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
 	TowerClones[0] = new AreaTower(ColorChangeShader, AreaTowerRemderable);
@@ -212,8 +268,8 @@ bool GameLevel::LoadWaves()
 	int WaveNumber = 1;
 	//Wave 1
 	Wave.AddNewSpawn(SlowGrunts, 2, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 5, 5, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 5, 5, WaveNumber);
+	Wave.AddNewSpawn(FastPack, 5, 0, WaveNumber);
+	Wave.AddNewSpawn(FastPack, 5, 10, WaveNumber);
 	WaveNumber++;
 	//Wave 3
 	Wave.AddNewSpawn(FastPack, 5, 0, WaveNumber);
@@ -382,8 +438,10 @@ void GameLevel::SpawnAreaTower()
 			if (Rings[i]->PlotAvailable())
 			{
 				Tower* TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
+				TowerIn->SetScale(0.8f, 0.8f);
 				Rings[i]->PlantTower(TowerIn);
 				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->BindPlotsColor();
 				return;
 			}
 		}
@@ -399,8 +457,10 @@ void GameLevel::SpawnGroundAreaTower()
 			if (Rings[i]->PlotAvailable())
 			{
 				Tower* TowerIn = CurrencyShop->CreateTower(TowerClones[1], Graphics);
+				TowerIn->SetScale(0.8f, 0.8f);
 				Rings[i]->PlantTower(TowerIn);
 				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->BindPlotsColor();
 				return;
 			}
 		}

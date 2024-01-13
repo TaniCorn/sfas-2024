@@ -69,7 +69,6 @@ void Enemy::Spawn(DirectX::XMFLOAT2 Location)
 	SetPosition(Location);
 	bAlive = true;
 	Health.Health = Health.GetMaxHealth();
-	ColorHighlight.SetNormalColor(1, 0, 0, 1);
 	ColorHighlight.Unhighlighted();
 }
 

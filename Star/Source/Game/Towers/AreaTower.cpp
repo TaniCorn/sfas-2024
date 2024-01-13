@@ -1,7 +1,7 @@
 #include "AreaTower.h"
 #include "../Enemies/Enemy.h"
 AreaTower::AreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
-	Tower(ShaderIn, RenderableIn, 5, 1400, 1.5f,60)
+	Tower(ShaderIn, RenderableIn, 1, 120, 0.5f,60)
 {
 }
 

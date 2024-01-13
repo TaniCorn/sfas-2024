@@ -53,7 +53,7 @@ private:
 	Shop* CurrencyShop;
 	TextButton* TowerButtons[2];
 	Tower* TowerClones[2];
-	TowerPlot* Plots[3];
+	TowerPlot* Plots[14];
 	RingSelection* RingGamepadSelection;
 	DefenceRing* Rings[3];
 	HomeBase* Base;

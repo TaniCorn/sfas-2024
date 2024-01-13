@@ -24,7 +24,7 @@ bool MainMenu::Load()
 {
 	float screenX = Graphics->GetWindowWidth();
 	float screenY= Graphics->GetWindowHeight();
-	ITexture* BackgroundTexture = Graphics->CreateTexture(L"Resource/Textures/Splash.png", "Background");
+	ITexture* BackgroundTexture = Graphics->CreateTexture(L"Resource/Textures/Water.png", "Background");
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 
 
@@ -34,7 +34,9 @@ bool MainMenu::Load()
 	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IRenderable* QuitRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IRenderable* BackgroundRender = Graphics->CreateBillboard(BackgroundShader, BackgroundTexture);
-	
+	BackgroundRender->SetScale(40, 20);
+	Graphics->AddSpriteToRender(BackgroundShader, BackgroundRender);
+
 	IText* StartText = Graphics->CreateText("Start Game", 0, 0, 1,1,0,1,0,0,1);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	Buttons[0] = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);

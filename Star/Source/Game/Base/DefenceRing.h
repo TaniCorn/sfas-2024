@@ -13,6 +13,7 @@ public:
 	void Rotate(float Direction, float DeltaTime);
 	bool PlotAvailable();
 	void PlantTower(Tower* TowerIn);
+	void BindPlotsColor();
 	Interactable Interact;
 	std::vector<TowerPlot*> Plots;
 private:

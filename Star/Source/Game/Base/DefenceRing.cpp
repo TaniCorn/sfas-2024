@@ -50,9 +50,10 @@ void DefenceRing::Rotate(float Direction, float DeltaTime)
 	{
 		//TODO: Find out if the rotation goes between 0 and 360,
 		//if not we need to convert it
-		float newOutRotation = static_cast<float>(fmod(Plots[i]->Rotation + delta, TwoPies));
-		int y = (cos(newOutRotation) * (Plots[i]->DistanceFromCenter));
-		int x = (sin(newOutRotation) * (Plots[i]->DistanceFromCenter));
+		float newOutRotation = Plots[i]->Rotation + (delta * RotationSpeed * 5);// static_cast<float>(fmod(Plots[i]->Rotation + delta, TwoPies));
+		float radRot = newOutRotation * Pie / 180;
+		int y = (cos(radRot) * (Plots[i]->DistanceFromCenter));
+		int x = (sin(radRot) * (Plots[i]->DistanceFromCenter));
 		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plots[i]->Rotation = newOutRotation;
 	}
@@ -84,3 +85,17 @@ void DefenceRing::PlantTower(Tower* TowerIn)
 	int PlotNumber = rand() % PlotsAvailable.size();
 	PlotsAvailable[PlotNumber]->PlantTower(TowerIn);
 }
+
+void DefenceRing::BindPlotsColor()
+{
+	for (int i = 0; i < Plots.size(); i++)
+	{
+		Plots[i]->GetRenderable()->BindParam(Interact.GetColorBind());
+		if (Plots[i]->GetTowerRenderable() != nullptr)
+		{
+			Plots[i]->GetTowerRenderable()->BindParam(Interact.GetColorBind());
+
+		}
+	}
+}
+

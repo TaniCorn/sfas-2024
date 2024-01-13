@@ -18,6 +18,8 @@ public:
 	void SetScale(float x, float y);
 	bool IsAvailable();
 	void PlantTower(Tower* TowerToPlant);
+	IRenderable* GetRenderable();
+	IRenderable* GetTowerRenderable();
 	Interactable Interact;
 	Tower* PlantedTower;
 	float DistanceFromCenter;

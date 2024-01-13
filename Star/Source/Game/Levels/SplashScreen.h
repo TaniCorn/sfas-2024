@@ -25,7 +25,6 @@ private:
 	float FadeParams[4] = { 1,1,1,0 };
 
 	IRenderable* SplashRender;
-	IRenderable* SplashRender2;
 	IText* Text;
 };
 

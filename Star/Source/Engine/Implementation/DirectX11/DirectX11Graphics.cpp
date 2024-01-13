@@ -160,16 +160,19 @@ void DirectX11Graphics::Update()
         Context->OMSetRenderTargets(1, &BackbufferView, NULL);
 
         //Sprites
-        for (auto bucket = Renderables.begin(); bucket != Renderables.end(); ++bucket)
+        for (auto zOrder = Renderables.begin(); zOrder != Renderables.end(); ++zOrder)
         {
-            bucket->first->Update();
- 
-            for (auto renderable = bucket->second.begin(); renderable != bucket->second.end(); ++renderable)
-            {
-                SetWorldMatrix((*renderable)->GetTransform());
-                Context->OMSetBlendState(BlendState, NULL, ~0U);
-                (*renderable)->Update(Context);
-            }
+                for (auto bucket = zOrder->second.begin(); bucket != zOrder->second.end(); ++bucket)
+                {
+                    bucket->first->Update();
+
+                    for (auto renderable = bucket->second.begin(); renderable != bucket->second.end(); ++renderable)
+                    {
+                        SetWorldMatrix((*renderable)->GetTransform());
+                        Context->OMSetBlendState(BlendState, NULL, ~0U);
+                        (*renderable)->Update(Context);
+                    }
+                }
         }
         //UI
         for (auto bucket = UIRenderables.begin(); bucket != UIRenderables.end(); ++bucket)
@@ -320,7 +323,6 @@ IShader* DirectX11Graphics::CreateShader(const wchar_t* filepath, const char* vs
         if (SUCCEEDED(hr))
         {
             Result = new DirectX11Shader(Context, VertexShader, PixelShader, InputLayout);
-            Renderables.insert(std::pair<IShader*, std::list<IRenderable*> >(Result, std::list<IRenderable*>()));
             ShadersRegister.insert(Result);
         }
     }

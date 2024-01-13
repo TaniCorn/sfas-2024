@@ -30,7 +30,7 @@ public:
 	virtual void Cleanup();
 
 	ITexture* GetTexture(std::string identifierName);
-	void AddSpriteToRender(IShader* ShaderIn, IRenderable* RenderableIn);
+	void AddSpriteToRender(IShader* ShaderIn, IRenderable* RenderableIn, int ZOrder = 5);
 	void RemoveSpriteFromRender(IShader* ShaderIn, IRenderable* RenderableIn);
 	void AddUIToRender(IShader* ShaderIn, IRenderable* RenderableIn);
 	void RemoveUIFromRender(IShader* ShaderIn, IRenderable* RenderableIn);
@@ -39,7 +39,7 @@ public:
 	virtual float GetWindowWidth() = 0;
 	virtual float GetWindowHeight() = 0;
 protected:
-	std::map<IShader*, std::list<IRenderable*> > Renderables;
+	std::map<int, std::map<IShader*, std::list<IRenderable*> >> Renderables;
 	std::map<std::string, ITexture*> Textures;
 
 	std::list<IText*> UIText;
@@ -49,7 +49,6 @@ protected:
 	std::set<IShader*> ShadersRegister;
 	std::set<IRenderable*> RenderablesRegister;
 	std::set<IText*> TextRegister;
-
 
 };
 

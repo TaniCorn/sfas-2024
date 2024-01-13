@@ -23,7 +23,7 @@ public:
 	void SetScale(float x, float y);
 	bool IsEnemyInRange(const Enemy* CurrentEnemy) const;
 	ColorHighlighting ColorHighlight;
-
+	IRenderable* GetRenderable();
 	virtual Tower* Clone(IGraphics* Graphics) = 0;
 protected:
 	IShader* Shader;

@@ -47,7 +47,7 @@ void Tower::SetScale(float x, float y)
 bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), *Position);
-	float Distance = DXHelper::Magnitude(Vector);
+	float Distance = DXHelper::MagnitudeSqrRoot(Vector);
 	if (Distance > Range)
 	{
 		return false;
@@ -57,4 +57,9 @@ bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 		return true;
 	}
 
+}
+
+IRenderable* Tower::GetRenderable()
+{
+	return CurrentTexture;
 }

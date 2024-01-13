@@ -52,16 +52,21 @@ ITexture* IGraphics::GetTexture(std::string identifierName)
     return Textures[identifierName];
 }
 
-void IGraphics::AddSpriteToRender(IShader* ShaderIn, IRenderable* RenderableIn)
+void IGraphics::AddSpriteToRender(IShader* ShaderIn, IRenderable* RenderableIn, int ZOrder)
 {
-    Renderables[ShaderIn].push_back(RenderableIn);
+    Renderables[ZOrder][ShaderIn].push_back(RenderableIn);
     ShadersRegister.insert(ShaderIn);
     RenderablesRegister.insert(RenderableIn);
 }
 
 void IGraphics::RemoveSpriteFromRender(IShader* ShaderIn, IRenderable* RenderableIn)
 {
-    Renderables[ShaderIn].remove(RenderableIn);
+    //Renderables[ShaderIn].remove(RenderableIn);
+    for (auto zOrder = Renderables.begin(); zOrder != Renderables.end(); ++zOrder)
+    {
+        zOrder->second[ShaderIn].remove(RenderableIn);
+
+    }
 }
 
 void IGraphics::AddUIToRender(IShader* ShaderIn, IRenderable* RenderableIn)

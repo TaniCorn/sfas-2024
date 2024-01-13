@@ -60,3 +60,17 @@ void TowerPlot::PlantTower(Tower* TowerToPlant)
 	Interact.SetNormalColor(0, 0, 0, 0);
 	Interact.Unhighlighted();
 }
+
+IRenderable* TowerPlot::GetRenderable()
+{
+	return Renderable;
+}
+
+IRenderable* TowerPlot::GetTowerRenderable()
+{
+	if (PlantedTower != nullptr)
+	{
+		return PlantedTower->GetRenderable();
+	}
+	return nullptr;
+}

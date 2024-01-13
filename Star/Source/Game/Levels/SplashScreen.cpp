@@ -13,40 +13,29 @@ SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphi
 
 SplashScreen::~SplashScreen()
 {
-
 }
 
 bool SplashScreen::Load()
 {
+	float screenX = Graphics->GetWindowWidth();
+	float screenY = Graphics->GetWindowHeight();
 	ITexture* SplashTexture = Graphics->CreateTexture(L"Resource/Textures/Splash.png", "SplashTexture");
-	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
-
 	IShader* SplashShader = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
-	IShader* SplashShader2 = Graphics->CreateShader(L"Resource/Shaders/FadeColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
-	IShader* SplashShader3 = Graphics->CreateShader(L"Resource/Shaders/UnlitColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
-	SplashRender = Graphics->CreateFloat4Billboard(SplashShader,SplashTexture, FadeParams);
-	SplashRender->SetPosition(500, -500);
 	
 	Transform2D TransformText;
-	TransformText.PositionX = 0;
-	TransformText.PositionY = 0;
+	TransformText.PositionX = (screenX/2) - 100;
+	TransformText.PositionY = (screenY/2) + 300;
 	TransformText.ScaleX = 1;
 	TransformText.ScaleY = 1;
 	TransformText.Rotation = 0;
 	
-	Text = new DirectX11Text("My name is Dende", TransformText, DirectX::Colors::White);
+	Text = Graphics->CreateText("Tanapat Somrid", (screenX / 2) - 380, (screenY / 2) + 400, 2, 2, 0);
+	SplashRender = Graphics->CreateFloat4Billboard(SplashShader, SplashTexture, FadeParams);
+	SplashRender->SetScale(0.8, 0.8f);
 
 	Graphics->AddText(Text);
-
-	SplashRender2 = Graphics->CreateBillboard(SplashShader, ButtonTexture);
 	Graphics->AddSpriteToRender(SplashShader, SplashRender);
-	/*Graphics->AddSpriteToRender(SplashShader2, SplashRender2);
-	Graphics->AddUIToRender(SplashShader, SplashRender2);*/
-	Graphics->AddSpriteToRender(SplashShader3, SplashRender2);
-	//Graphics->RemoveUIFromRender(SplashShader, SplashRender2); //Tested works
-	//Graphics->RemoveSpriteFromRender(SplashShader, SplashRender); //Tested works
-	//Graphics->RemoveText(Text);//Tested works
 	
 	return true;
 }
