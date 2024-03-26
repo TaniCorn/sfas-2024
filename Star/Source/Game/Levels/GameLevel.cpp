@@ -163,11 +163,7 @@ bool GameLevel::LoadEntities()
 	
 
 	ITexture* RingTextureInner = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds", "InnerRing");
-	//ITexture* RingTextureMiddle = Graphics->CreateTexture(L"Resource/Textures/MiddleRing.dds", "MiddleRing");
-	//ITexture* RingTextureOuter = Graphics->CreateTexture(L"Resource/Textures/OuterRing.dds", "OuterRing");
 	IRenderable* InnerRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureInner, nullptr);
-	//IRenderable* MiddleRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureMiddle, nullptr);
-	//IRenderable* OuterRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureOuter, nullptr);
 	Rings[0] = new DefenceRing(ColorChangeShader, InnerRing);
 	Rings[1] = new DefenceRing(ColorChangeShader, InnerRing);
 	Rings[2] = new DefenceRing(ColorChangeShader, InnerRing);

@@ -61,7 +61,6 @@ void IGraphics::AddSpriteToRender(IShader* ShaderIn, IRenderable* RenderableIn, 
 
 void IGraphics::RemoveSpriteFromRender(IShader* ShaderIn, IRenderable* RenderableIn)
 {
-    //Renderables[ShaderIn].remove(RenderableIn);
     for (auto zOrder = Renderables.begin(); zOrder != Renderables.end(); ++zOrder)
     {
         zOrder->second[ShaderIn].remove(RenderableIn);

@@ -37,7 +37,6 @@ void DirectX11Float4Billboard::Update(ID3D11DeviceContext* Context)
 		fadePtr->z = Params[2];
 		fadePtr->w = Params[3];
 		Context->Unmap(PixelBuffer, 0);
-		//Context->UpdateSubresource(PixelBuffer, 0, 0, &Fade, 0, 0); // Not recommended for dynamic resources
 
 	}
 	if (Context)

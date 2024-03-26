@@ -48,9 +48,7 @@ void DefenceRing::Rotate(float Direction, float DeltaTime)
 	//Rotate plots around ring
 	for (int i = 0; i < Plots.size(); i++)
 	{
-		//TODO: Find out if the rotation goes between 0 and 360,
-		//if not we need to convert it
-		float newOutRotation = Plots[i]->Rotation + (delta * RotationSpeed * 5);// static_cast<float>(fmod(Plots[i]->Rotation + delta, TwoPies));
+		float newOutRotation = Plots[i]->Rotation + (delta * RotationSpeed * 5);
 		float radRot = newOutRotation * Pie / 180;
 		int y = (cos(radRot) * (Plots[i]->DistanceFromCenter));
 		int x = (sin(radRot) * (Plots[i]->DistanceFromCenter));

@@ -28,11 +28,6 @@ public:
 private:
 
 	void SwitchLevel(Level NextLevelIdentfier);
-	void SetupEachRing();
-	void UpdateRingSelection();
-	void UpdateSelectedRingRotation();
-	void UpdateRingTestSelection();
-	void TestRingSolution();
 
 	IRenderable* Rings[NumberOfRings];
 	IRenderable* Arrow;
