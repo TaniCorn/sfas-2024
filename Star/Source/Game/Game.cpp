@@ -41,7 +41,7 @@ bool Game::Load()
 {
 	CurrentLevel = new SplashScreen(Graphics, Input);
 	CurrentLevel->Load();
-	CurrentLevelIdentifier = Level::SplashScreenLevel;
+	CurrentLevelIdentifier = LevelId::SplashScreenLevel;
 	return true;
 }
 
@@ -60,23 +60,23 @@ void Game::Cleanup()
 
 }
 
-void Game::SwitchLevel(Level NextLevelIdentfier)
+void Game::SwitchLevel(LevelId NextLevelIdentfier)
 {
 	CurrentLevel->Cleanup();
 	delete CurrentLevel;
 
 	switch (NextLevelIdentfier)
 	{
-	case Level::QuitProgram:
+	case LevelId::QuitProgram:
 		bQuitGame = true;
 		return;
-	case Level::MainMenuLevel:
+	case LevelId::MainMenuLevel:
 		CurrentLevel = new MainMenu(Graphics, Input);
 		break;
-	case Level::SettingsMenuLevel:
+	case LevelId::SettingsMenuLevel:
 		//CurrentLevel = new
 		break;
-	case Level::GameLevel1:
+	case LevelId::GameLevel1:
 		CurrentLevel = new GameLevel(Graphics, Input);
 		break;
 	default:
@@ -91,6 +91,6 @@ void Game::SwitchLevel(Level NextLevelIdentfier)
 		delete CurrentLevel;
 		CurrentLevel = new SplashScreen(Graphics, Input);
 		CurrentLevel->Load();
-		CurrentLevelIdentifier = Level::SplashScreenLevel;
+		CurrentLevelIdentifier = LevelId::SplashScreenLevel;
 	}
 }

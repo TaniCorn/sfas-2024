@@ -8,7 +8,7 @@
 #include <DirectXColors.h>
 SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = Level::SplashScreenLevel;
+	LevelSwitchKey = LevelId::SplashScreenLevel;
 }
 
 SplashScreen::~SplashScreen()
@@ -65,7 +65,7 @@ void SplashScreen::Update(float DeltaTime)
 		Time -= DeltaTime;
 		FadeParams[3] = Time/OutTransitionTime;
 		bCompleted = true;
-		LevelSwitchKey = Level::MainMenuLevel;
+		LevelSwitchKey = LevelId::MainMenuLevel;
 	}
 }
 

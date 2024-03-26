@@ -8,7 +8,7 @@ ILevel::~ILevel()
 {
 }
 
-Level ILevel::LevelSwitch()
+LevelId ILevel::LevelSwitch()
 {
     return LevelSwitchKey;
 }

@@ -14,7 +14,7 @@
 
 GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = Level::GameLevel1;
+	LevelSwitchKey = LevelId::GameLevel1;
 }
 
 GameLevel::~GameLevel()
@@ -477,5 +477,5 @@ void GameLevel::SpawnGroundAreaTower()
 
 void GameLevel::QuitGame()
 {
-	LevelSwitchKey = Level::MainMenuLevel;
+	LevelSwitchKey = LevelId::MainMenuLevel;
 }

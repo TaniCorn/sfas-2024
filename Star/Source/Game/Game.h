@@ -6,7 +6,7 @@ class IGraphics;
 class ITexture;
 class IShader;
 class IRenderable;
-enum class Level;
+enum class LevelId;
 class ILevel;
 
 class Game : public IApplication
@@ -23,9 +23,9 @@ public:
 
 private:
 
-	void SwitchLevel(Level NextLevelIdentfier);
+	void SwitchLevel(LevelId NextLevelIdentfier);
 
-	Level CurrentLevelIdentifier;
+	LevelId CurrentLevelIdentifier;
 	ILevel* CurrentLevel;
 	ILevel* LoadingScreenLevel; //If implementing Asyncronous loading screens
 

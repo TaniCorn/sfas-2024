@@ -10,7 +10,7 @@
 #include "../../Engine/Implementation/InputSelection.h"
 MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = Level::MainMenuLevel;
+	LevelSwitchKey = LevelId::MainMenuLevel;
 }
 
 MainMenu::~MainMenu()
@@ -80,10 +80,10 @@ void MainMenu::Cleanup()
 
 void MainMenu::QuitGame()
 {
-	LevelSwitchKey = Level::QuitProgram;
+	LevelSwitchKey = LevelId::QuitProgram;
 }
 
 void MainMenu::StartGame()
 {
-	LevelSwitchKey = Level::GameLevel1;
+	LevelSwitchKey = LevelId::GameLevel1;
 }

@@ -4,7 +4,7 @@ class IGraphics;
 class IInput;
 
 //TODO: Remove level enum class to a scalable system
-enum class Level
+enum class LevelId
 {
 	QuitProgram,
 	SplashScreenLevel,
@@ -19,13 +19,13 @@ public:
 	ILevel(IGraphics* GraphicsIn, IInput* InputIn);
 	virtual ~ILevel();
 
-	virtual Level LevelSwitch();
+	virtual LevelId LevelSwitch();
 	virtual bool Load() = 0;
 	virtual void Update(float DeltaTime) = 0;
 	virtual void Cleanup() = 0;
 
 protected:
-	Level LevelSwitchKey;
+	LevelId LevelSwitchKey;
 	IGraphics* Graphics;
 	IInput* Input;
 };
