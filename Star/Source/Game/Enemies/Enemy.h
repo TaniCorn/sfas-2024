@@ -31,7 +31,7 @@ public:
 	int GetGoldGain();
 
 	EntityHealth Health;
-	static EntityHealth* Target;
+	static EntityHealth* TargetHealthObject;
 	static DirectX::XMFLOAT2 TargetPosition;
 	ColorHighlighting ColorHighlight;
 protected:

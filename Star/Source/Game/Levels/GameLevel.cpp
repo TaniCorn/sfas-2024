@@ -60,7 +60,7 @@ bool GameLevel::Load()
 	}
 	CurrentSelector = ButtonSelector;
 	Enemy::TargetPosition = Base->Position;
-	Enemy::Target = &Base->Health;
+	Enemy::TargetHealthObject = &Base->Health;
     return true;
 }
 

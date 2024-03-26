@@ -1,7 +1,7 @@
 #include "Enemy.h"
 #include "../../Engine/Implementation/DXMathHelper.h"
 DirectX::XMFLOAT2 Enemy::TargetPosition = DirectX::XMFLOAT2(0, 0);
-EntityHealth* Enemy::Target = nullptr;
+EntityHealth* Enemy::TargetHealthObject = nullptr;
 
 
 Enemy::Enemy() : CurrentTexture(nullptr), Shader(nullptr), ColorHighlight(), Health(0)
@@ -76,7 +76,7 @@ void Enemy::Spawn(DirectX::XMFLOAT2 Location)
 void Enemy::Update(float DeltaTime)
 {
 	ColorHighlight.Update(DeltaTime);
-	if (Target != nullptr && bAlive)
+	if (TargetHealthObject != nullptr && bAlive)
 	{
 		MoveTowardsTarget(DeltaTime);
 	}
@@ -124,7 +124,7 @@ void Enemy::MoveTowardsTarget(float DeltaTime)
 	}
 	else
 	{
-		Target->DamageEntity(Damage);
+		TargetHealthObject->DamageEntity(Damage);
 		DamageEntity(Health.GetMaxHealth());
 	}
 }
