@@ -24,7 +24,7 @@ IApplication* GetApplication(IGraphics* Graphics, IInput* Input)
 	return new Game(Graphics, Input);
 }
 
-Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn), Rings(), Arrow(nullptr), SelectedRing(), State()
+Game::Game(IGraphics* GraphicsIn, IInput* InputIn) : IApplication(GraphicsIn, InputIn)
 {
 }
 
@@ -41,7 +41,7 @@ bool Game::Load()
 {
 	CurrentLevel = new SplashScreen(Graphics, Input);
 	CurrentLevel->Load();
-	CurrentLevelIdentifier = SplashScreenLevel;
+	CurrentLevelIdentifier = Level::SplashScreenLevel;
 	return true;
 }
 
@@ -67,16 +67,16 @@ void Game::SwitchLevel(Level NextLevelIdentfier)
 
 	switch (NextLevelIdentfier)
 	{
-	case QuitProgram:
+	case Level::QuitProgram:
 		bQuitGame = true;
 		return;
-	case MainMenuLevel:
+	case Level::MainMenuLevel:
 		CurrentLevel = new MainMenu(Graphics, Input);
 		break;
-	case SettingsMenuLevel:
+	case Level::SettingsMenuLevel:
 		//CurrentLevel = new
 		break;
-	case GameLevel1:
+	case Level::GameLevel1:
 		CurrentLevel = new GameLevel(Graphics, Input);
 		break;
 	default:
@@ -91,6 +91,6 @@ void Game::SwitchLevel(Level NextLevelIdentfier)
 		delete CurrentLevel;
 		CurrentLevel = new SplashScreen(Graphics, Input);
 		CurrentLevel->Load();
-		CurrentLevelIdentifier = SplashScreenLevel;
+		CurrentLevelIdentifier = Level::SplashScreenLevel;
 	}
 }

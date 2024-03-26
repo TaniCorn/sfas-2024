@@ -3,7 +3,7 @@ class IInput;
 class Interactable;
 #include <functional>
 #include <map>
-enum ButtonDirection {
+enum class ButtonDirection {
 	Up,
 	Down,
 	Left,

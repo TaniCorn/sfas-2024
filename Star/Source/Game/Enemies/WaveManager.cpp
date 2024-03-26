@@ -12,7 +12,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 	for (int i = 0; i < 50; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FastIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, FastPack);
+		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::FastPacks);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0,0.3);
@@ -22,7 +22,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 	for (int i = 50; i < 100; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FlyIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, Flyers);
+		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::Flyers);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
@@ -32,7 +32,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 	for (int i = 100; i < 150; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, SlowIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, SlowGrunts);
+		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::SlowGrunts);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
@@ -134,13 +134,13 @@ int WaveManager::SpawnGroup(EnemyTypes Type, int Amount, int Area)
 	int Range = 50;
 	switch (Type)
 	{
-	case FastPack:
+	case EnemyTypes::FastPacks:
 		Range = 50;
 		break;
-	case Flyers:
+	case EnemyTypes::Flyers:
 		Range = 100;
 		break;
-	case SlowGrunts:
+	case EnemyTypes::SlowGrunts:
 		Range = 150;
 		break;
 	default:

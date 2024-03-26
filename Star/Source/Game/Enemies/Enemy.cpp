@@ -15,13 +15,13 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 	Shader = ShaderIn;
 	switch (Enemy)
 	{
-	case FastPack:
+	case EnemyTypes::FastPacks:
 		SetStats(5, 5, 50, 2, false);
 		break;
-	case SlowGrunts:
+	case EnemyTypes::SlowGrunts:
 		SetStats(20, 5, 20, 10, false);
 		break;
-	case Flyers:
+	case EnemyTypes::Flyers:
 		SetStats(5, 2, 40, 3, true);
 		break;
 	default:

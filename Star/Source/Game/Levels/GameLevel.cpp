@@ -14,7 +14,7 @@
 
 GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = GameLevel1;
+	LevelSwitchKey = Level::GameLevel1;
 }
 
 GameLevel::~GameLevel()
@@ -255,69 +255,69 @@ bool GameLevel::LoadWaves()
 {
 	int WaveNumber = 1;
 	//Wave 1
-	Wave.AddNewSpawn(SlowGrunts, 2, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 5, 5, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 5, 10, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 2, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 5, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 5, 10, WaveNumber);
 	WaveNumber++;
 	//Wave 3
-	Wave.AddNewSpawn(FastPack, 5, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 15, 10, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 3, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 5, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 15, 10, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 3, 5, WaveNumber);
 	WaveNumber++;
 	//Wave 3
-	Wave.AddNewSpawn(Flyers, 5, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 10, 10, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 5, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 5, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 10, 10, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 5, 0, WaveNumber);
 	WaveNumber++;
 	//Wave 4
-	Wave.AddNewSpawn(FastPack, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 5, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 5, 5, WaveNumber);
 	WaveNumber++;
 	//Wave 5
-	Wave.AddNewSpawn(FastPack, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber);
 	WaveNumber++;
 	//Wave 6
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 0, WaveNumber);
 	WaveNumber++;
 	//Wave 7
-	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
-	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 15, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 15, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 20, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 20, 0, WaveNumber);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 20, 0, WaveNumber);
 	WaveNumber++;
 	//Wave 8
-	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber, 0);
-	Wave.AddNewSpawn(FastPack, 15, 0, WaveNumber, 1);
-	Wave.AddNewSpawn(Flyers, 10, 5, WaveNumber , 2);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber , 3);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber , 4);
-	Wave.AddNewSpawn(Flyers, 10, 0, WaveNumber, 5);
-	Wave.AddNewSpawn(SlowGrunts, 10, 5, WaveNumber, 6);
-	Wave.AddNewSpawn(FastPack, 30, 0, WaveNumber, 7);
-	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber, 6);
-	Wave.AddNewSpawn(FastPack, 20, 0, WaveNumber, 5);
-	Wave.AddNewSpawn(Flyers, 30, 0, WaveNumber, 5);
-	Wave.AddNewSpawn(SlowGrunts, 20, 0, WaveNumber, 0);
-	Wave.AddNewSpawn(SlowGrunts, 20, 0, WaveNumber, 1);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 15, 0, WaveNumber, 0);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 15, 0, WaveNumber, 1);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 5, WaveNumber , 2);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber , 3);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber , 4);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 10, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 10, 5, WaveNumber, 6);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 30, 0, WaveNumber, 7);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 20, 0, WaveNumber, 6);
+	Wave.AddNewSpawn(EnemyTypes::FastPacks, 20, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(EnemyTypes::Flyers, 30, 0, WaveNumber, 5);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 20, 0, WaveNumber, 0);
+	Wave.AddNewSpawn(EnemyTypes::SlowGrunts, 20, 0, WaveNumber, 1);
 	WaveNumber++;
 
 	return true;
@@ -399,10 +399,10 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 bool GameLevel::LoadUILinks()
 {
 	ButtonSelector = new InputSelection(&StartNextWaveButton->Interact);
-	ButtonSelector->AddButtonLink(&StartNextWaveButton->Interact, &OpenShopButton->Interact, Right);
-	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &StartNextWaveButton->Interact, Left);
-	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &QuitButton->Interact, Right);
-	ButtonSelector->AddButtonLink(&QuitButton->Interact, &OpenShopButton->Interact, Left);
+	ButtonSelector->AddButtonLink(&StartNextWaveButton->Interact, &OpenShopButton->Interact, ButtonDirection::Right);
+	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &StartNextWaveButton->Interact, ButtonDirection::Left);
+	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &QuitButton->Interact, ButtonDirection::Right);
+	ButtonSelector->AddButtonLink(&QuitButton->Interact, &OpenShopButton->Interact, ButtonDirection::Left);
 
 	RingGamepadSelection = new RingSelection(Rings[0]);
 	Rings[0]->Interact.Highlighted();
@@ -412,8 +412,8 @@ bool GameLevel::LoadUILinks()
 	RingGamepadSelection->AddLink(Rings[2], Rings[1], false);
 
 	ShopSelector = new InputSelection(&TowerButtons[0]->Interact);
-	ShopSelector->AddButtonLink(&TowerButtons[0]->Interact, &TowerButtons[1]->Interact, Right);
-	ShopSelector->AddButtonLink(&TowerButtons[1]->Interact, &TowerButtons[0]->Interact, Left);
+	ShopSelector->AddButtonLink(&TowerButtons[0]->Interact, &TowerButtons[1]->Interact, ButtonDirection::Right);
+	ShopSelector->AddButtonLink(&TowerButtons[1]->Interact, &TowerButtons[0]->Interact, ButtonDirection::Left);
 	ShopSelector->PreviousMenuFunction = std::bind(&GameLevel::CloseShop, this);
 
 	EndSelector = new InputSelection(&EndButton->Interact);
@@ -477,5 +477,5 @@ void GameLevel::SpawnGroundAreaTower()
 
 void GameLevel::QuitGame()
 {
-	LevelSwitchKey = MainMenuLevel;
+	LevelSwitchKey = Level::MainMenuLevel;
 }

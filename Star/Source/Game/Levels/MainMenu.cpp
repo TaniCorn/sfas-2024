@@ -10,7 +10,7 @@
 #include "../../Engine/Implementation/InputSelection.h"
 MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = MainMenuLevel;
+	LevelSwitchKey = Level::MainMenuLevel;
 }
 
 MainMenu::~MainMenu()
@@ -60,8 +60,8 @@ bool MainMenu::Load()
 	Buttons[1]->Interact.BoundFunction = std::bind(&MainMenu::QuitGame, this);
 
 	GamepadSelection = new InputSelection(&Buttons[0]->Interact);
-	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, Down);
-	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, Up);
+	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, ButtonDirection::Down);
+	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, ButtonDirection::Up);
 	return true;
 }
 
@@ -80,10 +80,10 @@ void MainMenu::Cleanup()
 
 void MainMenu::QuitGame()
 {
-	LevelSwitchKey = QuitProgram;
+	LevelSwitchKey = Level::QuitProgram;
 }
 
 void MainMenu::StartGame()
 {
-	LevelSwitchKey = GameLevel1;
+	LevelSwitchKey = Level::GameLevel1;
 }

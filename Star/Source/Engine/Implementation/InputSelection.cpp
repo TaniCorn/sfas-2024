@@ -102,16 +102,16 @@ void InputSelection::AddButtonLink(Interactable* Button, Interactable* Link, But
 {
 	switch (Direction)
 	{
-	case Up:
+	case ButtonDirection::Up:
 		InteractableLinks[Button].Up = Link;
 		break;
-	case Down:
+	case ButtonDirection::Down:
 		InteractableLinks[Button].Down = Link;
 		break;
-	case Left:
+	case ButtonDirection::Left:
 		InteractableLinks[Button].Left = Link;
 		break;
-	case Right:
+	case ButtonDirection::Right:
 		InteractableLinks[Button].Right = Link;
 		break;
 	default:

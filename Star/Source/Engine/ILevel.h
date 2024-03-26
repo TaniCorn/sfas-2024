@@ -3,7 +3,8 @@
 class IGraphics;
 class IInput;
 
-enum Level
+//TODO: Remove level enum class to a scalable system
+enum class Level
 {
 	QuitProgram,
 	SplashScreenLevel,

@@ -7,11 +7,12 @@
 
 class IShader;
 
-enum EnemyTypes {
-	FastPack,
+enum class EnemyTypes {
+	FastPacks,
 	SlowGrunts,
 	Flyers
 };
+
 class Enemy : public IRegisteredObject
 {
 public:
