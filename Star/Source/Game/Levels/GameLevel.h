@@ -2,7 +2,7 @@
 #include "../../Engine/ILevel.h"
 #include "../Enemies/WaveManager.h"
 #include "../Base/HomeBase.h"
-#include "../../../RingSelection.h"
+#include "../Base/RingSelection.h"
 #include "../Base/DefenceRing.h"
 #include "../Shop/Shop.h"
 

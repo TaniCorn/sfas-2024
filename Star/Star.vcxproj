@@ -132,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RingSelection.cpp" />
     <ClCompile Include="Source\Engine\IApplication.cpp" />
     <ClCompile Include="Source\Engine\IGraphics.cpp" />
     <ClCompile Include="Source\Engine\IInput.cpp" />
@@ -155,6 +154,7 @@
     <ClCompile Include="Source\EntryPoints\WindowsMain.cpp" />
     <ClCompile Include="Source\Game\Base\DefenceRing.cpp" />
     <ClCompile Include="Source\Game\Base\HomeBase.cpp" />
+    <ClCompile Include="Source\Game\Base\RingSelection.cpp" />
     <ClCompile Include="Source\Game\Base\TowerPlot.cpp" />
     <ClCompile Include="Source\Game\Components\ColorHighlighting.cpp" />
     <ClCompile Include="Source\Game\Components\EntityHealth.cpp" />
@@ -172,7 +172,6 @@
     <ClCompile Include="Source\Game\UI\TextButton.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RingSelection.h" />
     <ClInclude Include="Source\Engine\IApplication.h" />
     <ClInclude Include="Source\Engine\IGraphics.h" />
     <ClInclude Include="Source\Engine\IInput.h" />
@@ -196,6 +195,7 @@
     <ClInclude Include="Source\Engine\Transform2D.h" />
     <ClInclude Include="Source\Game\Base\DefenceRing.h" />
     <ClInclude Include="Source\Game\Base\HomeBase.h" />
+    <ClInclude Include="Source\Game\Base\RingSelection.h" />
     <ClInclude Include="Source\Game\Base\TowerPlot.h" />
     <ClInclude Include="Source\Game\Components\ColorHighlighting.h" />
     <ClInclude Include="Source\Game\Components\EntityHealth.h" />

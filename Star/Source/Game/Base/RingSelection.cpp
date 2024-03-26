@@ -1,6 +1,6 @@
 #include "RingSelection.h"
-#include "Source/Engine/IInput.h"
-#include "Source/Game/Base/DefenceRing.h"
+#include "../../Engine/IInput.h"
+#include "DefenceRing.h"
 void RingSelection::Update(float DeltaTime, IInput* Input)
 {
 	if (Input->IsPressed(InputAction::ShoulderButtonLeft))
