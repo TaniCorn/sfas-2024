@@ -13,15 +13,13 @@ class Shop
 {
 public:
 	Shop(const int StartingGold);
-	int GetCurrentGold();
+	const int GetCurrentGold() const;
+	const bool CanPurchase(const int GoldSpend) const;
 	void AddGold(const int Amount);
-	void AddButton(TextButton* Button, Tower* PurchaseTower);
 	void Spend(const int GoldSpend);
-	bool CanPurchase(const int GoldSpend);
 
-	std::unique_ptr<Tower> CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics);
+	std::unique_ptr<Tower> CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics) const;
 private:
 	int Gold;
-	std::vector<std::pair<TextButton*,Tower*>> PurchaseButtons;
 };
 
