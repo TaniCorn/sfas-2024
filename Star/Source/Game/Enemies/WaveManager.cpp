@@ -39,6 +39,40 @@ WaveManager::WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn,
 	}
 }
 
+void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn)
+{
+	for (int i = 0; i < 50; i++)
+	{
+		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FastIn, nullptr);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::FastPacks);
+		EnemyPool[i].Register(Graphics);
+		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
+		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
+		EnemyPool[i].ColorHighlight.Unhighlighted();
+	}
+	for (int i = 50; i < 100; i++)
+	{
+		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FlyIn, nullptr);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::Flyers);
+		EnemyPool[i].Register(Graphics);
+		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
+		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
+		EnemyPool[i].ColorHighlight.Unhighlighted();
+	}
+	for (int i = 100; i < 150; i++)
+	{
+		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, SlowIn, nullptr);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::SlowGrunts);
+		EnemyPool[i].Register(Graphics);
+		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
+		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
+		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
+		EnemyPool[i].ColorHighlight.Unhighlighted();
+	}
+}
+
 void WaveManager::Update(float DeltaTime)
 {
 	if (bWaveInProgress)

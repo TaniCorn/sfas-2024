@@ -9,6 +9,7 @@ class WaveManager
 public:
 	WaveManager();
 	WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
+	void Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
 	struct WaveSpawns
 	{
 		EnemyTypes Type;

@@ -239,7 +239,8 @@ bool GameLevel::LoadEntities()
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Flyer.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
-	Wave = WaveManager(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);//Interesting warning about 17kb of stack memory used
+	
+	Wave.Init(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);
 	for (int i = 0; i < 8; i++)
 	{
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
