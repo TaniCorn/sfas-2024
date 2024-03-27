@@ -27,17 +27,17 @@ void Tower::Update(float DeltaTime)
 
 }
 
-void Tower::SetPosition(DirectX::XMFLOAT2 Location)
+void Tower::SetPosition(const DirectX::XMFLOAT2 Location)
 {
 	CurrentTexture->SetPosition(Location.x, Location.y);
 }
 
-int Tower::GetCost()
+int Tower::GetCost() const
 {
 	return Cost;
 }
 
-void Tower::SetScale(float x, float y)
+void Tower::SetScale(const float x, const float y)
 {
 	CurrentTexture->SetScale(x, y);
 }
@@ -58,7 +58,7 @@ bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 
 }
 
-IRenderable* Tower::GetRenderable()
+IRenderable* Tower::GetRenderable() const
 {
 	return CurrentTexture;
 }

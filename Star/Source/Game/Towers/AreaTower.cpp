@@ -30,7 +30,7 @@ void AreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 		}
 	}
 }
-std::unique_ptr<Tower> AreaTower::Clone(IGraphics* Graphics)
+std::unique_ptr<Tower> AreaTower::Clone(IGraphics* Graphics) const
 {
 	IRenderable* Renderable = Graphics->CreateFloat4Billboard(Shader, Graphics->GetTexture("AreaTower"), nullptr);
 	return std::make_unique<AreaTower>(Shader, Renderable);

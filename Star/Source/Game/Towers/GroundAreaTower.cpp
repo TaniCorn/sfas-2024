@@ -36,7 +36,7 @@ void GroundAreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 	}
 }
 
-std::unique_ptr<Tower> GroundAreaTower::Clone(IGraphics* Graphics)
+std::unique_ptr<Tower> GroundAreaTower::Clone(IGraphics* Graphics) const
 {
 	IRenderable* Renderable = Graphics->CreateFloat4Billboard(Shader, Graphics->GetTexture("GroundAreaTower"), nullptr);
 	return std::make_unique<GroundAreaTower>(Shader, Renderable);

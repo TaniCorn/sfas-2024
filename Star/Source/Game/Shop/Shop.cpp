@@ -4,7 +4,7 @@ Shop::Shop(int StartingGold) : Gold(StartingGold)
 {
 }
 
-const int Shop::GetCurrentGold() const
+int Shop::GetCurrentGold() const
 {
     return Gold;
 }
@@ -19,7 +19,7 @@ void Shop::Spend(const int GoldSpend)
     Gold -= GoldSpend;
 }
 
-const bool Shop::CanPurchase(const int GoldSpend) const 
+bool Shop::CanPurchase(const int GoldSpend) const 
 {
     if (GoldSpend <= Gold)
     {

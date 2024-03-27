@@ -11,28 +11,29 @@ class Enemy;
 class Tower : public IRegisteredObject
 {
 public:
-	Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn, int Cost);
+	Tower(IShader* ShaderIn, IRenderable* RenderableIn, const float DamageIn, const float RangeIn, const float AttackCooldownIn, const int Cost);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
-
 	virtual void Update(float DeltaTime);
 	virtual void AttackUpdate(const std::vector<Enemy*>& Enemies) = 0;
-	void SetPosition(DirectX::XMFLOAT2 Location);
-	int GetCost();
-	void SetScale(float x, float y);
+	virtual std::unique_ptr<Tower> Clone(IGraphics* Graphics) const = 0;
+
 	bool IsEnemyInRange(const Enemy* CurrentEnemy) const;
+	int GetCost() const;
+	IRenderable* GetRenderable() const;
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
+
 	ColorHighlighting ColorHighlight;
-	IRenderable* GetRenderable();
-	virtual std::unique_ptr<Tower> Clone(IGraphics* Graphics) = 0;
 protected:
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-	float Range;
-	float Damage;
+	const float Range;
+	const float Damage;
+	const int Cost;
+	const float AttackCooldown;
 
-	float AttackCooldown;
 	float AttackTimer = 0;
 	bool bAttack = false;
-	int Cost;
 };
 
