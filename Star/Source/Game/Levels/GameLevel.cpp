@@ -19,7 +19,6 @@ GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, In
 
 GameLevel::~GameLevel()
 {
-	delete ButtonSelector;
 }
 
 bool GameLevel::Load()
@@ -329,7 +328,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
 	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* StartText = Graphics->CreateText("Start Next Wave", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	StartNextWaveButton = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
+	StartNextWaveButton = std::make_unique<TextButton>(StartRender, StartText, ButtonShader, screenX, screenY);
 	StartNextWaveButton->SetPosition(-700, -400);
 	StartNextWaveButton->SetButtonScale(4, 2);
 	StartNextWaveButton->AddTextPosition(-200, 25);
@@ -337,7 +336,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	StartNextWaveButton->Interact.BoundFunction = std::bind(&GameLevel::StartNextWave, this);
 	IRenderable* OpenRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* OpenText = Graphics->CreateText("Open Shop", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	OpenShopButton = new TextButton(OpenRender, OpenText, ButtonShader, screenX, screenY);
+	OpenShopButton = std::make_unique<TextButton>(OpenRender, OpenText, ButtonShader, screenX, screenY);
 	OpenShopButton->SetPosition(0, -400);
 	OpenShopButton->SetButtonScale(4, 2);
 	OpenShopButton->AddTextPosition(-200, 25);
@@ -345,7 +344,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	OpenShopButton->Interact.BoundFunction = std::bind(&GameLevel::OpenShop, this);
 	IRenderable* QuitRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	QuitButton = new TextButton(QuitRender, QuitText, ButtonShader, screenX, screenY);
+	QuitButton = std::make_unique<TextButton>(QuitRender, QuitText, ButtonShader, screenX, screenY);
 	QuitButton->SetPosition(700, -400);
 	QuitButton->SetButtonScale(4, 2);
 	QuitButton->AddTextPosition(-200, 25);
@@ -353,7 +352,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	QuitButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
 	IRenderable* EndRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* EndButtonText = Graphics->CreateText("End Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	EndButton = new TextButton(EndRender, EndButtonText, ButtonShader, screenX, screenY);
+	EndButton = std::make_unique<TextButton>(EndRender, EndButtonText, ButtonShader, screenX, screenY);
 	EndButton->SetPosition(0, 200);
 	EndButton->SetButtonScale(4, 2);
 	EndButton->AddTextPosition(-200, 25);
@@ -398,25 +397,25 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 
 bool GameLevel::LoadUILinks()
 {
-	ButtonSelector = new InputSelection(&StartNextWaveButton->Interact);
+	ButtonSelector = std::make_shared<InputSelection>(&StartNextWaveButton->Interact);
 	ButtonSelector->AddButtonLink(&StartNextWaveButton->Interact, &OpenShopButton->Interact, ButtonDirection::Right);
 	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &StartNextWaveButton->Interact, ButtonDirection::Left);
 	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &QuitButton->Interact, ButtonDirection::Right);
 	ButtonSelector->AddButtonLink(&QuitButton->Interact, &OpenShopButton->Interact, ButtonDirection::Left);
 
-	RingGamepadSelection = new RingSelection(Rings[0]);
+	RingGamepadSelection = std::make_unique<RingSelection>(Rings[0]);
 	Rings[0]->Interact.Highlighted();
 	RingGamepadSelection->AddLink(Rings[0], Rings[1], true);
 	RingGamepadSelection->AddLink(Rings[1], Rings[0], false);
 	RingGamepadSelection->AddLink(Rings[1], Rings[2], true);
 	RingGamepadSelection->AddLink(Rings[2], Rings[1], false);
 
-	ShopSelector = new InputSelection(&TowerButtons[0]->Interact);
+	ShopSelector = std::make_shared<InputSelection>(&TowerButtons[0]->Interact);
 	ShopSelector->AddButtonLink(&TowerButtons[0]->Interact, &TowerButtons[1]->Interact, ButtonDirection::Right);
 	ShopSelector->AddButtonLink(&TowerButtons[1]->Interact, &TowerButtons[0]->Interact, ButtonDirection::Left);
 	ShopSelector->PreviousMenuFunction = std::bind(&GameLevel::CloseShop, this);
 
-	EndSelector = new InputSelection(&EndButton->Interact);
+	EndSelector = std::make_shared<InputSelection>(&EndButton->Interact);
 	return true;
 }
 

@@ -33,9 +33,10 @@ private:
 	void SpawnAreaTower();
 	void SpawnGroundAreaTower();
 	void QuitGame();
-	TextButton* StartNextWaveButton;
-	TextButton* OpenShopButton;
-	TextButton* QuitButton;
+	//UI
+	std::unique_ptr<TextButton> StartNextWaveButton;
+	std::unique_ptr<TextButton> OpenShopButton;
+	std::unique_ptr<TextButton> QuitButton;
 	IText* CurrencyIndicator;
 	std::string CurrencyString;
 	IText* RoundIndicator;
@@ -43,21 +44,25 @@ private:
 	IText* HealthIndicator;
 	std::string HealthString;
 	IText* EndText;
-	TextButton* EndButton;
+	std::unique_ptr<TextButton> EndButton;
 
-	InputSelection* ButtonSelector;
-	InputSelection* ShopSelector;
-	InputSelection* EndSelector;
-	InputSelection* CurrentSelector;
+	//Input Selections
+	std::shared_ptr<InputSelection> ButtonSelector;
+	std::shared_ptr<InputSelection> ShopSelector;
+	std::shared_ptr<InputSelection> EndSelector;
+	std::shared_ptr<InputSelection> CurrentSelector;
 
+	//Gameobjects
 	std::unique_ptr<Shop> CurrencyShop;
 	std::unique_ptr<TextButton> TowerButtons[2];
 	std::unique_ptr<Tower> TowerClones[2];
-	RingSelection* RingGamepadSelection;
-	DefenceRing* Rings[3];
-	std::unique_ptr<HomeBase> Base;
 	WaveManager Wave;
 	DirectX::XMFLOAT2 SpawnAreas[8];
+
+	std::unique_ptr<RingSelection> RingGamepadSelection;
+	DefenceRing* Rings[3];
+	std::unique_ptr<HomeBase> Base;
+
 
 	bool bPaused = false;
 };
