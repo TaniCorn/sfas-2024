@@ -15,22 +15,24 @@ IGraphics::~IGraphics()
     {
         delete* it;
     }
+    RenderablesRegister.clear();
     for (auto it = ShadersRegister.begin(); it != ShadersRegister.end(); ++it)
     {
         delete* it;
     }
+    ShadersRegister.clear();
     for (auto it = TextRegister.begin(); it != TextRegister.end(); ++it)
     {
         delete* it;
     }
+    TextRegister.clear();
     for (auto it = TexturesRegister.begin(); it != TexturesRegister.end(); ++it)
     {
         delete* it;
     }
-    RenderablesRegister.clear();
-    ShadersRegister.clear();
-    TextRegister.clear();
     TexturesRegister.clear();
+
+    //These are not registers but rather temporary storages, they do not need deleting
     Renderables.clear();
     UIRenderables.clear();
     Textures.clear();

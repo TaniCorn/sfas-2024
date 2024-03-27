@@ -18,9 +18,9 @@ public:
 protected:
 	void SetArray(float* arrayColor, float r, float g, float b, float a);
 
-	float Color[4] = { 1,1,1,1 };
-	float HighlightColor[4] = { 0.7,0.7,0.8,1 };
-	float PressedColor[4]{ 0.5,0.5,0.6, 1 };
-	float NormalColor[4] = { 1,1,1,1 };
+	float Color[4] = { 1.0f,1.0f,1.0f,1.0f };
+	float HighlightColor[4] = { 0.7f,0.7f,0.8f,1.0f };
+	float PressedColor[4]{ 0.5f,0.5f,0.6f, 1.0f };
+	float NormalColor[4] = { 1.0f,1.0f,1.0f,1.0f };
 };
 

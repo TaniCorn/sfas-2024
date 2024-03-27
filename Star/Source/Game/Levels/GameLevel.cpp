@@ -12,7 +12,7 @@
 #include "../Towers/AreaTower.h"
 #include "../Towers/GroundAreaTower.h"
 
-GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
+GameLevel::GameLevel(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn), SpawnAreas(), Wave(), RoundIndicator(nullptr), HealthIndicator(nullptr), EndText(nullptr), CurrencyIndicator(nullptr)
 {
 	LevelSwitchKey = LevelId::GameLevel1;
 }
@@ -117,7 +117,7 @@ void GameLevel::Update(float DeltaTime)
 	int Currency = CurrencyShop->GetCurrentGold();
 	CurrencyString = "Gold: " + std::to_string(Currency);
 	CurrencyIndicator->SetText(CurrencyString.c_str());
-	int Health = Base->Health.Health;
+	int Health = int(Base->Health.Health);
 	HealthString = "Health: " + std::to_string(Health);
 	HealthIndicator->SetText(HealthString.c_str());
 }
@@ -137,16 +137,16 @@ void GameLevel::StartNextWave()
 
 bool GameLevel::LoadArea()
 {
-	int XBound = 800;
-	int YBound = 600;
+	float XBound = 800.0f;
+	float YBound = 600.0f;
 
-	SpawnAreas[0] = DirectX::XMFLOAT2(-XBound, 0);
+	SpawnAreas[0] = DirectX::XMFLOAT2(-XBound, 0.0f);
 	SpawnAreas[1] = DirectX::XMFLOAT2(-XBound, YBound);
-	SpawnAreas[2] = DirectX::XMFLOAT2(0, YBound);
+	SpawnAreas[2] = DirectX::XMFLOAT2(0.0f, YBound);
 	SpawnAreas[3] = DirectX::XMFLOAT2(XBound, YBound);
-	SpawnAreas[4] = DirectX::XMFLOAT2(XBound, 0);
+	SpawnAreas[4] = DirectX::XMFLOAT2(XBound, 0.0f);
 	SpawnAreas[5] = DirectX::XMFLOAT2(XBound, -YBound);
-	SpawnAreas[6] = DirectX::XMFLOAT2(0, -YBound);
+	SpawnAreas[6] = DirectX::XMFLOAT2(0.0f, -YBound);
 	SpawnAreas[7] = DirectX::XMFLOAT2(-XBound, -YBound);
 	return true;
 }
@@ -163,9 +163,9 @@ bool GameLevel::LoadEntities()
 
 	ITexture* RingTextureInner = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds", "InnerRing");
 	IRenderable* InnerRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureInner, nullptr);
-	Rings[0] = new DefenceRing(ColorChangeShader, InnerRing);
-	Rings[1] = new DefenceRing(ColorChangeShader, InnerRing);
-	Rings[2] = new DefenceRing(ColorChangeShader, InnerRing);
+	Rings[0] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
+	Rings[1] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
+	Rings[2] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
 
 
 	ITexture* PlotTexture = Graphics->CreateTexture(L"Resource/Textures/Plot.png", "Plot");
@@ -179,10 +179,10 @@ bool GameLevel::LoadEntities()
 
 		float DistFromCenter = 150; 
 		
-		float Rotation = 180 * i; 
-		float radRot = Rotation * 3.14159265359f / 180;
-		int y = (cos(radRot) * (DistFromCenter));
-		int x = (sin(radRot) * (DistFromCenter));
+		float Rotation = 180.0f * i; 
+		float radRot = Rotation * 3.14159265359f / 180.0f;
+		float y = (float(cos(radRot)) * (DistFromCenter));
+		float x = (float(sin(radRot)) * (DistFromCenter));
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
@@ -197,10 +197,10 @@ bool GameLevel::LoadEntities()
 
 		float DistFromCenter = 300;
 
-		float Rotation = 90 * i;
-		float radRot = Rotation * 3.14159265359f / 180;
-		int y = (cos(radRot) * (DistFromCenter));
-		int x = (sin(radRot) * (DistFromCenter));
+		float Rotation = 90.0f * i;
+		float radRot = Rotation * 3.14159265359f / 180.0f;
+		float y = (float(cos(radRot)) * (DistFromCenter));
+		float x = (float(sin(radRot)) * (DistFromCenter));
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
@@ -215,10 +215,12 @@ bool GameLevel::LoadEntities()
 
 		float DistFromCenter = 450;
 
-		float Rotation = (360/8) * i;
-		float radRot = Rotation * 3.14159265359f / 180;
-		int y = (cos(radRot) * (DistFromCenter));
-		int x = (sin(radRot) * (DistFromCenter));
+		float Rotation = (360.0f/8.0f) * i;
+		float radRot = Rotation * 3.14159265359f / 180.0f;
+//#pragma warning disable 4244 // 
+		float y = (float(cos(radRot)) * (DistFromCenter));
+		float x = (float(sin(radRot)) * (DistFromCenter));
+//#pragma warning restore 4244
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
@@ -377,7 +379,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	TowerButtons[0]->AddTextPosition(-400, 200);
 	TowerButtons[0]->Register(Graphics);
 	TowerButtons[0]->Unregister(Graphics);
-	TowerButtons[0]->Interact.SetHighlightColor(0.7, 1, 0.7, 1);
+	TowerButtons[0]->Interact.SetHighlightColor(0.7f, 1.0f, 0.7f, 1.0f);
 	TowerButtons[0]->Interact.BoundFunction = std::bind(&GameLevel::SpawnAreaTower, this);
 	IText* GroundAreaTowerText = Graphics->CreateText("40 Gold Can attack Sea", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GTBuy");
@@ -388,7 +390,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	TowerButtons[1]->AddTextPosition(-300, -150);
 	TowerButtons[1]->Register(Graphics);
 	TowerButtons[1]->Unregister(Graphics);
-	TowerButtons[1]->Interact.SetHighlightColor(0.7, 1, 0.7, 1);
+	TowerButtons[1]->Interact.SetHighlightColor(0.7f, 1.0f, 0.7f, 1.0f);
 	TowerButtons[1]->Interact.BoundFunction = std::bind(&GameLevel::SpawnGroundAreaTower, this);
 	return true;
 }
@@ -401,12 +403,12 @@ bool GameLevel::LoadUILinks()
 	ButtonSelector->AddButtonLink(&OpenShopButton->Interact, &QuitButton->Interact, ButtonDirection::Right);
 	ButtonSelector->AddButtonLink(&QuitButton->Interact, &OpenShopButton->Interact, ButtonDirection::Left);
 
-	RingGamepadSelection = std::make_unique<RingSelection>(Rings[0]);
-	Rings[0]->Interact.Highlighted();
-	RingGamepadSelection->AddLink(Rings[0], Rings[1], true);
-	RingGamepadSelection->AddLink(Rings[1], Rings[0], false);
-	RingGamepadSelection->AddLink(Rings[1], Rings[2], true);
-	RingGamepadSelection->AddLink(Rings[2], Rings[1], false);
+	RingGamepadSelection = std::make_unique<RingSelection>();
+	RingGamepadSelection->SetFirstRing(Rings[0].get());
+	RingGamepadSelection->AddLink(Rings[0].get(), Rings[1].get(), true);
+	RingGamepadSelection->AddLink(Rings[1].get(), Rings[0].get(), false);
+	RingGamepadSelection->AddLink(Rings[1].get(), Rings[2].get(), true);
+	RingGamepadSelection->AddLink(Rings[2].get(), Rings[1].get(), false);
 
 	ShopSelector = std::make_shared<InputSelection>(&TowerButtons[0]->Interact);
 	ShopSelector->AddButtonLink(&TowerButtons[0]->Interact, &TowerButtons[1]->Interact, ButtonDirection::Right);

@@ -6,7 +6,7 @@
 #include "Engine/IInput.h"
 #include "../../Engine/Implementation/DirectX11/DirectX11Text.h"
 #include <DirectXColors.h>
-SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
+SplashScreen::SplashScreen(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn), Text(nullptr), SplashRender(nullptr)
 {
 	LevelSwitchKey = LevelId::SplashScreenLevel;
 }
@@ -32,7 +32,7 @@ bool SplashScreen::Load()
 	
 	Text = Graphics->CreateText("Tanapat Somrid", (screenX / 2) - 380, (screenY / 2) + 400, 2, 2, 0);
 	SplashRender = Graphics->CreateFloat4Billboard(SplashShader, SplashTexture, FadeParams);
-	SplashRender->SetScale(0.8, 0.8f);
+	SplashRender->SetScale(0.8f, 0.8f);
 
 	Graphics->AddText(Text);
 	Graphics->AddSpriteToRender(SplashShader, SplashRender);

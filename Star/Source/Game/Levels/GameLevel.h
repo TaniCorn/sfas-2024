@@ -38,11 +38,11 @@ private:
 	std::unique_ptr<TextButton> OpenShopButton;
 	std::unique_ptr<TextButton> QuitButton;
 	IText* CurrencyIndicator;
-	std::string CurrencyString;
+	std::string CurrencyString = "Null";
 	IText* RoundIndicator;
-	std::string RoundString;
+	std::string RoundString = "Null";
 	IText* HealthIndicator;
-	std::string HealthString;
+	std::string HealthString = "Null";
 	IText* EndText;
 	std::unique_ptr<TextButton> EndButton;
 
@@ -60,7 +60,7 @@ private:
 	DirectX::XMFLOAT2 SpawnAreas[8];
 
 	std::unique_ptr<RingSelection> RingGamepadSelection;
-	DefenceRing* Rings[3];
+	std::shared_ptr<DefenceRing> Rings[3];
 	std::unique_ptr<HomeBase> Base;
 
 

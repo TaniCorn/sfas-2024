@@ -24,10 +24,8 @@ void RingSelection::Update(float DeltaTime, IInput* Input)
 	}
 }
 
-RingSelection::RingSelection(DefenceRing* InnerRing) : RingLinks()
+RingSelection::RingSelection() : RingLinks(), CurrentRing(nullptr)
 {
-	CurrentRing = InnerRing;
-	RingLinks[InnerRing] = std::pair<DefenceRing*, DefenceRing*>();
 }
 
 void RingSelection::AddLink(DefenceRing* Ring, DefenceRing* Link, bool bIsOuter)
@@ -40,6 +38,13 @@ void RingSelection::AddLink(DefenceRing* Ring, DefenceRing* Link, bool bIsOuter)
 	{
 		RingLinks[Ring].second = Link;
 	}
+}
+
+void RingSelection::SetFirstRing(DefenceRing* InnerRing)
+{
+	CurrentRing = InnerRing;
+	RingLinks[InnerRing] = std::pair<DefenceRing*, DefenceRing*>();
+	InnerRing->Interact.Highlighted();
 }
 
 void RingSelection::ChangeRing(bool bToOuter)
