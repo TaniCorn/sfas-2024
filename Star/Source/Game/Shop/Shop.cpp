@@ -33,7 +33,7 @@ bool Shop::CanPurchase(int GoldSpend)
     return false;
 }
 
-Tower* Shop::CreateTower(Tower* Clone, IGraphics* Graphics)
+Tower* Shop::CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics)
 {
     Tower* CreatedTower = Clone->Clone(Graphics);
     CreatedTower->SetScale(2, 2);

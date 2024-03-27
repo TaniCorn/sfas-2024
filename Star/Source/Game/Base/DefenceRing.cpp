@@ -72,16 +72,16 @@ bool DefenceRing::PlotAvailable()
 
 void DefenceRing::PlantTower(Tower* TowerIn)
 {
-	std::vector<TowerPlot*> PlotsAvailable;
+	std::vector<int> PlotsAvailable;
 	for (int i = 0; i < Plots.size(); i++)
 	{
 		if (Plots[i]->IsAvailable())
 		{
-			PlotsAvailable.push_back(Plots[i]);
+			PlotsAvailable.push_back(i);
 		}
 	}
 	int PlotNumber = rand() % PlotsAvailable.size();
-	PlotsAvailable[PlotNumber]->PlantTower(TowerIn);
+	Plots[PlotsAvailable[PlotNumber]]->PlantTower(TowerIn);
 }
 
 void DefenceRing::BindPlotsColor()

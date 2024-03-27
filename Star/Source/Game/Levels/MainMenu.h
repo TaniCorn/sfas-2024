@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Engine/ILevel.h"
-
+#include <memory>
 class IRenderable;
 class TextButton;
 class IText;
@@ -17,8 +17,8 @@ public:
 	virtual void Cleanup();
 
 private:
-	InputSelection* GamepadSelection;
-	TextButton* Buttons[2];
+	std::unique_ptr<InputSelection> GamepadSelection;
+	std::unique_ptr <TextButton> Buttons[2];
 	void QuitGame();
 	void StartGame();
 };

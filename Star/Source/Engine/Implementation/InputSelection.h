@@ -3,6 +3,11 @@ class IInput;
 class Interactable;
 #include <functional>
 #include <map>
+
+//The input selection class will remain as is with raw pointers, as it never owns any of the objects. It only references them.
+//A better system would be to not have the Interactables be referenced at all but have each interactable object have a unique ID and reference those ID's
+
+
 enum class ButtonDirection {
 	Up,
 	Down,

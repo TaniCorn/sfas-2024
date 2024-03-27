@@ -74,6 +74,7 @@ void GameLevel::Update(float DeltaTime)
 
 		Base->Update(DeltaTime);
 		Wave.Update(DeltaTime);
+		CurrencyShop->AddGold(Wave.ProcessEarnedGold());
 
 		if (Wave.CanStartNextWave() && Wave.WavesLeft() > 1)
 		{
@@ -157,7 +158,7 @@ bool GameLevel::LoadEntities()
 
 	ITexture* BaseTexture = Graphics->CreateTexture(L"Resource/Textures/Base.png", "Base");
 	IRenderable* BaseRender = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
-	Base = new HomeBase(BaseRender, ColorChangeShader);
+	Base = std::make_unique<HomeBase>(BaseRender, ColorChangeShader);
 	Base->Register(Graphics);
 
 	
@@ -172,10 +173,10 @@ bool GameLevel::LoadEntities()
 	ITexture* PlotTexture = Graphics->CreateTexture(L"Resource/Textures/Plot.png", "Plot");
 	for (int i = 0; i < 2; i++)
 	{
-		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
-		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
-		Plots[i]->Register(Graphics);
-		Plots[i]->SetScale(0.5, 0.5);
+		IRenderable* PlotRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
+		std::unique_ptr<TowerPlot> Plot (new TowerPlot(ColorChangeShader, PlotRenderable));
+		Plot->Register(Graphics);
+		Plot->SetScale(0.5, 0.5);
 	
 
 		float DistFromCenter = 150; 
@@ -184,18 +185,18 @@ bool GameLevel::LoadEntities()
 		float radRot = Rotation * 3.14159265359f / 180;
 		int y = (cos(radRot) * (DistFromCenter));
 		int x = (sin(radRot) * (DistFromCenter));
-		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
-		Plots[i]->Rotation = Rotation;
-		Plots[i]->DistanceFromCenter = DistFromCenter;
-		Rings[0]->Plots.push_back(Plots[i]);
+		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plot->Rotation = Rotation;
+		Plot->DistanceFromCenter = DistFromCenter;
+		Rings[0]->Plots.push_back(std::move(Plot));
 
 	}
 	for (int i = 2; i < 6; i++)
 	{
-		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
-		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
-		Plots[i]->Register(Graphics);
-		Plots[i]->SetScale(0.5, 0.5);
+		IRenderable* PlotRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
+		std::unique_ptr<TowerPlot> Plot(new TowerPlot(ColorChangeShader, PlotRenderable));
+		Plot->Register(Graphics);
+		Plot->SetScale(0.5, 0.5);
 
 		float DistFromCenter = 300;
 
@@ -203,17 +204,17 @@ bool GameLevel::LoadEntities()
 		float radRot = Rotation * 3.14159265359f / 180;
 		int y = (cos(radRot) * (DistFromCenter));
 		int x = (sin(radRot) * (DistFromCenter));
-		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
-		Plots[i]->Rotation = Rotation;
-		Plots[i]->DistanceFromCenter = DistFromCenter;
-		Rings[1]->Plots.push_back(Plots[i]);
+		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plot->Rotation = Rotation;
+		Plot->DistanceFromCenter = DistFromCenter;
+		Rings[1]->Plots.push_back(std::move(Plot));
 	}
 	for (int i = 6; i < 14; i++)
 	{
-		IRenderable* Plot = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
-		Plots[i] = new TowerPlot(ColorChangeShader, Plot);
-		Plots[i]->Register(Graphics);
-		Plots[i]->SetScale(0.5, 0.5);
+		IRenderable* PlotRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
+		std::unique_ptr<TowerPlot> Plot(new TowerPlot(ColorChangeShader, PlotRenderable));
+		Plot->Register(Graphics);
+		Plot->SetScale(0.5, 0.5);
 
 		float DistFromCenter = 450;
 
@@ -221,10 +222,10 @@ bool GameLevel::LoadEntities()
 		float radRot = Rotation * 3.14159265359f / 180;
 		int y = (cos(radRot) * (DistFromCenter));
 		int x = (sin(radRot) * (DistFromCenter));
-		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
-		Plots[i]->Rotation = Rotation;
-		Plots[i]->DistanceFromCenter = DistFromCenter;
-		Rings[2]->Plots.push_back(Plots[i]);
+		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
+		Plot->Rotation = Rotation;
+		Plot->DistanceFromCenter = DistFromCenter;
+		Rings[2]->Plots.push_back(std::move(Plot));
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -234,11 +235,11 @@ bool GameLevel::LoadEntities()
 	}
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "AreaTower");
 	IRenderable* AreaTowerRemderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
-	TowerClones[0] = new AreaTower(ColorChangeShader, AreaTowerRemderable);
+	TowerClones[0] = std::make_unique<AreaTower>(ColorChangeShader, AreaTowerRemderable);
 	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GroundAreaTower");
 	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
-	TowerClones[1] = new GroundAreaTower(ColorChangeShader, GroundAreaTowerRenderable);
-	CurrencyShop = new Shop(100);
+	TowerClones[1] = std::make_unique<GroundAreaTower>(ColorChangeShader, GroundAreaTowerRenderable);
+	CurrencyShop = std::make_unique<Shop>(100);
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Flyer.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
@@ -247,7 +248,6 @@ bool GameLevel::LoadEntities()
 	{
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
 	}
-	Wave.ShopReference = CurrencyShop;
 	return true;
 }
 
@@ -374,7 +374,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	IText* AreaTowerText = Graphics->CreateText("60 Gold Can attack Sea and Air", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "TBuy");
 	IRenderable* AreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, AreaTowerTexture, nullptr);
-	TowerButtons[0] = new TextButton(AreaTowerRenderable, AreaTowerText, ButtonShader, screenX, screenY);
+	TowerButtons[0] =std::make_unique<TextButton>(AreaTowerRenderable, AreaTowerText, ButtonShader, screenX, screenY);
 	TowerButtons[0]->SetPosition(-300, 0);
 	TowerButtons[0]->SetButtonScale(2, 2);
 	TowerButtons[0]->AddTextPosition(-400, 200);
@@ -385,7 +385,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	IText* GroundAreaTowerText = Graphics->CreateText("40 Gold Can attack Sea", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GTBuy");
 	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, GroundAreaTowerTexture, nullptr);
-	TowerButtons[1] = new TextButton(GroundAreaTowerRenderable, GroundAreaTowerText, ButtonShader, screenX, screenY);
+	TowerButtons[1] = std::make_unique<TextButton>(GroundAreaTowerRenderable, GroundAreaTowerText, ButtonShader, screenX, screenY);
 	TowerButtons[1]->SetPosition(300, 0);
 	TowerButtons[1]->SetButtonScale(2, 2);
 	TowerButtons[1]->AddTextPosition(-300, -150);

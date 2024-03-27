@@ -7,6 +7,7 @@ class Tower;
 
 #include <vector>
 #include <set>
+#include <memory>
 
 class Shop
 {
@@ -18,7 +19,7 @@ public:
 	void Spend(int GoldSpend);
 	bool CanPurchase(int GoldSpend);
 
-	Tower* CreateTower(Tower* Clone, IGraphics* Graphics);
+	Tower* CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics);
 	std::set<Tower*> TowersCreated;
 private:
 	int Gold;

@@ -5,7 +5,7 @@
 #include "../Base/RingSelection.h"
 #include "../Base/DefenceRing.h"
 #include "../Shop/Shop.h"
-
+#include <memory>
 class IRenderable;
 class TextButton;
 class IText;
@@ -50,13 +50,12 @@ private:
 	InputSelection* EndSelector;
 	InputSelection* CurrentSelector;
 
-	Shop* CurrencyShop;
-	TextButton* TowerButtons[2];
-	Tower* TowerClones[2];
-	TowerPlot* Plots[14];
+	std::unique_ptr<Shop> CurrencyShop;
+	std::unique_ptr<TextButton> TowerButtons[2];
+	std::unique_ptr<Tower> TowerClones[2];
 	RingSelection* RingGamepadSelection;
 	DefenceRing* Rings[3];
-	HomeBase* Base;
+	std::unique_ptr<HomeBase> Base;
 	WaveManager Wave;
 	DirectX::XMFLOAT2 SpawnAreas[8];
 

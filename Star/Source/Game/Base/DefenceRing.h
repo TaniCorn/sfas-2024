@@ -1,6 +1,7 @@
 #pragma once
 #include "TowerPlot.h"
 #include <vector>
+#include <memory>
 class DefenceRing : public IRegisteredObject
 {
 public:
@@ -15,7 +16,7 @@ public:
 	void PlantTower(Tower* TowerIn);
 	void BindPlotsColor();
 	Interactable Interact;
-	std::vector<TowerPlot*> Plots;
+	std::vector<std::unique_ptr<TowerPlot>> Plots;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;

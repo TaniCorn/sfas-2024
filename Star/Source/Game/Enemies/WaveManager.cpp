@@ -2,7 +2,6 @@
 #include <list>
 #include "../Source/Engine/IGraphics.h"
 #include "../Source/Engine/IShader.h"
-#include "../Shop/Shop.h"
 WaveManager::WaveManager() : WaveEntities(), SpawnArea()
 {
 }
@@ -60,7 +59,7 @@ void WaveManager::Update(float DeltaTime)
 		}
 		if (!AliveEnemies[i]->IsAlive())
 		{
-			ShopReference->AddGold(AliveEnemies[i]->GetGoldGain());
+			GoldGainBuffer += AliveEnemies[i]->GetGoldGain();
 			AliveEnemies.erase(AliveEnemies.begin() + i);
 		}
 	}
@@ -100,6 +99,13 @@ void WaveManager::StartNextWave()
 int WaveManager::GetWaveNumber()
 {
 	return CurrentWave;
+}
+
+int WaveManager::ProcessEarnedGold()
+{
+	int Gold = GoldGainBuffer;
+	GoldGainBuffer = 0;
+	return Gold;
 }
 
 const std::vector<Enemy*>& WaveManager::GetAliveEnemies()

@@ -2,8 +2,8 @@
 #include "Enemy.h"
 class IGraphics;
 class IShader;
-class Shop;
 #include <queue>
+#include <memory>
 class WaveManager
 {
 public:
@@ -25,9 +25,9 @@ public:
 	bool CanStartNextWave();
 	void StartNextWave();
 	int GetWaveNumber();
-
+	int ProcessEarnedGold();
 	const std::vector<Enemy*>& GetAliveEnemies();
-	Shop* ShopReference;
+	 
 private:
 	int SpawnGroup(EnemyTypes Type, int Amount, int Area);
 	void SpawnWave();
@@ -35,9 +35,9 @@ private:
 	std::vector<Enemy*> AliveEnemies;
 	Enemy EnemyPool[150];
 	std::vector<DirectX::XMFLOAT2*> SpawnArea;
-
 	int CurrentWave = 0;
 	float Timer = 0;
 	bool bWaveInProgress = false;
+	int GoldGainBuffer = 0;
 };
 
