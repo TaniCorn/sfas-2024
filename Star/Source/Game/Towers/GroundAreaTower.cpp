@@ -2,7 +2,7 @@
 #include "../Enemies/Enemy.h"
 #include "../Shop/Shop.h"
 GroundAreaTower::GroundAreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
-	Tower(ShaderIn, RenderableIn, 4.0f, 80,1.5f,40)
+	Tower(ShaderIn, RenderableIn, 4.0f, 80*80,1.5f,40)
 {
 }
 

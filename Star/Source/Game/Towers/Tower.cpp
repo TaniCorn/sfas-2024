@@ -46,7 +46,7 @@ bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), 
 		DirectX::XMFLOAT2(CurrentTexture->GetTransform().PositionX, CurrentTexture->GetTransform().PositionY));
-	float Distance = DXHelper::MagnitudeSqrRoot(Vector);
+	float Distance = DXHelper::Magnitude(Vector);
 	if (Distance > Range)
 	{
 		return false;
