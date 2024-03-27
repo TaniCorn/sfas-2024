@@ -110,6 +110,16 @@ DirectX11Graphics::DirectX11Graphics(HWND hwndIn) : Device(nullptr), Context(nul
 
 DirectX11Graphics::~DirectX11Graphics()
 {
+    if (SpriteBatch)
+    {
+        delete SpriteBatch;
+        SpriteBatch = nullptr;
+    }
+    if (SpriteFont)
+    {
+        delete SpriteFont;
+        SpriteFont = nullptr;
+    }
     if (BlendState)
     {
         BlendState->Release();
@@ -139,6 +149,7 @@ DirectX11Graphics::~DirectX11Graphics()
         Device->Release();
         Device = nullptr;
     }
+
 }
 
 void DirectX11Graphics::Update()
