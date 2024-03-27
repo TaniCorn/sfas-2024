@@ -7,8 +7,7 @@ class IShader;
 class WaveManager
 {
 public:
-	WaveManager();
-	void Init(IGraphics* Graphics, IShader* Shader, ITexture* Fast, ITexture* Fly, ITexture* Slow);
+	WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
 	struct WaveSpawns
 	{
 		EnemyTypes Type;
@@ -18,18 +17,19 @@ public:
 	};
 	void Update(float DeltaTime);
 	void AddNewSpawnArea(DirectX::XMFLOAT2& Area);
-	void AddNewSpawn(EnemyTypes Type, int Amount, float TimeToSpawnFromLast, int Wave, int SpawnArea = -1);
+	void AddNewSpawn(const EnemyTypes Type, const int Amount, const float TimeToSpawnFromLast, const int Wave, int SpawnArea = -1);
 
-	int WavesLeft();
-	bool HasWon();
-	bool CanStartNextWave();
+	int WavesLeft() const;
+	bool HasWon() const;
+	bool CanStartNextWave() const;
+	int GetWaveNumber() const;
+	const std::vector<Enemy*>& GetAliveEnemies() const;
+
 	void StartNextWave();
-	int GetWaveNumber();
 	int ProcessEarnedGold();
-	const std::vector<Enemy*>& GetAliveEnemies();
 	 
 private:
-	int SpawnGroup(EnemyTypes Type, int Amount, int Area);
+	int SpawnGroup(const EnemyTypes Type, int Amount, const int Area);
 	void SpawnWave();
 	std::map<int, std::queue<WaveSpawns>> WaveEntities;
 	std::vector<Enemy*> AliveEnemies;

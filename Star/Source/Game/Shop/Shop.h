@@ -13,8 +13,8 @@ class Shop
 {
 public:
 	Shop(const int StartingGold);
-	const int GetCurrentGold() const;
-	const bool CanPurchase(const int GoldSpend) const;
+	int GetCurrentGold() const;
+	bool CanPurchase(const int GoldSpend) const;
 	void AddGold(const int Amount);
 	void Spend(const int GoldSpend);
 

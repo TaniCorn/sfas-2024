@@ -6,13 +6,10 @@ EntityHealth* Enemy::TargetHealthObject = nullptr;
 
 Enemy::Enemy() : CurrentTexture(nullptr), Shader(nullptr), ColorHighlight(), Health(0)
 {
-	bAlive = false;
 }
 
-void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
+Enemy::Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : CurrentTexture(RenderableIn), Shader(ShaderIn), ColorHighlight(), Health(0)
 {
-	CurrentTexture = RenderableIn;
-	Shader = ShaderIn;
 	switch (Enemy)
 	{
 	case EnemyTypes::FastPacks:
@@ -27,8 +24,8 @@ void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
 	default:
 		break;
 	}
-	SetPosition(DirectX::XMFLOAT2(0, 0));
 	bAlive = false;
+	SetPosition(DirectX::XMFLOAT2(0, 0));
 	ColorHighlight.SetNormalColor(0, 0, 0, 0);
 }
 
@@ -64,7 +61,7 @@ bool Enemy::Flying() const
 	return bFlying;
 }
 
-void Enemy::Spawn(DirectX::XMFLOAT2 Location)
+void Enemy::Spawn(const DirectX::XMFLOAT2 Location)
 {
 	SetPosition(Location);
 	bAlive = true;
@@ -98,7 +95,7 @@ DirectX::XMFLOAT2 Enemy::GetPosition() const
 	return Position;
 }
 
-int Enemy::GetGoldGain()
+int Enemy::GetGoldGain() const
 {
 	return GoldGain;
 }
@@ -129,7 +126,7 @@ void Enemy::MoveTowardsTarget(float DeltaTime)
 	}
 }
 
-void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, int Gold, bool bCanFly)
+void Enemy::SetStats(const float HealthIn, const float DamageIn, const float SpeedIn, const int Gold, const bool bCanFly)
 {
 	Health.SetEntityHealth(HealthIn);
 	Damage = DamageIn;

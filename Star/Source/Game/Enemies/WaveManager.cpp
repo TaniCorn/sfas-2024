@@ -2,26 +2,22 @@
 #include <list>
 #include "../Source/Engine/IGraphics.h"
 #include "../Source/Engine/IShader.h"
-WaveManager::WaveManager() : WaveEntities(), SpawnArea()
-{
-}
-
-void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture*SlowIn)
+WaveManager::WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn) : WaveEntities(), SpawnArea()
 {
 	for (int i = 0; i < 50; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FastIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::FastPacks);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::FastPacks);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
-		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0,0.3);
+		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
 		EnemyPool[i].ColorHighlight.SetNormalColor(0, 0, 0, 0);
 		EnemyPool[i].ColorHighlight.Unhighlighted();
 	}
 	for (int i = 50; i < 100; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, FlyIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::Flyers);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::Flyers);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
@@ -31,7 +27,7 @@ void WaveManager::Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, I
 	for (int i = 100; i < 150; i++)
 	{
 		IRenderable* EnemyRender = Graphics->CreateFloat4Billboard(Shader, SlowIn, nullptr);
-		EnemyPool[i].Init(EnemyRender, Shader, EnemyTypes::SlowGrunts);
+		EnemyPool[i] = Enemy(EnemyRender, Shader, EnemyTypes::SlowGrunts);
 		EnemyPool[i].Register(Graphics);
 		EnemyRender->BindParam(EnemyPool[i].ColorHighlight.GetColorBind());
 		EnemyPool[i].ColorHighlight.SetHighlightColor(0.5, 0, 0, 0.3);
@@ -96,7 +92,7 @@ void WaveManager::StartNextWave()
 	Timer = WaveEntities[CurrentWave].front().TimeToSpawnFromLast;
 }
 
-int WaveManager::GetWaveNumber()
+int WaveManager::GetWaveNumber() const
 {
 	return CurrentWave;
 }
@@ -108,17 +104,17 @@ int WaveManager::ProcessEarnedGold()
 	return Gold;
 }
 
-const std::vector<Enemy*>& WaveManager::GetAliveEnemies()
+const std::vector<Enemy*>& WaveManager::GetAliveEnemies() const
 {
 	return AliveEnemies;
 }
 
-int WaveManager::WavesLeft()
+int WaveManager::WavesLeft() const
 {
 	return WaveEntities.size();
 }
 
-bool WaveManager::HasWon()
+bool WaveManager::HasWon() const
 {
 	if (WaveEntities.size() <= 1)
 	{
@@ -130,7 +126,7 @@ bool WaveManager::HasWon()
 	return false;
 }
 
-bool WaveManager::CanStartNextWave()
+bool WaveManager::CanStartNextWave() const
 {
 	return !bWaveInProgress;
 }
