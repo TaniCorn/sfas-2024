@@ -24,19 +24,17 @@ void Tower::Update(float DeltaTime)
 		AttackTimer = AttackCooldown;
 	}
 	AttackTimer -= DeltaTime;
-	CurrentTexture->SetPosition(Position->x, Position->y);
 
+}
+
+void Tower::SetPosition(DirectX::XMFLOAT2 Location)
+{
+	CurrentTexture->SetPosition(Location.x, Location.y);
 }
 
 int Tower::GetCost()
 {
 	return Cost;
-}
-
-void Tower::LinkPosition(DirectX::XMFLOAT2& Location)
-{
-	Position = &Location;
-	CurrentTexture->SetPosition(Position->x, Position->y);
 }
 
 void Tower::SetScale(float x, float y)
@@ -46,7 +44,8 @@ void Tower::SetScale(float x, float y)
 
 bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 {
-	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), *Position);
+	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), 
+		DirectX::XMFLOAT2(CurrentTexture->GetTransform().PositionX, CurrentTexture->GetTransform().PositionY));
 	float Distance = DXHelper::MagnitudeSqrRoot(Vector);
 	if (Distance > Range)
 	{

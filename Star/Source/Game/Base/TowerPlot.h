@@ -4,7 +4,6 @@
 #include <DirectXMath.h>
 class IShader;
 class IRenderable;
-class Tower;
 
 class TowerPlot : public IRegisteredObject
 {
@@ -17,16 +16,15 @@ public:
 	DirectX::XMFLOAT2 GetPosition() const;
 	void SetScale(float x, float y);
 	bool IsAvailable();
-	void PlantTower(Tower* TowerToPlant);
+	void PlantTower();
 	IRenderable* GetRenderable();
-	IRenderable* GetTowerRenderable();
 	Interactable Interact;
-	Tower* PlantedTower;
 	float DistanceFromCenter;
 	float Rotation;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;
 	DirectX::XMFLOAT2 Position;
+	bool bAvailable = true;
 };
 

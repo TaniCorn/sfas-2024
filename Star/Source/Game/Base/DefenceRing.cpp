@@ -1,5 +1,6 @@
 #include "DefenceRing.h"
 #include "../../Engine/IRenderable.h"
+
 constexpr float Pie = 3.14159265359f;
 constexpr float TwoPies = Pie * 2.0f;
 
@@ -46,23 +47,28 @@ void DefenceRing::Rotate(float Direction, float DeltaTime)
 
 	delta = -Direction * RotationSpeed * DeltaTime;
 	//Rotate plots around ring
-	for (int i = 0; i < Plots.size(); i++)
+	
+	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
 	{
-		float newOutRotation = Plots[i]->Rotation + (delta * RotationSpeed * 5);
+		float newOutRotation = it->first->Rotation + (delta * RotationSpeed * 5);
 		float radRot = newOutRotation * Pie / 180;
-		int y = (cos(radRot) * (Plots[i]->DistanceFromCenter));
-		int x = (sin(radRot) * (Plots[i]->DistanceFromCenter));
-		Plots[i]->SetPosition(DirectX::XMFLOAT2(x, y));
-		Plots[i]->Rotation = newOutRotation;
+		int y = (cos(radRot) * (it->first->DistanceFromCenter));
+		int x = (sin(radRot) * (it->first->DistanceFromCenter));
+		it->first->SetPosition(DirectX::XMFLOAT2(x, y));
+		it->first->Rotation = newOutRotation;
+		if (!it->first->IsAvailable())
+		{
+			it->second->SetPosition(it->first->GetPosition());
+		}
 	}
 
 }
 
 bool DefenceRing::PlotAvailable()
 {
-	for (int i = 0; i < Plots.size(); i++)
+	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
 	{
-		if (Plots[i]->IsAvailable())
+		if (it->first->IsAvailable())
 		{
 			return true;
 		}
@@ -70,18 +76,19 @@ bool DefenceRing::PlotAvailable()
 	return false;
 }
 
-void DefenceRing::PlantTower(Tower* TowerIn)
+void DefenceRing::PlantTower(std::unique_ptr<Tower> TowerIn)
 {
-	std::vector<int> PlotsAvailable;
-	for (int i = 0; i < Plots.size(); i++)
+	std::vector<std::map<std::unique_ptr<TowerPlot>, std::unique_ptr<Tower>>::iterator> PlotsAvailable;
+	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
 	{
-		if (Plots[i]->IsAvailable())
+		if (it->first->IsAvailable())
 		{
-			PlotsAvailable.push_back(i);
+			PlotsAvailable.push_back(it);
 		}
 	}
 	int PlotNumber = rand() % PlotsAvailable.size();
-	Plots[PlotsAvailable[PlotNumber]]->PlantTower(TowerIn);
+	auto PlotIt = PlotsAvailable[PlotNumber];
+	PlotIt->second = std::move(TowerIn);
 }
 
 void DefenceRing::BindPlotsColor()
@@ -89,14 +96,26 @@ void DefenceRing::BindPlotsColor()
 	Interact.SetNormalColor(1.0, 1.0, 1.0, 0.8);
 	Interact.SetHighlightColor(0.6, 1, 0.6, 0.9);
 	Interact.Unhighlighted();
-	for (int i = 0; i < Plots.size(); i++)
+	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
 	{
-		Plots[i]->GetRenderable()->BindParam(Interact.GetColorBind());
-		if (Plots[i]->GetTowerRenderable() != nullptr)
+		it->first->GetRenderable()->BindParam(Interact.GetColorBind());
+		if (!it->first->IsAvailable())
 		{
-			Plots[i]->GetTowerRenderable()->BindParam(Interact.GetColorBind());
-
+			it->second->GetRenderable()->BindParam(Interact.GetColorBind());
 		}
 	}
 }
+
+void DefenceRing::Update(float DeltaTime, const std::vector<Enemy*>& Enemies)
+{
+	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
+	{
+		if (!it->first->IsAvailable())
+		{
+			it->second->Update(DeltaTime);
+			it->second->AttackUpdate(Enemies);
+		}
+	}
+}
+
 

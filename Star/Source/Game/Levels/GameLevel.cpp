@@ -83,10 +83,9 @@ void GameLevel::Update(float DeltaTime)
 		{
 			StartNextWaveButton->Unregister(Graphics);
 		}
-		for (auto it = CurrencyShop->TowersCreated.begin(); it != CurrencyShop->TowersCreated.end(); it++)
+		for (int i = 0; i < 3; i++)
 		{
-			it._Ptr->_Myval->Update(DeltaTime);
-			it._Ptr->_Myval->AttackUpdate(Wave.GetAliveEnemies());
+			Rings[i]->Update(DeltaTime, Wave.GetAliveEnemies());
 		}
 
 		if (Base->Health.Health <= 0)
@@ -187,8 +186,7 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[0]->Plots.push_back(std::move(Plot));
-
+		Rings[0]->PlotsAndTowers[std::move(Plot)] = nullptr;
 	}
 	for (int i = 2; i < 6; i++)
 	{
@@ -206,7 +204,7 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[1]->Plots.push_back(std::move(Plot));
+		Rings[1]->PlotsAndTowers[std::move(Plot)] = nullptr;
 	}
 	for (int i = 6; i < 14; i++)
 	{
@@ -224,7 +222,7 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[2]->Plots.push_back(std::move(Plot));
+		Rings[2]->PlotsAndTowers[std::move(Plot)] = nullptr;
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -444,10 +442,13 @@ void GameLevel::SpawnAreaTower()
 		{
 			if (Rings[i]->PlotAvailable())
 			{
-				Tower* TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
+				std::unique_ptr<Tower> TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
+				TowerIn->SetScale(2, 2);
+				TowerIn->Register(Graphics);
 				TowerIn->SetScale(0.8f, 0.8f);
-				Rings[i]->PlantTower(TowerIn);
 				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->PlantTower(std::move(TowerIn));
+				
 				Rings[i]->BindPlotsColor();
 				return;
 			}
@@ -463,10 +464,12 @@ void GameLevel::SpawnGroundAreaTower()
 		{
 			if (Rings[i]->PlotAvailable())
 			{
-				Tower* TowerIn = CurrencyShop->CreateTower(TowerClones[1], Graphics);
+				std::unique_ptr<Tower> TowerIn =CurrencyShop->CreateTower(TowerClones[1], Graphics);
+				TowerIn->SetScale(2, 2);
+				TowerIn->Register(Graphics);
 				TowerIn->SetScale(0.8f, 0.8f);
-				Rings[i]->PlantTower(TowerIn);
 				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->PlantTower(std::move(TowerIn));
 				Rings[i]->BindPlotsColor();
 				return;
 			}

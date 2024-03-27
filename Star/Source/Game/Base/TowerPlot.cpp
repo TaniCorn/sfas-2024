@@ -8,11 +8,6 @@ TowerPlot::TowerPlot(IShader* ShaderIn, IRenderable* RenderableIn) : Shader(Shad
 
 TowerPlot::~TowerPlot()
 {
-	if (PlantedTower != nullptr)
-	{
-		delete PlantedTower;
-		PlantedTower = nullptr;
-	}
 }
 
 void TowerPlot::Register(IGraphics* GraphicsIn)
@@ -43,7 +38,7 @@ void TowerPlot::SetScale(float x, float y)
 
 bool TowerPlot::IsAvailable()
 {
-	if (PlantedTower == nullptr)
+	if (bAvailable)
 	{
 		return true;
 	}
@@ -53,10 +48,9 @@ bool TowerPlot::IsAvailable()
 	}
 }
 
-void TowerPlot::PlantTower(Tower* TowerToPlant)
+void TowerPlot::PlantTower()
 {
-	PlantedTower = TowerToPlant;
-	TowerToPlant->LinkPosition(Position);
+	bAvailable = false;
 	Interact.SetNormalColor(0, 0, 0, 0);
 	Interact.Unhighlighted();
 }
@@ -64,13 +58,4 @@ void TowerPlot::PlantTower(Tower* TowerToPlant)
 IRenderable* TowerPlot::GetRenderable()
 {
 	return Renderable;
-}
-
-IRenderable* TowerPlot::GetTowerRenderable()
-{
-	if (PlantedTower != nullptr)
-	{
-		return PlantedTower->GetRenderable();
-	}
-	return nullptr;
 }

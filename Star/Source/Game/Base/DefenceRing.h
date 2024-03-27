@@ -1,7 +1,14 @@
 #pragma once
+
+#include "../../Engine/IRegisteredObject.h"
 #include "TowerPlot.h"
+#include "../Towers/Tower.h"
+#include <map>
 #include <vector>
 #include <memory>
+class Enemy;
+
+
 class DefenceRing : public IRegisteredObject
 {
 public:
@@ -13,10 +20,11 @@ public:
 	void SetScale(float x, float y);
 	void Rotate(float Direction, float DeltaTime);
 	bool PlotAvailable();
-	void PlantTower(Tower* TowerIn);
+	void PlantTower(std::unique_ptr<Tower> TowerIn);
 	void BindPlotsColor();
+	void Update(float DeltaTime, const std::vector<Enemy*>& Enemies);
 	Interactable Interact;
-	std::vector<std::unique_ptr<TowerPlot>> Plots;
+	std::map<std::unique_ptr<TowerPlot>,std::unique_ptr<Tower>> PlotsAndTowers;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;

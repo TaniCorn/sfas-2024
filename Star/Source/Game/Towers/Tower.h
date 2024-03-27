@@ -4,7 +4,7 @@
 #include "../Components/ColorHighlighting.h"
 #include <vector>
 #include <DirectXMath.h>
-
+#include <memory>
 class TowerPlot;
 class Enemy;
 
@@ -17,18 +17,16 @@ public:
 
 	virtual void Update(float DeltaTime);
 	virtual void AttackUpdate(const std::vector<Enemy*>& Enemies) = 0;
-
+	void SetPosition(DirectX::XMFLOAT2 Location);
 	int GetCost();
-	void LinkPosition(DirectX::XMFLOAT2& Location);
 	void SetScale(float x, float y);
 	bool IsEnemyInRange(const Enemy* CurrentEnemy) const;
 	ColorHighlighting ColorHighlight;
 	IRenderable* GetRenderable();
-	virtual Tower* Clone(IGraphics* Graphics) = 0;
+	virtual std::unique_ptr<Tower> Clone(IGraphics* Graphics) = 0;
 protected:
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-	DirectX::XMFLOAT2* Position;
 	float Range;
 	float Damage;
 
