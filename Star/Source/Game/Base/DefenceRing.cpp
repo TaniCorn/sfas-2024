@@ -89,6 +89,8 @@ void DefenceRing::PlantTower(std::unique_ptr<Tower> TowerIn)
 	int PlotNumber = rand() % PlotsAvailable.size();
 	auto PlotIt = PlotsAvailable[PlotNumber];
 	PlotIt->second = std::move(TowerIn);
+	PlotIt->first->PlantTower();
+	PlotIt->second->SetPosition(PlotIt->first->GetPosition());
 }
 
 void DefenceRing::BindPlotsColor()

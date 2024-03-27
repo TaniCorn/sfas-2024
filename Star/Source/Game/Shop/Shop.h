@@ -13,11 +13,11 @@ class Shop
 {
 public:
 	Shop(const int StartingGold);
-	const int GetCurrentGold() const;
+	int GetCurrentGold();
 	void AddGold(const int Amount);
 	void AddButton(TextButton* Button, Tower* PurchaseTower);
 	void Spend(const int GoldSpend);
-	bool CanPurchase(const int GoldSpend) const;
+	bool CanPurchase(const int GoldSpend);
 
 	std::unique_ptr<Tower> CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics);
 private:
