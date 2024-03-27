@@ -6,7 +6,7 @@ public:
 	EntityHealth(float HealthIn);
 	void SetEntityHealth(float HealthIn);
 	void DamageEntity(float Amount);
-	const float GetMaxHealth();
+	const float GetMaxHealth() const;
 
 	float Health;
 private:

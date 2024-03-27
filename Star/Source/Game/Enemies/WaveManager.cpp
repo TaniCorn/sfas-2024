@@ -2,6 +2,9 @@
 #include <list>
 #include "../Source/Engine/IGraphics.h"
 #include "../Source/Engine/IShader.h"
+WaveManager::WaveManager() : WaveEntities(), SpawnArea()
+{
+}
 WaveManager::WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn) : WaveEntities(), SpawnArea()
 {
 	for (int i = 0; i < 50; i++)

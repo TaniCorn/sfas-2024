@@ -22,7 +22,7 @@ void DefenceRing::Unregister(IGraphics* GraphicsIn)
 	GraphicsIn->RemoveSpriteFromRender(Shader, Renderable);
 }
 
-void DefenceRing::SetPosition(DirectX::XMFLOAT2 Location)
+void DefenceRing::SetPosition(const DirectX::XMFLOAT2 Location)
 {
 	Position = Location;
 	Renderable->SetPosition(Location.x, Location.y);
@@ -33,7 +33,7 @@ DirectX::XMFLOAT2 DefenceRing::GetPosition() const
 	return Position;
 }
 
-void DefenceRing::SetScale(float x, float y)
+void DefenceRing::SetScale(const float x, const float y)
 {
 	Renderable->SetScale(x, y);
 }
@@ -64,7 +64,7 @@ void DefenceRing::Rotate(float Direction, float DeltaTime)
 
 }
 
-bool DefenceRing::PlotAvailable()
+bool DefenceRing::IsPlotAvailable() const
 {
 	for (auto it = PlotsAndTowers.begin(); it != PlotsAndTowers.end(); it++)
 	{
@@ -91,6 +91,11 @@ void DefenceRing::PlantTower(std::unique_ptr<Tower> TowerIn)
 	PlotIt->second = std::move(TowerIn);
 	PlotIt->first->PlantTower();
 	PlotIt->second->SetPosition(PlotIt->first->GetPosition());
+}
+
+void DefenceRing::PlantPlot(std::unique_ptr<TowerPlot> PlotIn)
+{
+	PlotsAndTowers[std::move(PlotIn)] = nullptr;
 }
 
 void DefenceRing::BindPlotsColor()

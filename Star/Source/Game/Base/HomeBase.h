@@ -14,12 +14,13 @@ public:
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
 	virtual void DamageEntity(float Amount);
+
 	void Update(float DeltaTime);
-	void SetPosition(DirectX::XMFLOAT2 Location);
+	void SetPosition(const DirectX::XMFLOAT2 Location);
 
 	EntityHealth Health;
-	ColorHighlighting ColorHighlight;
 	DirectX::XMFLOAT2 Position;
+	ColorHighlighting ColorHighlight;
 protected:
 	IShader* Shader;
 	IRenderable* CurrentTexture;

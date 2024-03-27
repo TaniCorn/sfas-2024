@@ -7,6 +7,7 @@ class IShader;
 class WaveManager
 {
 public:
+	WaveManager();
 	WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
 	struct WaveSpawns
 	{
@@ -31,10 +32,13 @@ public:
 private:
 	int SpawnGroup(const EnemyTypes Type, int Amount, const int Area);
 	void SpawnWave();
+
 	std::map<int, std::queue<WaveSpawns>> WaveEntities;
 	std::vector<Enemy*> AliveEnemies;
+
 	Enemy EnemyPool[150];
 	std::vector<DirectX::XMFLOAT2*> SpawnArea;
+	
 	int CurrentWave = 0;
 	float Timer = 0;
 	bool bWaveInProgress = false;

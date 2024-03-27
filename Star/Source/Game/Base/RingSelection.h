@@ -3,6 +3,8 @@ class DefenceRing;
 class IInput;
 #include <map>
 
+//This couldn't use the InputSelection class as this requires seperate inputs, RB LB not thumbstick control
+
 class RingSelection
 {
 public:

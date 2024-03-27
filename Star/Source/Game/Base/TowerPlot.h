@@ -12,18 +12,21 @@ public:
 	~TowerPlot();
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
-	void SetPosition(DirectX::XMFLOAT2 Location);
+
+	bool IsAvailable() const;
 	DirectX::XMFLOAT2 GetPosition() const;
-	void SetScale(float x, float y);
-	bool IsAvailable();
+	IRenderable* GetRenderable() const;
+
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
 	void PlantTower();
-	IRenderable* GetRenderable();
-	Interactable Interact;
+
 	float DistanceFromCenter;
 	float Rotation;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;
+	Interactable Interact;
 	DirectX::XMFLOAT2 Position;
 	bool bAvailable = true;
 };

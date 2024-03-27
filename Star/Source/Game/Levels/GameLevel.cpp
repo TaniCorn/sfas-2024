@@ -186,7 +186,7 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[0]->PlotsAndTowers[std::move(Plot)] = nullptr;
+		Rings[0]->PlantPlot(std::move(Plot));
 	}
 	for (int i = 2; i < 6; i++)
 	{
@@ -204,7 +204,7 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[1]->PlotsAndTowers[std::move(Plot)] = nullptr;
+		Rings[1]->PlantPlot(std::move(Plot));
 	}
 	for (int i = 6; i < 14; i++)
 	{
@@ -222,12 +222,11 @@ bool GameLevel::LoadEntities()
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
-		Rings[2]->PlotsAndTowers[std::move(Plot)] = nullptr;
+		Rings[2]->PlantPlot(std::move(Plot));
 	}
 
 	for (int i = 0; i < 3; i++)
 	{
-		//Rings[i]->Register(Graphics);
 		Rings[i]->BindPlotsColor();
 	}
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "AreaTower");
@@ -240,7 +239,7 @@ bool GameLevel::LoadEntities()
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Flyer.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
-	Wave.Init(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);
+	Wave = WaveManager(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);//Interesting warning about 17kb of stack memory used
 	for (int i = 0; i < 8; i++)
 	{
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
@@ -440,7 +439,7 @@ void GameLevel::SpawnAreaTower()
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if (Rings[i]->PlotAvailable())
+			if (Rings[i]->IsPlotAvailable())
 			{
 				std::unique_ptr<Tower> TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
 				TowerIn->SetScale(2, 2);
@@ -462,7 +461,7 @@ void GameLevel::SpawnGroundAreaTower()
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			if (Rings[i]->PlotAvailable())
+			if (Rings[i]->IsPlotAvailable())
 			{
 				std::unique_ptr<Tower> TowerIn =CurrencyShop->CreateTower(TowerClones[1], Graphics);
 				TowerIn->SetScale(2, 2);

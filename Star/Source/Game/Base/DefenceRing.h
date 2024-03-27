@@ -15,21 +15,24 @@ public:
 	DefenceRing(IShader* ShaderIn, IRenderable* RenderableIn);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
-	void SetPosition(DirectX::XMFLOAT2 Location);
+	
 	DirectX::XMFLOAT2 GetPosition() const;
-	void SetScale(float x, float y);
+	bool IsPlotAvailable() const;
+
 	void Rotate(float Direction, float DeltaTime);
-	bool PlotAvailable();
-	void PlantTower(std::unique_ptr<Tower> TowerIn);
-	void BindPlotsColor();
 	void Update(float DeltaTime, const std::vector<Enemy*>& Enemies);
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
+	void PlantTower(std::unique_ptr<Tower> TowerIn);
+	void PlantPlot(std::unique_ptr<TowerPlot> PlotIn);
+	void BindPlotsColor();
 	Interactable Interact;
-	std::map<std::unique_ptr<TowerPlot>,std::unique_ptr<Tower>> PlotsAndTowers;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;
 	DirectX::XMFLOAT2 Position;
+	std::map<std::unique_ptr<TowerPlot>, std::unique_ptr<Tower>> PlotsAndTowers;
 
-	float RotationSpeed = 5;
+	const float RotationSpeed = 5;
 };
 

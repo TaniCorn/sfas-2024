@@ -19,7 +19,7 @@ void EntityHealth::DamageEntity(float Amount)
 	}
 }
 
-const float EntityHealth::GetMaxHealth()
+const float EntityHealth::GetMaxHealth() const
 {
 	return MaxHealth;
 }

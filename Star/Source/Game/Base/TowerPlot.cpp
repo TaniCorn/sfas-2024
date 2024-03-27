@@ -20,7 +20,7 @@ void TowerPlot::Unregister(IGraphics* GraphicsIn)
 	GraphicsIn->RemoveSpriteFromRender(Shader, Renderable);
 }
 
-void TowerPlot::SetPosition(DirectX::XMFLOAT2 Location)
+void TowerPlot::SetPosition(const DirectX::XMFLOAT2 Location)
 {
 	Position = Location;
 	Renderable->SetPosition(Location.x, Location.y);
@@ -36,7 +36,7 @@ void TowerPlot::SetScale(float x, float y)
 	Renderable->SetScale(x, y);
 }
 
-bool TowerPlot::IsAvailable()
+bool TowerPlot::IsAvailable() const
 {
 	if (bAvailable)
 	{
@@ -50,12 +50,16 @@ bool TowerPlot::IsAvailable()
 
 void TowerPlot::PlantTower()
 {
-	bAvailable = false;
-	Interact.SetNormalColor(0, 0, 0, 0);
-	Interact.Unhighlighted();
+	if (bAvailable)
+	{
+		bAvailable = false;
+		Interact.SetNormalColor(0, 0, 0, 0);
+		Interact.Unhighlighted();
+	}
+
 }
 
-IRenderable* TowerPlot::GetRenderable()
+IRenderable* TowerPlot::GetRenderable() const
 {
 	return Renderable;
 }
