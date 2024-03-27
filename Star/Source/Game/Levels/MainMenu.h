@@ -17,9 +17,11 @@ public:
 	virtual void Cleanup();
 
 private:
-	std::unique_ptr<InputSelection> GamepadSelection;
-	std::unique_ptr <TextButton> Buttons[2];
 	void QuitGame();
 	void StartGame();
+
+	std::unique_ptr<InputSelection> GamepadSelection;
+	std::unique_ptr <TextButton> Buttons[2];
+
 };
 
