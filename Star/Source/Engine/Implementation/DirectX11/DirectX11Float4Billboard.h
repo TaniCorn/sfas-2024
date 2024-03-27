@@ -13,7 +13,7 @@ public:
 
 	DirectX11Float4Billboard(ID3D11DeviceContext* ContextIn, ID3D11Buffer* VertexBufferIn, unsigned int vertexStride, unsigned int vertexOffset, unsigned int vertexCountIn, ITexture* TextureIn, ID3D11Buffer* pixelBufferIn, float* ParamPtr);
 	virtual ~DirectX11Float4Billboard();
-	virtual void Update(ID3D11DeviceContext* Context);
+	virtual void Update(ID3D11DeviceContext* ContextIn);
 	virtual void BindParam(float* Param);
 
 private:

@@ -13,8 +13,8 @@ class DefenceRing : public IRegisteredObject
 {
 public:
 	DefenceRing(IShader* ShaderIn, IRenderable* RenderableIn);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
 	
 	DirectX::XMFLOAT2 GetPosition() const;
 	bool IsPlotAvailable() const;

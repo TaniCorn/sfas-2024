@@ -10,8 +10,8 @@ class TowerPlot : public IRegisteredObject
 public:
 	TowerPlot(IShader* ShaderIn, IRenderable* RenderableIn);
 	~TowerPlot();
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
 
 	bool IsAvailable() const;
 	DirectX::XMFLOAT2 GetPosition() const;

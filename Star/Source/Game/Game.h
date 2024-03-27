@@ -16,10 +16,10 @@ public:
 	Game(IGraphics* Graphics, IInput* InputIn);
 	virtual ~Game();
 
-	virtual bool IsValid();
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool IsValid() override;
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
 

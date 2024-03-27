@@ -7,9 +7,6 @@ class IShader;
 class WaveManager
 {
 public:
-	WaveManager();
-	WaveManager(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
-	void Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
 	struct WaveSpawns
 	{
 		EnemyTypes Type;
@@ -17,6 +14,9 @@ public:
 		float TimeToSpawnFromLast;
 		int SpawnArea = -1;
 	};
+	WaveManager();
+	void Init(IGraphics* Graphics, IShader* Shader, ITexture* FastIn, ITexture* FlyIn, ITexture* SlowIn);
+
 	void Update(float DeltaTime);
 	void AddNewSpawnArea(DirectX::XMFLOAT2& Area);
 	void AddNewSpawn(const EnemyTypes Type, const int Amount, const float TimeToSpawnFromLast, const int Wave, int SpawnArea = -1);

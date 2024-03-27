@@ -12,9 +12,9 @@ public:
 	MainMenu(IGraphics* Graphics, IInput* InputIn);
 	virtual ~MainMenu();
 
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
 	void QuitGame();

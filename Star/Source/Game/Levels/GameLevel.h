@@ -17,9 +17,9 @@ public:
 	GameLevel(IGraphics* Graphics, IInput* InputIn);
 	virtual ~GameLevel();
 
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
 	void StartNextWave();

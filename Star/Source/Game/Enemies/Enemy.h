@@ -18,16 +18,17 @@ class Enemy : public IRegisteredObject
 public:
 	Enemy();
 	Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
-	virtual void DamageEntity(float Amount);
-	virtual void Update(float DeltaTime);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
+	
 
 	bool IsAlive() const;
 	bool Flying() const;
 	DirectX::XMFLOAT2 GetPosition() const;
 	int GetGoldGain() const;
 
+	void DamageEntity(float Amount);
+	void Update(float DeltaTime);
 	void Spawn(const DirectX::XMFLOAT2 Location);
 	void SetPosition(DirectX::XMFLOAT2 Location);
 	void SetRotation(float Rotation);

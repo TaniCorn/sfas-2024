@@ -11,10 +11,10 @@ class HomeBase : public IRegisteredObject
 {
 public:
 	HomeBase(IRenderable* RenderableIn, IShader* ShaderIn);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
-	virtual void DamageEntity(float Amount);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
 
+	void DamageEntity(float Amount);
 	void Update(float DeltaTime);
 	void SetPosition(const DirectX::XMFLOAT2 Location);
 
