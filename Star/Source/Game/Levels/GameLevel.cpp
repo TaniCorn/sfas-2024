@@ -65,7 +65,8 @@ bool GameLevel::Load()
 
 void GameLevel::Update(float DeltaTime)
 {
-	RingGamepadSelection->Update(DeltaTime, Input);
+	//UI can update when game is paused
+	RingGamepadSelection->Update(DeltaTime, Input);//Little cheat left in, where you can spin the rings while game is paused ;)
 	CurrentSelector->Update(Input);
 
 	if (!bPaused)
@@ -75,6 +76,7 @@ void GameLevel::Update(float DeltaTime)
 		Wave.Update(DeltaTime);
 		CurrencyShop->AddGold(Wave.ProcessEarnedGold());
 
+		//If there is a next wave and we can start it, register the startnextwave button for the player
 		if (Wave.CanStartNextWave() && Wave.WavesLeft() > 1)
 		{
 			StartNextWaveButton->Register(Graphics);
@@ -83,34 +85,40 @@ void GameLevel::Update(float DeltaTime)
 		{
 			StartNextWaveButton->Unregister(Graphics);
 		}
+		//Update towers
 		for (int i = 0; i < 3; i++)
 		{
 			Rings[i]->Update(DeltaTime, Wave.GetAliveEnemies());
 		}
 
+		//Lose Game
 		if (Base->Health.Health <= 0)
 		{
-			//Lose Game
 			//Popup quit/retry UI
-			CurrentSelector = EndSelector;
 			EndButton->Register(Graphics);
+
 			EndText->SetText("You Lose!");
 			Graphics->AddText(EndText);
+
+			CurrentSelector = EndSelector;
 			bPaused = true;
 		}
 
+		//End Game
 		if (Wave.HasWon())
 		{
-			//End Game
 			//Popup win UI
-			CurrentSelector = EndSelector;
 			EndButton->Register(Graphics);
+
 			EndText->SetText("You Win!");
 			Graphics->AddText(EndText);
+
+			CurrentSelector = EndSelector;
 			bPaused = true;
 		}
 	}
 
+	//Display the waves, gold, and health
 	int Round = Wave.GetWaveNumber();
 	RoundString = "Wave: " + std::to_string(Round);
 	RoundIndicator->SetText(RoundString.c_str());
@@ -135,6 +143,74 @@ void GameLevel::StartNextWave()
 	}
 }
 
+void GameLevel::OpenShop()
+{
+	CurrentSelector = ShopSelector;
+	bPaused = true;
+	TowerButtons[0]->Register(Graphics);
+	TowerButtons[1]->Register(Graphics);
+
+}
+
+void GameLevel::CloseShop()
+{
+	CurrentSelector = ButtonSelector;
+	bPaused = false;
+	TowerButtons[0]->Unregister(Graphics);
+	TowerButtons[1]->Unregister(Graphics);
+}
+
+void GameLevel::SpawnAreaTower()
+{
+	//Spawn tower on incremental plots(inside to out rings)
+	if (CurrencyShop->CanPurchase(TowerClones[0]->GetCost()))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (Rings[i]->IsPlotAvailable())
+			{
+				std::unique_ptr<Tower> TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
+				TowerIn->SetScale(2, 2);
+				TowerIn->Register(Graphics);
+				TowerIn->SetScale(0.8f, 0.8f);
+				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->PlantTower(std::move(TowerIn));
+
+				Rings[i]->BindPlotsColor();
+				return;
+			}
+		}
+	}
+}
+
+void GameLevel::SpawnGroundAreaTower()
+{
+	//Spawn tower on incremental plots(inside to out rings)
+	if (CurrencyShop->CanPurchase(TowerClones[1]->GetCost()))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			if (Rings[i]->IsPlotAvailable())
+			{
+				std::unique_ptr<Tower> TowerIn = CurrencyShop->CreateTower(TowerClones[1], Graphics);
+				TowerIn->SetScale(2, 2);
+				TowerIn->Register(Graphics);
+				TowerIn->SetScale(0.8f, 0.8f);
+				CurrencyShop->Spend(TowerIn->GetCost());
+				Rings[i]->PlantTower(std::move(TowerIn));
+
+				Rings[i]->BindPlotsColor();
+				return;
+			}
+		}
+	}
+}
+
+void GameLevel::QuitGame()
+{
+	LevelSwitchKey = LevelId::MainMenuLevel;
+}
+
 bool GameLevel::LoadArea()
 {
 	float XBound = 800.0f;
@@ -154,21 +230,22 @@ bool GameLevel::LoadEntities()
 {
 	IShader* ColorChangeShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 
+	//Base
 	ITexture* BaseTexture = Graphics->CreateTexture(L"Resource/Textures/Base.png", "Base");
 	IRenderable* BaseRender = Graphics->CreateFloat4Billboard(ColorChangeShader, BaseTexture, nullptr);
 	Base = std::make_unique<HomeBase>(BaseRender, ColorChangeShader);
 	Base->Register(Graphics);
 
-	
-
+	//Rings
 	ITexture* RingTextureInner = Graphics->CreateTexture(L"Resource/Textures/InnerRing.dds", "InnerRing");
 	IRenderable* InnerRing = Graphics->CreateFloat4Billboard(ColorChangeShader, RingTextureInner, nullptr);
 	Rings[0] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
 	Rings[1] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
 	Rings[2] = std::make_shared<DefenceRing>(ColorChangeShader, InnerRing);
 
-
 	ITexture* PlotTexture = Graphics->CreateTexture(L"Resource/Textures/Plot.png", "Plot");
+
+	//Calculating each plots locationa and rotation in their respective rings, and assigning them to the rings
 	for (int i = 0; i < 2; i++)
 	{
 		IRenderable* PlotRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, PlotTexture, nullptr);
@@ -217,32 +294,34 @@ bool GameLevel::LoadEntities()
 
 		float Rotation = (360.0f/8.0f) * i;
 		float radRot = Rotation * 3.14159265359f / 180.0f;
-//#pragma warning disable 4244 // 
 		float y = (float(cos(radRot)) * (DistFromCenter));
 		float x = (float(sin(radRot)) * (DistFromCenter));
-//#pragma warning restore 4244
 		Plot->SetPosition(DirectX::XMFLOAT2(x, y));
 		Plot->Rotation = Rotation;
 		Plot->DistanceFromCenter = DistFromCenter;
 		Rings[2]->PlantPlot(std::move(Plot));
 	}
-
 	for (int i = 0; i < 3; i++)
 	{
 		Rings[i]->BindPlotsColor();
 	}
+	//Tower templates
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "AreaTower");
 	IRenderable* AreaTowerRemderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
 	TowerClones[0] = std::make_unique<AreaTower>(ColorChangeShader, AreaTowerRemderable);
+
 	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GroundAreaTower");
 	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ColorChangeShader, AreaTowerTexture, nullptr);
 	TowerClones[1] = std::make_unique<GroundAreaTower>(ColorChangeShader, GroundAreaTowerRenderable);
+
 	CurrencyShop = std::make_unique<Shop>(100);
+
+	//Enemies
 	ITexture* EnemyPackTextures = Graphics->CreateTexture(L"Resource/Textures/Fast.png", "EnemyPack");
 	ITexture* EnemyFlyTextures = Graphics->CreateTexture(L"Resource/Textures/Flyer.png", "EnemyFly");
 	ITexture* EnemySlowTextures = Graphics->CreateTexture(L"Resource/Textures/Slow.png", "EnemySlow");
-	
 	Wave.Init(Graphics, ColorChangeShader, EnemyPackTextures, EnemyFlyTextures, EnemySlowTextures);
+	//Spawn areas
 	for (int i = 0; i < 8; i++)
 	{
 		Wave.AddNewSpawnArea(SpawnAreas[i]);
@@ -326,6 +405,8 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 {
 	IShader* ButtonShader = Graphics->CreateShader(L"Resource/Shaders/DynamicColor.fx", "VS_Main", "vs_4_0", "PS_Main", "ps_4_0");
 	ITexture* ButtonTexture = Graphics->CreateTexture(L"Resource/Textures/ButtonNormal.png", "Button");
+
+	//Start, Open Shop, Quit
 	IRenderable* StartRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* StartText = Graphics->CreateText("Start Next Wave", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	StartNextWaveButton = std::make_unique<TextButton>(StartRender, StartText, ButtonShader, screenX, screenY);
@@ -334,6 +415,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	StartNextWaveButton->AddTextPosition(-200, 25);
 	StartNextWaveButton->Register(Graphics);
 	StartNextWaveButton->Interact.BoundFunction = std::bind(&GameLevel::StartNextWave, this);
+
 	IRenderable* OpenRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* OpenText = Graphics->CreateText("Open Shop", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	OpenShopButton = std::make_unique<TextButton>(OpenRender, OpenText, ButtonShader, screenX, screenY);
@@ -342,6 +424,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	OpenShopButton->AddTextPosition(-200, 25);
 	OpenShopButton->Register(Graphics);
 	OpenShopButton->Interact.BoundFunction = std::bind(&GameLevel::OpenShop, this);
+
 	IRenderable* QuitRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	QuitButton = std::make_unique<TextButton>(QuitRender, QuitText, ButtonShader, screenX, screenY);
@@ -350,19 +433,8 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	QuitButton->AddTextPosition(-200, 25);
 	QuitButton->Register(Graphics);
 	QuitButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
-	IRenderable* EndRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
-	IText* EndButtonText = Graphics->CreateText("End Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	EndButton = std::make_unique<TextButton>(EndRender, EndButtonText, ButtonShader, screenX, screenY);
-	EndButton->SetPosition(0, 200);
-	EndButton->SetButtonScale(4, 2);
-	EndButton->AddTextPosition(-200, 25);
-	EndButton->Register(Graphics);
-	EndButton->Unregister(Graphics);
-	EndText = Graphics->CreateText("END CONDITION", (screenX / 2) - 200, 50);
-	EndButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
-	Graphics->AddText(EndText);
-	Graphics->RemoveText(EndText);
 
+	//Round, Currency, Health
 	RoundIndicator = Graphics->CreateText("Round: X");
 	CurrencyIndicator = Graphics->CreateText("Gold: X", 0, 50);
 	HealthIndicator = Graphics->CreateText("Health: X", 0, 100);
@@ -370,10 +442,11 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	Graphics->AddText(CurrencyIndicator);
 	Graphics->AddText(HealthIndicator);
 
+	//Tower templates buying prompts
 	IText* AreaTowerText = Graphics->CreateText("60 Gold Can attack Sea and Air", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* AreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/Tower.png", "TBuy");
 	IRenderable* AreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, AreaTowerTexture, nullptr);
-	TowerButtons[0] =std::make_unique<TextButton>(AreaTowerRenderable, AreaTowerText, ButtonShader, screenX, screenY);
+	TowerButtons[0] = std::make_unique<TextButton>(AreaTowerRenderable, AreaTowerText, ButtonShader, screenX, screenY);
 	TowerButtons[0]->SetPosition(-300, 0);
 	TowerButtons[0]->SetButtonScale(2, 2);
 	TowerButtons[0]->AddTextPosition(-400, 200);
@@ -381,6 +454,7 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	TowerButtons[0]->Unregister(Graphics);
 	TowerButtons[0]->Interact.SetHighlightColor(0.7f, 1.0f, 0.7f, 1.0f);
 	TowerButtons[0]->Interact.BoundFunction = std::bind(&GameLevel::SpawnAreaTower, this);
+
 	IText* GroundAreaTowerText = Graphics->CreateText("40 Gold Can attack Sea", 0, 0, 1, 1, 0, 1, 0, 0, 1);
 	ITexture* GroundAreaTowerTexture = Graphics->CreateTexture(L"Resource/Textures/GroundTower.png", "GTBuy");
 	IRenderable* GroundAreaTowerRenderable = Graphics->CreateFloat4Billboard(ButtonShader, GroundAreaTowerTexture, nullptr);
@@ -392,6 +466,23 @@ bool GameLevel::LoadUI(float screenX, float screenY)
 	TowerButtons[1]->Unregister(Graphics);
 	TowerButtons[1]->Interact.SetHighlightColor(0.7f, 1.0f, 0.7f, 1.0f);
 	TowerButtons[1]->Interact.BoundFunction = std::bind(&GameLevel::SpawnGroundAreaTower, this);
+
+	//End game
+	IRenderable* EndRender = Graphics->CreateFloat4Billboard(ButtonShader, ButtonTexture, nullptr);
+	IText* EndButtonText = Graphics->CreateText("End Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
+	EndButton = std::make_unique<TextButton>(EndRender, EndButtonText, ButtonShader, screenX, screenY);
+	EndButton->SetPosition(0, 200);
+	EndButton->SetButtonScale(4, 2);
+	EndButton->AddTextPosition(-200, 25);
+	EndButton->Register(Graphics);
+	EndButton->Unregister(Graphics);
+	EndText = Graphics->CreateText("END CONDITION", (screenX / 2) - 200, 50);
+	EndButton->Interact.BoundFunction = std::bind(&GameLevel::QuitGame, this);
+	//Disables it from render at the beginning
+	Graphics->AddText(EndText);
+	Graphics->RemoveText(EndText);
+
+
 	return true;
 }
 
@@ -417,69 +508,4 @@ bool GameLevel::LoadUILinks()
 
 	EndSelector = std::make_shared<InputSelection>(&EndButton->Interact);
 	return true;
-}
-
-void GameLevel::OpenShop()
-{
-	CurrentSelector = ShopSelector;
-	bPaused = true;
-	TowerButtons[0]->Register(Graphics);
-	TowerButtons[1]->Register(Graphics);
-
-}
-
-void GameLevel::CloseShop()
-{
-	CurrentSelector = ButtonSelector;
-	bPaused = false;
-	TowerButtons[0]->Unregister(Graphics);
-	TowerButtons[1]->Unregister(Graphics);
-}
-
-void GameLevel::SpawnAreaTower()
-{
-	if (CurrencyShop->CanPurchase(TowerClones[0]->GetCost()))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (Rings[i]->IsPlotAvailable())
-			{
-				std::unique_ptr<Tower> TowerIn = CurrencyShop->CreateTower(TowerClones[0], Graphics);
-				TowerIn->SetScale(2, 2);
-				TowerIn->Register(Graphics);
-				TowerIn->SetScale(0.8f, 0.8f);
-				CurrencyShop->Spend(TowerIn->GetCost());
-				Rings[i]->PlantTower(std::move(TowerIn));
-				
-				Rings[i]->BindPlotsColor();
-				return;
-			}
-		}
-	}
-}
-
-void GameLevel::SpawnGroundAreaTower()
-{
-	if (CurrencyShop->CanPurchase(TowerClones[1]->GetCost()))
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			if (Rings[i]->IsPlotAvailable())
-			{
-				std::unique_ptr<Tower> TowerIn =CurrencyShop->CreateTower(TowerClones[1], Graphics);
-				TowerIn->SetScale(2, 2);
-				TowerIn->Register(Graphics);
-				TowerIn->SetScale(0.8f, 0.8f);
-				CurrencyShop->Spend(TowerIn->GetCost());
-				Rings[i]->PlantTower(std::move(TowerIn));
-				Rings[i]->BindPlotsColor();
-				return;
-			}
-		}
-	}
-}
-
-void GameLevel::QuitGame()
-{
-	LevelSwitchKey = LevelId::MainMenuLevel;
 }

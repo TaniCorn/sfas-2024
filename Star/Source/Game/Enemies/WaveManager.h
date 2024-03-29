@@ -4,6 +4,12 @@ class IGraphics;
 class IShader;
 #include <queue>
 #include <memory>
+
+
+/// <summary>
+/// The wave manager handles the spawning, gold aquisition, and enemies inside a level.
+/// Using a round and waves system, Round 1 can have 5 different waves of enemies, and so on
+/// </summary>
 class WaveManager
 {
 public:
@@ -34,9 +40,12 @@ private:
 	int SpawnGroup(const EnemyTypes Type, int Amount, const int Area);
 	void SpawnWave();
 
+	//Map of Roundnumbers, and a queue of enemy waves inside the round
 	std::map<int, std::queue<WaveSpawns>> WaveEntities;
+	//Enemies that have spawned and not been killed
 	std::vector<Enemy*> AliveEnemies;
 
+	//Enemy pool of 50 enemies each
 	Enemy EnemyPool[150];
 	std::vector<DirectX::XMFLOAT2*> SpawnArea;
 	

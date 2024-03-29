@@ -21,11 +21,12 @@ public:
 
 	void Rotate(float Direction, float DeltaTime);
 	void Update(float DeltaTime, const std::vector<Enemy*>& Enemies);
-	void SetPosition(const DirectX::XMFLOAT2 Location);
-	void SetScale(const float x, const float y);
 	void PlantTower(std::unique_ptr<Tower> TowerIn);
 	void PlantPlot(std::unique_ptr<TowerPlot> PlotIn);
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
 	void BindPlotsColor();
+
 	Interactable Interact;
 private:
 	IShader* Shader;

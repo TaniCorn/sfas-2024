@@ -25,6 +25,8 @@ public:
 	std::function<void()> PreviousMenuFunction;
 
 private:
+	void XMovement(IInput* Input);
+	void YMovement(IInput* Input);
 	struct NESW
 	{
 		Interactable* Up;
@@ -35,7 +37,8 @@ private:
 
 	std::map<Interactable*, NESW> InteractableLinks;
 	Interactable* CurrentInteractable;
-	bool bMoveableX = true;
-	bool bMoveableY = true;
+
+	bool bMoveableX = true;//For making sure the selector only moves one on the X direction at a time
+	bool bMoveableY = true;//For making sure the selector only moves one on the Y direction at a time
 };
 

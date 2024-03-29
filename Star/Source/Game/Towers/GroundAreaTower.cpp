@@ -8,11 +8,14 @@ GroundAreaTower::GroundAreaTower(IShader* ShaderIn, IRenderable* RenderableIn) :
 
 void GroundAreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 {
+	
 	if (bAttack)
 	{
+		//Push enemies to damange into temporary vector
 		std::vector<Enemy*> EnemiesToHit;
 		for (int i = 0; i < Enemies.size(); i++)
 		{
+			//If enemy is in range and not flying
 			if (IsEnemyInRange(Enemies[i]))
 			{
 				if (!Enemies[i]->Flying())
@@ -22,6 +25,7 @@ void GroundAreaTower::AttackUpdate(const std::vector<Enemy*>& Enemies)
 			}
 		}
 
+		//Attack any valid enemies, set bAttack to false regardless if any enemies are hit
 		bAttack = false;
 		if (EnemiesToHit.size() == 0)
 		{

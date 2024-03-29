@@ -24,6 +24,8 @@ Enemy::Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : C
 	default:
 		break;
 	}
+
+	//Sets the enemy to invisibble and dead when spawning
 	bAlive = false;
 	SetPosition(DirectX::XMFLOAT2(0, 0));
 	ColorHighlight.SetNormalColor(0, 0, 0, 0);
@@ -102,27 +104,36 @@ int Enemy::GetGoldGain() const
 void Enemy::MoveTowardsTarget(float DeltaTime)
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(TargetPosition, Position);
-	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Vector);
 	float Distance = DXHelper::Magnitude(Vector);
+
 	if (Distance > 10.0f)
 	{
-		DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
-		SetPosition(DXHelper::Add(Direction, Position));
-		
-		float RadRotDot = acos(DXHelper::DotProduct(DirectX::XMFLOAT2(0, -1), UnitVector));
-		if (UnitVector.x < 0)
-		{
-			SetRotation(-RadRotDot);
-		}
-		else 
-		{
-			SetRotation(RadRotDot);
-		}
+		MoveAndRotate(DeltaTime, Vector);
 	}
 	else
 	{
 		TargetHealthObject->DamageEntity(Damage);
 		DamageEntity(Health.GetMaxHealth());
+	}
+}
+
+void Enemy::MoveAndRotate(float DeltaTime, DirectX::XMFLOAT2 Direction)
+{
+	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Direction);
+	DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
+
+	//Move
+	SetPosition(DXHelper::Add(Direction, Position));
+
+	//Rotate
+	float RadRotDot = acos(DXHelper::DotProduct(DirectX::XMFLOAT2(0, -1), UnitVector));
+	if (UnitVector.x < 0)
+	{
+		SetRotation(-RadRotDot);
+	}
+	else
+	{
+		SetRotation(RadRotDot);
 	}
 }
 
