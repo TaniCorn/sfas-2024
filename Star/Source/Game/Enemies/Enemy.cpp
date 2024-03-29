@@ -117,9 +117,9 @@ void Enemy::MoveTowardsTarget(float DeltaTime)
 	}
 }
 
-void Enemy::MoveAndRotate(float DeltaTime, DirectX::XMFLOAT2 Direction)
+void Enemy::MoveAndRotate(float DeltaTime, DirectX::XMFLOAT2 Vector)
 {
-	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Direction);
+	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Vector);
 	DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
 
 	//Move
