@@ -37,6 +37,7 @@ When I first set out on this project, I had a couple goals when looking at the c
 
 I managed to do everything except the sound because I had run out of time.
 The idea for the game came from my love for Vampire Survivors and tower defence games. This was the original screenshot of my idea![image](https://github.com/TaniCorn/sfas-2024/assets/63819551/960421e6-bd54-407b-966c-2529abe18099)
+
 Initially I tried to research some of the previous SFAS Programming entries but found out that most of the games made before was using a game engine, which puts the expectations for the this a little bit differently. I felt like it would be most suited to put 50% of my focus into the engine, and the other 50% into the game.
 
 ### Design Plan
@@ -44,10 +45,13 @@ Initially I tried to research some of the previous SFAS Programming entries but 
 Graphics
  - I also want to improve the graphical pipeline, instead of creating a texture, a shader for that texture, and a renderable for that shader; which I understood that it would be more efficient for use cases where there was a lot of assets using the same texture, it was just a bit clunky to use. 
  - The design I had envisioned for the system was to create textures that were referenced by Renderables, and shaders could render anything with any texture.
+
  Levels
  - Having the Game.h be the main game application while the levels would live inside it. I thought it would be a good idea to replicate the IApplication to the ILevel as much as possible. With one difference being the IsValid function changes to a function that allows current levels to switch to a different level by returning an enum value.
+
  AI
  - AI would be really simple, since our base would be in the middle we don’t need to do any advanced pathfinding or creating paths for them to follow, instead we’d just make them go to the target straight on.
+
  Tower and Enemies
  - Initially I planned to have towers and enemies function with the prototype pattern, however as I was reaching the end of the project, the extra work to implement specialised functionality and extra art assets that would make sense with the theme was not worth the limited time I had.
 
