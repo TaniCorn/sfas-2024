@@ -16,17 +16,17 @@ DirectX11Billboard::~DirectX11Billboard()
 	}
 }
 	
-void DirectX11Billboard::Update(ID3D11DeviceContext* Context)
+void DirectX11Billboard::Update(ID3D11DeviceContext* ContextIn)
 {
-	if (Context)
+	if (ContextIn)
 	{
 		if (Texture)
 		{
 			Texture->Update();
 		}
-		Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		Context->IASetVertexBuffers(0, 1, &VertexBuffer, &vertexStride, &vertexOffset);
-		Context->Draw(vertexCount, 0);
+		ContextIn->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		ContextIn->IASetVertexBuffers(0, 1, &VertexBuffer, &vertexStride, &vertexOffset);
+		ContextIn->Draw(vertexCount, 0);
 	}
 }
 

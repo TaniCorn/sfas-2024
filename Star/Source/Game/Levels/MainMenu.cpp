@@ -10,14 +10,11 @@
 #include "../../Engine/Implementation/InputSelection.h"
 MainMenu::MainMenu(IGraphics* Graphics, IInput* InputIn) : ILevel(Graphics, InputIn)
 {
-	LevelSwitchKey = MainMenuLevel;
+	LevelSwitchKey = LevelId::MainMenuLevel;
 }
 
 MainMenu::~MainMenu()
 {
-	delete GamepadSelection;
-	delete Buttons[0];
-	delete Buttons[1];
 }
 
 bool MainMenu::Load()
@@ -39,13 +36,13 @@ bool MainMenu::Load()
 
 	IText* StartText = Graphics->CreateText("Start Game", 0, 0, 1,1,0,1,0,0,1);
 	IText* QuitText = Graphics->CreateText("Quit Game", 0, 0, 1, 1, 0, 1, 0, 0, 1);
-	Buttons[0] = new TextButton(StartRender, StartText, ButtonShader, screenX, screenY);
+	Buttons[0] = std::make_unique<TextButton>(StartRender, StartText, ButtonShader, screenX, screenY);
 	Buttons[0]->SetPosition( ( - screenX / 2) + 200, -200);
 	Buttons[0]->SetTextRelativePosition(-100,50);
 	Buttons[0]->SetScale(2, 2);
 	Buttons[0]->AddButtonPosition(170, 0);
 	Buttons[0]->SetButtonScale(5, 2);
-	Buttons[1] = new TextButton(QuitRender, QuitText , ButtonShader, screenX, screenY);
+	Buttons[1] = std::make_unique<TextButton>(QuitRender, QuitText , ButtonShader, screenX, screenY);
 	Buttons[1]->SetPosition((-screenX / 2) + 200, -400);
 	Buttons[1]->SetTextRelativePosition(-100, 50);
 	Buttons[1]->SetScale(2, 2);
@@ -59,9 +56,9 @@ bool MainMenu::Load()
 	Buttons[0]->Interact.BoundFunction = std::bind(&MainMenu::StartGame, this);
 	Buttons[1]->Interact.BoundFunction = std::bind(&MainMenu::QuitGame, this);
 
-	GamepadSelection = new InputSelection(&Buttons[0]->Interact);
-	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, Down);
-	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, Up);
+	GamepadSelection = std::make_unique<InputSelection>(&Buttons[0]->Interact);
+	GamepadSelection->AddButtonLink(&Buttons[0]->Interact, &Buttons[1]->Interact, ButtonDirection::Down);
+	GamepadSelection->AddButtonLink(&Buttons[1]->Interact, &Buttons[0]->Interact, ButtonDirection::Up);
 	return true;
 }
 
@@ -80,10 +77,10 @@ void MainMenu::Cleanup()
 
 void MainMenu::QuitGame()
 {
-	LevelSwitchKey = QuitProgram;
+	LevelSwitchKey = LevelId::QuitProgram;
 }
 
 void MainMenu::StartGame()
 {
-	LevelSwitchKey = GameLevel1;
+	LevelSwitchKey = LevelId::GameLevel1;
 }

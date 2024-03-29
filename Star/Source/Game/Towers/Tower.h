@@ -4,37 +4,36 @@
 #include "../Components/ColorHighlighting.h"
 #include <vector>
 #include <DirectXMath.h>
-
+#include <memory>
 class TowerPlot;
 class Enemy;
 
 class Tower : public IRegisteredObject
 {
 public:
-	Tower(IShader* ShaderIn, IRenderable* RenderableIn, float DamageIn, float RangeIn, float AttackCooldownIn, int Cost);
+	Tower(IShader* ShaderIn, IRenderable* RenderableIn, const float DamageIn, const float RangeIn, const float AttackCooldownIn, const int Cost);
 	virtual void Register(IGraphics* GraphicsIn);
 	virtual void Unregister(IGraphics* GraphicsIn);
-
 	virtual void Update(float DeltaTime);
 	virtual void AttackUpdate(const std::vector<Enemy*>& Enemies) = 0;
+	virtual std::unique_ptr<Tower> Clone(IGraphics* Graphics) const = 0;
 
-	int GetCost();
-	void LinkPosition(DirectX::XMFLOAT2& Location);
-	void SetScale(float x, float y);
 	bool IsEnemyInRange(const Enemy* CurrentEnemy) const;
+	int GetCost() const;
+	IRenderable* GetRenderable() const;
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
+
 	ColorHighlighting ColorHighlight;
-	IRenderable* GetRenderable();
-	virtual Tower* Clone(IGraphics* Graphics) = 0;
 protected:
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-	DirectX::XMFLOAT2* Position;
-	float Range;
-	float Damage;
+	const float Range;
+	const float Damage;
+	const int Cost;
+	const float AttackCooldown;
 
-	float AttackCooldown;
 	float AttackTimer = 0;
 	bool bAttack = false;
-	int Cost;
 };
 

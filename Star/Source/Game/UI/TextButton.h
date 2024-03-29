@@ -11,8 +11,8 @@ class TextButton : public IRegisteredObject
 public:
 	TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* ShaderIn, float screenx, float screeny);
 
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
 
 	void AddButtonPosition(float x, float y);
 	void AddTextPosition(float x, float y);

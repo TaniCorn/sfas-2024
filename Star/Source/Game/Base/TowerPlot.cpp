@@ -8,11 +8,6 @@ TowerPlot::TowerPlot(IShader* ShaderIn, IRenderable* RenderableIn) : Shader(Shad
 
 TowerPlot::~TowerPlot()
 {
-	if (PlantedTower != nullptr)
-	{
-		delete PlantedTower;
-		PlantedTower = nullptr;
-	}
 }
 
 void TowerPlot::Register(IGraphics* GraphicsIn)
@@ -25,7 +20,7 @@ void TowerPlot::Unregister(IGraphics* GraphicsIn)
 	GraphicsIn->RemoveSpriteFromRender(Shader, Renderable);
 }
 
-void TowerPlot::SetPosition(DirectX::XMFLOAT2 Location)
+void TowerPlot::SetPosition(const DirectX::XMFLOAT2 Location)
 {
 	Position = Location;
 	Renderable->SetPosition(Location.x, Location.y);
@@ -41,9 +36,9 @@ void TowerPlot::SetScale(float x, float y)
 	Renderable->SetScale(x, y);
 }
 
-bool TowerPlot::IsAvailable()
+bool TowerPlot::IsAvailable() const
 {
-	if (PlantedTower == nullptr)
+	if (bAvailable)
 	{
 		return true;
 	}
@@ -53,24 +48,18 @@ bool TowerPlot::IsAvailable()
 	}
 }
 
-void TowerPlot::PlantTower(Tower* TowerToPlant)
+void TowerPlot::PlantTower()
 {
-	PlantedTower = TowerToPlant;
-	TowerToPlant->LinkPosition(Position);
-	Interact.SetNormalColor(0, 0, 0, 0);
-	Interact.Unhighlighted();
+	if (bAvailable)
+	{
+		bAvailable = false;
+		Interact.SetNormalColor(0, 0, 0, 0);
+		Interact.Unhighlighted();
+	}
+
 }
 
-IRenderable* TowerPlot::GetRenderable()
+IRenderable* TowerPlot::GetRenderable() const
 {
 	return Renderable;
-}
-
-IRenderable* TowerPlot::GetTowerRenderable()
-{
-	if (PlantedTower != nullptr)
-	{
-		return PlantedTower->GetRenderable();
-	}
-	return nullptr;
 }

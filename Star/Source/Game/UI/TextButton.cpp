@@ -8,7 +8,6 @@ TextButton::TextButton(IRenderable* RenderableIn, IText* TextIn, IShader* Shader
 	Renderable = RenderableIn;
 	Text = TextIn;
 	Shader = ShaderIn;
-	//Renderable->SetPosition(-halfX, halfY);
 	Text->SetPosition(halfX, halfY);
 	//Text origin is topLeft
 	//Renderable origin is center

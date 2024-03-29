@@ -7,41 +7,48 @@
 
 class IShader;
 
-enum EnemyTypes {
-	FastPack,
+enum class EnemyTypes {
+	FastPacks,
 	SlowGrunts,
 	Flyers
 };
+
 class Enemy : public IRegisteredObject
 {
 public:
+	static EntityHealth* TargetHealthObject;
+	static DirectX::XMFLOAT2 TargetPosition;
 	Enemy();
-	void Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
-	virtual void DamageEntity(float Amount);
+	Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
+	
+
 	bool IsAlive() const;
 	bool Flying() const;
-	void Spawn(DirectX::XMFLOAT2 Location);
-	virtual void Update(float DeltaTime);
+	DirectX::XMFLOAT2 GetPosition() const;
+	int GetGoldGain() const;
+
+	void DamageEntity(float Amount);
+	void Update(float DeltaTime);
+	void Spawn(const DirectX::XMFLOAT2 Location);
 	void SetPosition(DirectX::XMFLOAT2 Location);
 	void SetRotation(float Rotation);
-	DirectX::XMFLOAT2 GetPosition() const;
-	int GetGoldGain();
 
+	
 	EntityHealth Health;
-	static EntityHealth* Target;
-	static DirectX::XMFLOAT2 TargetPosition;
 	ColorHighlighting ColorHighlight;
 protected:
 	void MoveTowardsTarget(float DeltaTime);
-	void SetStats(float HealthIn, float DamageIn, float SpeedIn, int Gold, bool bCanFly);
+	void MoveAndRotate(float DeltaTime, DirectX::XMFLOAT2 Direction);
+	void SetStats(const float HealthIn, const float DamageIn, const float SpeedIn, const int Gold, const bool bCanFly);
+	
+
 	IShader* Shader;
 	IRenderable* CurrentTexture;
-
+	bool bFlying;
 	float Damage;
 	float Speed;
-	bool bFlying;
 	bool bAlive;
 	int GoldGain;
 	DirectX::XMFLOAT2 Position;

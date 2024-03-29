@@ -6,12 +6,8 @@ class IGraphics;
 class ITexture;
 class IShader;
 class IRenderable;
-enum Level;
+enum class LevelId;
 class ILevel;
-
-enum RingLayer { Outer, Middle, Inner, NumRings };
-enum GameState { Setup, Playing, Test, NumModes };
-static const unsigned int NumberOfRings = static_cast<int>(NumRings);
 
 class Game : public IApplication
 {
@@ -20,26 +16,16 @@ public:
 	Game(IGraphics* Graphics, IInput* InputIn);
 	virtual ~Game();
 
-	virtual bool IsValid();
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool IsValid() override;
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
 
-	void SwitchLevel(Level NextLevelIdentfier);
-	void SetupEachRing();
-	void UpdateRingSelection();
-	void UpdateSelectedRingRotation();
-	void UpdateRingTestSelection();
-	void TestRingSolution();
+	void SwitchLevel(LevelId NextLevelIdentfier);
 
-	IRenderable* Rings[NumberOfRings];
-	IRenderable* Arrow;
-	RingLayer SelectedRing;
-	GameState State;
-
-	Level CurrentLevelIdentifier;
+	LevelId CurrentLevelIdentifier;
 	ILevel* CurrentLevel;
 	ILevel* LoadingScreenLevel; //If implementing Asyncronous loading screens
 

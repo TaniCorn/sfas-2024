@@ -10,9 +10,9 @@ public:
 	SplashScreen(IGraphics* Graphics, IInput* InputIn);
 	virtual ~SplashScreen();
 
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
 	const float SplashTime = 4.0f;

@@ -4,27 +4,22 @@ Shop::Shop(int StartingGold) : Gold(StartingGold)
 {
 }
 
-int Shop::GetCurrentGold()
+int Shop::GetCurrentGold() const
 {
     return Gold;
 }
 
-void Shop::AddGold(int Amount)
+void Shop::AddGold(const int Amount)
 {
     Gold += Amount;
 }
 
-void Shop::AddButton(TextButton* Button, Tower* PurchaseTower)
-{
-    PurchaseButtons.push_back(std::pair<TextButton*, Tower*>(Button, PurchaseTower));
-}
-
-void Shop::Spend(int GoldSpend)
+void Shop::Spend(const int GoldSpend)
 {
     Gold -= GoldSpend;
 }
 
-bool Shop::CanPurchase(int GoldSpend)
+bool Shop::CanPurchase(const int GoldSpend) const 
 {
     if (GoldSpend <= Gold)
     {
@@ -33,11 +28,7 @@ bool Shop::CanPurchase(int GoldSpend)
     return false;
 }
 
-Tower* Shop::CreateTower(Tower* Clone, IGraphics* Graphics)
+std::unique_ptr<Tower> Shop::CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics) const
 {
-    Tower* CreatedTower = Clone->Clone(Graphics);
-    CreatedTower->SetScale(2, 2);
-    CreatedTower->Register(Graphics);
-    TowersCreated.insert(CreatedTower);
-    return CreatedTower;
+    return Clone->Clone(Graphics);
 }

@@ -1,26 +1,39 @@
 #pragma once
+
+#include "../../Engine/IRegisteredObject.h"
 #include "TowerPlot.h"
+#include "../Towers/Tower.h"
+#include <map>
 #include <vector>
+#include <memory>
+class Enemy;
+
+
 class DefenceRing : public IRegisteredObject
 {
 public:
 	DefenceRing(IShader* ShaderIn, IRenderable* RenderableIn);
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
-	void SetPosition(DirectX::XMFLOAT2 Location);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
+	
 	DirectX::XMFLOAT2 GetPosition() const;
-	void SetScale(float x, float y);
+	bool IsPlotAvailable() const;
+
 	void Rotate(float Direction, float DeltaTime);
-	bool PlotAvailable();
-	void PlantTower(Tower* TowerIn);
+	void Update(float DeltaTime, const std::vector<Enemy*>& Enemies);
+	void PlantTower(std::unique_ptr<Tower> TowerIn);
+	void PlantPlot(std::unique_ptr<TowerPlot> PlotIn);
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
 	void BindPlotsColor();
+
 	Interactable Interact;
-	std::vector<TowerPlot*> Plots;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;
 	DirectX::XMFLOAT2 Position;
+	std::map<std::unique_ptr<TowerPlot>, std::unique_ptr<Tower>> PlotsAndTowers;
 
-	float RotationSpeed = 5;
+	const float RotationSpeed = 5;
 };
 

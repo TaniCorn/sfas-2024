@@ -4,29 +4,30 @@
 #include <DirectXMath.h>
 class IShader;
 class IRenderable;
-class Tower;
 
 class TowerPlot : public IRegisteredObject
 {
 public:
 	TowerPlot(IShader* ShaderIn, IRenderable* RenderableIn);
 	~TowerPlot();
-	virtual void Register(IGraphics* GraphicsIn);
-	virtual void Unregister(IGraphics* GraphicsIn);
-	void SetPosition(DirectX::XMFLOAT2 Location);
+	virtual void Register(IGraphics* GraphicsIn) override;
+	virtual void Unregister(IGraphics* GraphicsIn) override;
+
+	bool IsAvailable() const;
 	DirectX::XMFLOAT2 GetPosition() const;
-	void SetScale(float x, float y);
-	bool IsAvailable();
-	void PlantTower(Tower* TowerToPlant);
-	IRenderable* GetRenderable();
-	IRenderable* GetTowerRenderable();
-	Interactable Interact;
-	Tower* PlantedTower;
+	IRenderable* GetRenderable() const;
+
+	void SetPosition(const DirectX::XMFLOAT2 Location);
+	void SetScale(const float x, const float y);
+	void PlantTower();
+
 	float DistanceFromCenter;
 	float Rotation;
 private:
 	IShader* Shader;
 	IRenderable* Renderable;
+	Interactable Interact;
 	DirectX::XMFLOAT2 Position;
+	bool bAvailable = true;
 };
 

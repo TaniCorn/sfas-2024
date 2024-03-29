@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Engine/ILevel.h"
-
+#include <memory>
 class IRenderable;
 class TextButton;
 class IText;
@@ -12,14 +12,16 @@ public:
 	MainMenu(IGraphics* Graphics, IInput* InputIn);
 	virtual ~MainMenu();
 
-	virtual bool Load();
-	virtual void Update(float DeltaTime);
-	virtual void Cleanup();
+	virtual bool Load() override;
+	virtual void Update(float DeltaTime) override;
+	virtual void Cleanup() override;
 
 private:
-	InputSelection* GamepadSelection;
-	TextButton* Buttons[2];
 	void QuitGame();
 	void StartGame();
+
+	std::unique_ptr<InputSelection> GamepadSelection;
+	std::unique_ptr <TextButton> Buttons[2];
+
 };
 

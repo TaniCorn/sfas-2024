@@ -7,21 +7,19 @@ class Tower;
 
 #include <vector>
 #include <set>
+#include <memory>
 
 class Shop
 {
 public:
-	Shop(int StartingGold);
-	int GetCurrentGold();
-	void AddGold(int Amount);
-	void AddButton(TextButton* Button, Tower* PurchaseTower);
-	void Spend(int GoldSpend);
-	bool CanPurchase(int GoldSpend);
+	Shop(const int StartingGold);
+	int GetCurrentGold() const;
+	bool CanPurchase(const int GoldSpend) const;
+	void AddGold(const int Amount);
+	void Spend(const int GoldSpend);
 
-	Tower* CreateTower(Tower* Clone, IGraphics* Graphics);
-	std::set<Tower*> TowersCreated;
+	std::unique_ptr<Tower> CreateTower(std::unique_ptr<Tower> const &Clone, IGraphics* Graphics) const;
 private:
 	int Gold;
-	std::vector<std::pair<TextButton*,Tower*>> PurchaseButtons;
 };
 

@@ -1,34 +1,33 @@
 #include "Enemy.h"
 #include "../../Engine/Implementation/DXMathHelper.h"
 DirectX::XMFLOAT2 Enemy::TargetPosition = DirectX::XMFLOAT2(0, 0);
-EntityHealth* Enemy::Target = nullptr;
+EntityHealth* Enemy::TargetHealthObject = nullptr;
 
 
 Enemy::Enemy() : CurrentTexture(nullptr), Shader(nullptr), ColorHighlight(), Health(0)
 {
-	bAlive = false;
 }
 
-void Enemy::Init(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy)
+Enemy::Enemy(IRenderable* RenderableIn, IShader* ShaderIn, EnemyTypes Enemy) : CurrentTexture(RenderableIn), Shader(ShaderIn), ColorHighlight(), Health(0)
 {
-	CurrentTexture = RenderableIn;
-	Shader = ShaderIn;
 	switch (Enemy)
 	{
-	case FastPack:
+	case EnemyTypes::FastPacks:
 		SetStats(5, 5, 50, 2, false);
 		break;
-	case SlowGrunts:
+	case EnemyTypes::SlowGrunts:
 		SetStats(20, 5, 20, 10, false);
 		break;
-	case Flyers:
+	case EnemyTypes::Flyers:
 		SetStats(5, 2, 40, 3, true);
 		break;
 	default:
 		break;
 	}
-	SetPosition(DirectX::XMFLOAT2(0, 0));
+
+	//Sets the enemy to invisibble and dead when spawning
 	bAlive = false;
+	SetPosition(DirectX::XMFLOAT2(0, 0));
 	ColorHighlight.SetNormalColor(0, 0, 0, 0);
 }
 
@@ -64,7 +63,7 @@ bool Enemy::Flying() const
 	return bFlying;
 }
 
-void Enemy::Spawn(DirectX::XMFLOAT2 Location)
+void Enemy::Spawn(const DirectX::XMFLOAT2 Location)
 {
 	SetPosition(Location);
 	bAlive = true;
@@ -76,7 +75,7 @@ void Enemy::Spawn(DirectX::XMFLOAT2 Location)
 void Enemy::Update(float DeltaTime)
 {
 	ColorHighlight.Update(DeltaTime);
-	if (Target != nullptr && bAlive)
+	if (TargetHealthObject != nullptr && bAlive)
 	{
 		MoveTowardsTarget(DeltaTime);
 	}
@@ -98,38 +97,47 @@ DirectX::XMFLOAT2 Enemy::GetPosition() const
 	return Position;
 }
 
-int Enemy::GetGoldGain()
+int Enemy::GetGoldGain() const
 {
 	return GoldGain;
 }
 void Enemy::MoveTowardsTarget(float DeltaTime)
 {
 	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(TargetPosition, Position);
-	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Vector);
 	float Distance = DXHelper::Magnitude(Vector);
+
 	if (Distance > 10.0f)
 	{
-		DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
-		SetPosition(DXHelper::Add(Direction, Position));
-		
-		float RadRotDot = acos(DXHelper::DotProduct(DirectX::XMFLOAT2(0, -1), UnitVector));
-		if (UnitVector.x < 0)
-		{
-			SetRotation(-RadRotDot);
-		}
-		else 
-		{
-			SetRotation(RadRotDot);
-		}
+		MoveAndRotate(DeltaTime, Vector);
 	}
 	else
 	{
-		Target->DamageEntity(Damage);
+		TargetHealthObject->DamageEntity(Damage);
 		DamageEntity(Health.GetMaxHealth());
 	}
 }
 
-void Enemy::SetStats(float HealthIn, float DamageIn, float SpeedIn, int Gold, bool bCanFly)
+void Enemy::MoveAndRotate(float DeltaTime, DirectX::XMFLOAT2 Vector)
+{
+	DirectX::XMFLOAT2 UnitVector = DXHelper::Normalise(Vector);
+	DirectX::XMFLOAT2 Direction = DXHelper::Multiply(UnitVector, (Speed * DeltaTime));
+
+	//Move
+	SetPosition(DXHelper::Add(Direction, Position));
+
+	//Rotate
+	float RadRotDot = acos(DXHelper::DotProduct(DirectX::XMFLOAT2(0, -1), UnitVector));
+	if (UnitVector.x < 0)
+	{
+		SetRotation(-RadRotDot);
+	}
+	else
+	{
+		SetRotation(RadRotDot);
+	}
+}
+
+void Enemy::SetStats(const float HealthIn, const float DamageIn, const float SpeedIn, const int Gold, const bool bCanFly)
 {
 	Health.SetEntityHealth(HealthIn);
 	Damage = DamageIn;

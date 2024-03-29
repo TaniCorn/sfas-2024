@@ -17,71 +17,9 @@ InputSelection::~InputSelection()
 
 void InputSelection::Update(IInput* Input)
 {
-	float xVal = Input->GetValue(InputAction::LeftStickXAxis);
-	float yVal = Input->GetValue(InputAction::LeftStickYAxis);
-	if (bMoveableX)
-	{
-		if (xVal < 0)
-		{
-			if (InteractableLinks[CurrentInteractable].Left != nullptr)
-			{
-				CurrentInteractable->Unhighlighted();
-				CurrentInteractable = InteractableLinks[CurrentInteractable].Left;
-				CurrentInteractable->Highlighted();
-				bMoveableX = false;
-			}
-		}
-		else if (xVal > 0)
-		{
-			if (InteractableLinks[CurrentInteractable].Right != nullptr)
-			{
-				CurrentInteractable->Unhighlighted();
-				CurrentInteractable = InteractableLinks[CurrentInteractable].Right;
-				CurrentInteractable->Highlighted();
-				bMoveableX = false;
-			}
-		}
-	}
-	else {
-		if (xVal <= 0.1 && xVal >= -0.1)
-		{
-			bMoveableX = true;
-		}
-	}
-
-	if (bMoveableY)
-	{
-		if (yVal < 0)
-		{
-			if (InteractableLinks[CurrentInteractable].Down != nullptr)
-			{
-				CurrentInteractable->Unhighlighted();
-				CurrentInteractable = InteractableLinks[CurrentInteractable].Down;
-				CurrentInteractable->Highlighted();
-				bMoveableY = false;
-			}
-
-		}
-		else if (yVal > 0)
-		{
-			if (InteractableLinks[CurrentInteractable].Up != nullptr)
-			{
-				CurrentInteractable->Unhighlighted();
-				CurrentInteractable = InteractableLinks[CurrentInteractable].Up;
-				CurrentInteractable->Highlighted();
-				bMoveableY = false;
-			}
-		}
-	}
-	else 
-	{
-		if (yVal <= 0.1 && yVal >= -0.1)
-		{
-			bMoveableY = true;
-		}
-	}
-
-
+	XMovement(Input);
+	YMovement(Input);
+	//Confirm Selection
 	if (Input->IsPressed(InputAction::ButtonBottom))
 	{
 		if (CurrentInteractable->BoundFunction)
@@ -89,6 +27,7 @@ void InputSelection::Update(IInput* Input)
 			CurrentInteractable->BoundFunction();
 		}
 	}
+	//Back button
 	if (Input->IsPressed(InputAction::ButtonRight))
 	{
 		if (PreviousMenuFunction)
@@ -102,19 +41,100 @@ void InputSelection::AddButtonLink(Interactable* Button, Interactable* Link, But
 {
 	switch (Direction)
 	{
-	case Up:
+	case ButtonDirection::Up:
 		InteractableLinks[Button].Up = Link;
 		break;
-	case Down:
+	case ButtonDirection::Down:
 		InteractableLinks[Button].Down = Link;
 		break;
-	case Left:
+	case ButtonDirection::Left:
 		InteractableLinks[Button].Left = Link;
 		break;
-	case Right:
+	case ButtonDirection::Right:
 		InteractableLinks[Button].Right = Link;
 		break;
 	default:
 		return;
+	}
+}
+
+void InputSelection::XMovement(IInput* Input)
+{
+	float xVal = Input->GetValue(InputAction::LeftStickXAxis);
+
+	//Moves to new UI, unhighlights old one and highlights new one
+	if (bMoveableX)
+	{
+		bool Left = xVal < 0;
+		bool Right = xVal > 0;
+		if (Left)
+		{
+			if (InteractableLinks[CurrentInteractable].Left != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Left;
+				CurrentInteractable->Highlighted();
+				bMoveableX = false;
+			}
+		}
+		else if (Right)
+		{
+			if (InteractableLinks[CurrentInteractable].Right != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Right;
+				CurrentInteractable->Highlighted();
+				bMoveableX = false;
+			}
+		}
+	}
+	else 
+	{
+		//Prevents moving until the stick is back near the center
+		if (xVal <= 0.1 && xVal >= -0.1)
+		{
+			bMoveableX = true;
+		}
+	}
+}
+
+void InputSelection::YMovement(IInput* Input)
+{
+	float yVal = Input->GetValue(InputAction::LeftStickYAxis);
+
+	//Moves to new UI, unhighlights old one and highlights new one
+	if (bMoveableY)
+	{
+		bool Left = yVal < 0;
+		bool Right = yVal > 0;
+		if (Left)
+		{
+			if (InteractableLinks[CurrentInteractable].Down != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Down;
+				CurrentInteractable->Highlighted();
+				bMoveableY = false;
+			}
+
+		}
+		else if (Right)
+		{
+			if (InteractableLinks[CurrentInteractable].Up != nullptr)
+			{
+				CurrentInteractable->Unhighlighted();
+				CurrentInteractable = InteractableLinks[CurrentInteractable].Up;
+				CurrentInteractable->Highlighted();
+				bMoveableY = false;
+			}
+		}
+	}
+	else
+	{
+		//Prevents moving until the stick is back near the center
+		if (yVal <= 0.1 && yVal >= -0.1)
+		{
+			bMoveableY = true;
+		}
 	}
 }

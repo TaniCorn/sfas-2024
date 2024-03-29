@@ -24,30 +24,29 @@ void Tower::Update(float DeltaTime)
 		AttackTimer = AttackCooldown;
 	}
 	AttackTimer -= DeltaTime;
-	CurrentTexture->SetPosition(Position->x, Position->y);
 
 }
 
-int Tower::GetCost()
+void Tower::SetPosition(const DirectX::XMFLOAT2 Location)
+{
+	CurrentTexture->SetPosition(Location.x, Location.y);
+}
+
+int Tower::GetCost() const
 {
 	return Cost;
 }
 
-void Tower::LinkPosition(DirectX::XMFLOAT2& Location)
-{
-	Position = &Location;
-	CurrentTexture->SetPosition(Position->x, Position->y);
-}
-
-void Tower::SetScale(float x, float y)
+void Tower::SetScale(const float x, const float y)
 {
 	CurrentTexture->SetScale(x, y);
 }
 
 bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 {
-	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), *Position);
-	float Distance = DXHelper::MagnitudeSqrRoot(Vector);
+	DirectX::XMFLOAT2 Vector = DXHelper::Subtract(CurrentEnemy->GetPosition(), 
+		DirectX::XMFLOAT2(CurrentTexture->GetTransform().PositionX, CurrentTexture->GetTransform().PositionY));
+	float Distance = DXHelper::Magnitude(Vector);
 	if (Distance > Range)
 	{
 		return false;
@@ -59,7 +58,7 @@ bool Tower::IsEnemyInRange(const Enemy* CurrentEnemy) const
 
 }
 
-IRenderable* Tower::GetRenderable()
+IRenderable* Tower::GetRenderable() const
 {
 	return CurrentTexture;
 }
