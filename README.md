@@ -13,25 +13,25 @@ I FINALLY worked on smart pointers, and you know what? I really like them, the c
 
 ### Individual Feedback Recieved
  - [] Do serialization so that things don't need to be stored in code. - Will not be able to do in time
- - [x]Add some comments describing my intention
- - [x]Look at the compiler warnings!
- - [x]GameLevel class leaks memory of many created objects
+ - [x] Add some comments describing my intention
+ - [x] Look at the compiler warnings!
+ - [x] GameLevel class leaks memory of many created objects
  - [] Enum for selecting levels scales poorly, and chosen name "Level" can lead to confusion, since its not the instance just an identifier. <- Took too long to think of a good solution
- - [x]Naming could be better, Enemy::Target for base health isn't great.
- - [x]Comment the pooling system
- - [x]Smaller commits of functional units would be better
- - [x]Parameter passed to DirectX11Billboard::Update shadows a memer variable in the class
- - [x]Avoid direct access of member variables.
- - [x]Mark virtual overidden methods both as virtual and overriden.
- - [x]Initialize all variables and pay attention to implicit conversions.
+ - [x] Naming could be better, Enemy::Target for base health isn't great.
+ - [x] Comment the pooling system
+ - [x] Smaller commits of functional units would be better
+ - [x] Parameter passed to DirectX11Billboard::Update shadows a memer variable in the class
+ - [x] Avoid direct access of member variables.
+ - [x] Mark virtual overidden methods both as virtual and overriden.
+ - [x] Initialize all variables and pay attention to implicit conversions.
  - [] Try to incorporate Entity-Component more in order to achieve code-reusability. The code seems a bit monolithic<- Will not be able to do in time
- - [x]Some parts of the code was really dense and hard to read.
- - [x]Split longer methods, unless performance is involved.
- - [x]Const-correct principle.
- - [x]Avoid hard-coded data, prefer parametrized code instead of refactoring hard coded data.
+ - [x] Some parts of the code was really dense and hard to read.
+ - [x] Split longer methods, unless performance is involved.
+ - [x] Const-correct principle.
+ - [x] Avoid hard-coded data, prefer parametrized code instead of refactoring hard coded data.
  - [] Use ini/asset files to load information into the game, Levels, Enemy types. <- Will not be able to do in time
- - [x]Use smart pointers.
- - [x]Free momenory when you have allocated.
+ - [x] Use smart pointers.
+ - [x] Free momenory when you have allocated.
 
 Now we'll move onto the broader feedback for all SFAS finalists. **_I've marked some of these in bold italics because I didn't think they applied to my project_**
 
