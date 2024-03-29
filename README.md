@@ -1,6 +1,75 @@
 # Search For A Star finalist 2024 repo, building a game upon a barebones DirectX11 graphical framework.
 
+## Information
+
+![s1](https://github.com/TaniCorn/sfas-2024/assets/63819551/5530efd9-c82e-4348-bd4d-9bd755cf49b3)
+
+This project was originally written in a week for the 2024 SFAS. I managed to get into the finalist and recieved amazing feedback, which for the most part has been implemented.
+You can check out the itchio here https://tanicorn.itch.io/sfas-pirate-bay
+
+What can you expect from this page?
+
+- [Initial project design and thoughts](#project-design)
+- [Feedback recieved and addressed](#individual-feedback-recieved)
+- [Retrospective](#retrospect)
+
+
+What can you expect from the code?
+
+- Smart pointers now implemented
+- Clean code with self-explained variables and function names, with comments to explain certain areas.
+- Concepts like polymorphism, object pooling, shaders and graphics system, level loading
+
+What can you expect from the game?
+
+- A quick short tower defence that quickly scales from easy to difficult
+- A fun and simple design that allows quick mastery and skill
+- Pirates with planes
+
+### Project supporting document
+#### Project Design
+
+When I first set out on this project, I had a couple goals when looking at the codebase I was given:
+1. Improve the graphical pipeline – Add some more shaders, UI, or handling of assets
+2. Introduce sound to the application
+3. Develop a good level loading system
+4. Have a somewhat polished, fully functional game from start to finish
+
+I managed to do everything except the sound because I had run out of time.
+The idea for the game came from my love for Vampire Survivors and tower defence games. This was the original screenshot of my idea![image](https://github.com/TaniCorn/sfas-2024/assets/63819551/960421e6-bd54-407b-966c-2529abe18099)
+Initially I tried to research some of the previous SFAS Programming entries but found out that most of the games made before was using a game engine, which puts the expectations for the this a little bit differently. I felt like it would be most suited to put 50% of my focus into the engine, and the other 50% into the game.
+
+#### Design Plan
+
+Graphics
+ - I also want to improve the graphical pipeline, instead of creating a texture, a shader for that texture, and a renderable for that shader; which I understood that it would be more efficient for use cases where there was a lot of assets using the same texture, it was just a bit clunky to use. 
+ - The design I had envisioned for the system was to create textures that were referenced by Renderables, and shaders could render anything with any texture.
+ Levels
+ - Having the Game.h be the main game application while the levels would live inside it. I thought it would be a good idea to replicate the IApplication to the ILevel as much as possible. With one difference being the IsValid function changes to a function that allows current levels to switch to a different level by returning an enum value.
+ AI
+ - AI would be really simple, since our base would be in the middle we don’t need to do any advanced pathfinding or creating paths for them to follow, instead we’d just make them go to the target straight on.
+ Tower and Enemies
+ - Initially I planned to have towers and enemies function with the prototype pattern, however as I was reaching the end of the project, the extra work to implement specialised functionality and extra art assets that would make sense with the theme was not worth the limited time I had.
+
+#### Dev Diary
+The application had some existing problems that needed to be fixed.
+1.	It could only load DDC textures -> Added WIC Loading into the create texture function
+2.	There was no true DeltaTime -> Created my own DeltaTime class following cross-platform architecture
+3.	There was a data leak – After identifying that it was simply coming from not having virtual destructors
+
+Graphic Pipeline handling data
+- I wanted to ensure that the graphics pipeline handled all graphics assets and did all the garbage collection, which is what I imagined the full engine is supposed to do. So I made a distinction between registered assets and rendered assets. 
+- Assets would automatically be added to a set when being rendered, but could be removed from render but not removed from the register of assets. I planned to allow them to be manually removed but eventually found no need for it. This allowed the Graphics->Cleanup() function to truly cleanup every single asset.
+
+1 Param shader class
+- I eventually found that for the purpose of my game I only needed one extra shader class, which was just receiving 4 float params. This translated into 1 C++ class and 2 fx files
+
+Interface trap
+- I started making everything inherit from IClasses I had made, however I had a look back on what they actually were. The interface classes that I was making followed the original code; not being true interface classes. I started to develop the mindset that it was fine, however as soon as I realised I was double and triple inheriting from non-true-interface classes, I took a step back and started to re-implement them as component classes.
+
+
 ## Post-SFAS
+
 I've done some cleanup and worked on the overall, and individual feedback I recieved from the judges.
 
 I gave myself a few days, as I'm still working on my honours project and I didn't want this to take up too much of my time.
@@ -8,12 +77,12 @@ I gave myself a few days, as I'm still working on my honours project and I didn'
 Original Search For A Star 2024 finalist code: [Original Branch](https://github.com/TaniCorn/sfas-2024/tree/original)
 
 ### Retrospect
+
 - I really really enjoyed this project. It's nice being able to do a project without the pressure to learn entirely new concepts and getting marked on it. On this I could purely focus on my code, rather than whether the new thing works. 
 
-- Recieving all this feedbakc has been great as well, it's let me see where I'm weak at and what I needed to work on
+- Recieving all this feedback has been great as well, it's let me see where I'm weak at and what I needed to work on
 
 - I FINALLY worked on smart pointers, and you know what? I really like them, the concept of ownership never really occured in my head until I started using smart pointers. Plus it just makes the code architecture better. I'll be trying to use them more in the future.
-
 
 ### Individual Feedback Recieved
  - [ ] Do serialization so that things don't need to be stored in code. - Will not be able to do in time
@@ -37,9 +106,10 @@ Original Search For A Star 2024 finalist code: [Original Branch](https://github.
  - [x] Use smart pointers.
  - [x] Free momenory when you have allocated.
 
+### Broader Feedback Recieved
+
 Now we'll move onto the broader feedback for all SFAS finalists. **_I've marked some of these in bold italics because I didn't think they applied to my project_**
 
-### Broader Feedback Recieved
 #### INPUT
  - [x] Make sure to use the provided abstraction for input
  - [x] Use DX Input rather than windows messages
@@ -91,11 +161,5 @@ SOURCE CONTROL
 
 
 
-## SFAS Original
-This project was created within a week for the Search For A Star 2024 compeition. 
-Inside you'll find a fully complete game built from an existing graphical engine using DirectX.
-You can check out the itchio here https://tanicorn.itch.io/sfas-pirate-bay
 
-I may come back to this project in the future to experiment with adding in smart pointers to really tidy it up.
-![s1](https://github.com/TaniCorn/sfas-2024/assets/63819551/5530efd9-c82e-4348-bd4d-9bd755cf49b3)
 ![s2](https://github.com/TaniCorn/sfas-2024/assets/63819551/ca5059bc-62ff-4f54-8087-4148ab5d9205)
