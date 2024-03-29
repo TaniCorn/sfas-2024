@@ -2,13 +2,17 @@
 
 ## Post-SFAS
 I've done some cleanup and worked on the overall, and individual feedback I recieved from the judges.
+
 I gave myself a few days, as I'm still working on my honours project and I didn't want this to take up too much of my time.
+
 Original Search For A Star 2024 finalist code: [Original Branch](https://github.com/TaniCorn/sfas-2024/tree/original)
 
 ### Retrospect
-I really really enjoyed this project. It's nice being able to do a project without the pressure to learn entirely new concepts and getting marked on it. On this I could purely focus on my code, rather than whether the new thing works. 
-Recieving all this feedbakc has been great as well, it's let me see where I'm weak at and what I needed to work on
-I FINALLY worked on smart pointers, and you know what? I really like them, the concept of ownership never really occured in my head until I started using smart pointers. Plus it just makes the code architecture better. I'll be trying to use them more in the future.
+- I really really enjoyed this project. It's nice being able to do a project without the pressure to learn entirely new concepts and getting marked on it. On this I could purely focus on my code, rather than whether the new thing works. 
+
+- Recieving all this feedbakc has been great as well, it's let me see where I'm weak at and what I needed to work on
+
+- I FINALLY worked on smart pointers, and you know what? I really like them, the concept of ownership never really occured in my head until I started using smart pointers. Plus it just makes the code architecture better. I'll be trying to use them more in the future.
 
 
 ### Individual Feedback Recieved
@@ -42,11 +46,9 @@ Now we'll move onto the broader feedback for all SFAS finalists. **_I've marked 
 
 #### POD
  - [x] Recommended to pass Plain Old Data types as const reference
-  > Non-POD's are structs and classes
-> 
-	> Some types can be passed by value if they'll fit in vector registers
-> 
-	> Conversely pass POD types as const values as long as they are 32bit, as the 32 bit copy will take less space on the stack than the address on a 64bit platform if you pass by pointer or reference.
+> Non-POD's are structs and classes
+> Some types can be passed by value if they'll fit in vector registers
+> Conversely pass POD types as const values as long as they are 32bit, as the 32 bit copy will take less space on the stack than the address on a 64bit platform if you pass by pointer or reference.
 
 #### BEST PRACTICES
  - [x] Using square of distance for collision checks avoids expensive square root function
