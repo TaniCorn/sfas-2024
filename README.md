@@ -26,8 +26,8 @@ What can you expect from the game?
 - A fun and simple design that allows quick mastery and skill
 - Pirates with planes
 
-### Project supporting document
-#### Project Design
+## Project supporting document
+### Project Design
 
 When I first set out on this project, I had a couple goals when looking at the codebase I was given:
 1. Improve the graphical pipeline – Add some more shaders, UI, or handling of assets
@@ -39,7 +39,7 @@ I managed to do everything except the sound because I had run out of time.
 The idea for the game came from my love for Vampire Survivors and tower defence games. This was the original screenshot of my idea![image](https://github.com/TaniCorn/sfas-2024/assets/63819551/960421e6-bd54-407b-966c-2529abe18099)
 Initially I tried to research some of the previous SFAS Programming entries but found out that most of the games made before was using a game engine, which puts the expectations for the this a little bit differently. I felt like it would be most suited to put 50% of my focus into the engine, and the other 50% into the game.
 
-#### Design Plan
+### Design Plan
 
 Graphics
  - I also want to improve the graphical pipeline, instead of creating a texture, a shader for that texture, and a renderable for that shader; which I understood that it would be more efficient for use cases where there was a lot of assets using the same texture, it was just a bit clunky to use. 
@@ -51,7 +51,7 @@ Graphics
  Tower and Enemies
  - Initially I planned to have towers and enemies function with the prototype pattern, however as I was reaching the end of the project, the extra work to implement specialised functionality and extra art assets that would make sense with the theme was not worth the limited time I had.
 
-#### Dev Diary
+### Dev Diary
 The application had some existing problems that needed to be fixed.
 1.	It could only load DDC textures -> Added WIC Loading into the create texture function
 2.	There was no true DeltaTime -> Created my own DeltaTime class following cross-platform architecture
@@ -68,7 +68,7 @@ Interface trap
 - I started making everything inherit from IClasses I had made, however I had a look back on what they actually were. The interface classes that I was making followed the original code; not being true interface classes. I started to develop the mindset that it was fine, however as soon as I realised I was double and triple inheriting from non-true-interface classes, I took a step back and started to re-implement them as component classes.
 
 
-## Post-SFAS
+# Post-SFAS
 
 I've done some cleanup and worked on the overall, and individual feedback I recieved from the judges.
 
@@ -76,7 +76,7 @@ I gave myself a few days, as I'm still working on my honours project and I didn'
 
 Original Search For A Star 2024 finalist code: [Original Branch](https://github.com/TaniCorn/sfas-2024/tree/original)
 
-### Retrospect
+## Retrospect
 
 - I really really enjoyed this project. It's nice being able to do a project without the pressure to learn entirely new concepts and getting marked on it. On this I could purely focus on my code, rather than whether the new thing works. 
 
@@ -84,7 +84,7 @@ Original Search For A Star 2024 finalist code: [Original Branch](https://github.
 
 - I FINALLY worked on smart pointers, and you know what? I really like them, the concept of ownership never really occured in my head until I started using smart pointers. Plus it just makes the code architecture better. I'll be trying to use them more in the future.
 
-### Individual Feedback Recieved
+## Individual Feedback Recieved
  - [ ] Do serialization so that things don't need to be stored in code. - Will not be able to do in time
  - [x] Add some comments describing my intention
  - [x] Look at the compiler warnings!
@@ -106,21 +106,21 @@ Original Search For A Star 2024 finalist code: [Original Branch](https://github.
  - [x] Use smart pointers.
  - [x] Free momenory when you have allocated.
 
-### Broader Feedback Recieved
+## Broader Feedback Recieved
 
 Now we'll move onto the broader feedback for all SFAS finalists. **_I've marked some of these in bold italics because I didn't think they applied to my project_**
 
-#### INPUT
+### INPUT
  - [x] Make sure to use the provided abstraction for input
  - [x] Use DX Input rather than windows messages
 
-#### POD
+### POD
  - [x] Recommended to pass Plain Old Data types as const reference
 > Non-POD's are structs and classes
 > Some types can be passed by value if they'll fit in vector registers
 > Conversely pass POD types as const values as long as they are 32bit, as the 32 bit copy will take less space on the stack than the address on a 64bit platform if you pass by pointer or reference.
 
-#### BEST PRACTICES
+### BEST PRACTICES
  - [x] Using square of distance for collision checks avoids expensive square root function
  - [x] Function parameters should be const when possible
  - [ ] **_For parameters where unit is unclear, degress or radians comment it_**
@@ -139,7 +139,7 @@ Now we'll move onto the broader feedback for all SFAS finalists. **_I've marked 
  - [x] Take time to create a folder structure for source files
  - [x] Watch the size of functions, break them down.
 
-CODING STANDARDS
+### CODING STANDARDS
  - [x] Tidy up a commit and remove any commented out code unless it's a good reason to keep it around.
  - [x] Just be consistant in your coding standards. If you are making changes in 3rd part code, follow their standards.
  - [x] Don't have line lengths too long, they're excessive and hard to read.
@@ -150,7 +150,7 @@ CODING STANDARDS
  - [x] Best to check for pointer being non-null and/or assert rather than assume the delete implementation handles it appropriately
  - [x] Recomment avoiding using auto unless the type decleration would be particularly long/complex
 
-SOURCE CONTROL
+### SOURCE CONTROL
  - [x] Check it works on another machine
  - [x] Beware of absolute paths in project configs
  - [ ] **_If you use 3rd part libs, make sure it's clear where and how to acquire libs_**
